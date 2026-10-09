@@ -1,0 +1,17 @@
+MOL_democratic_decisions_category = {
+	icon = generic_democracy
+
+	priority = 100
+
+	allowed = {
+		original_tag = MOL
+	}
+
+	visible = {
+		has_government = democratic
+		OR = {
+			has_completed_focus = MOL_dem_allies_alignment
+			has_completed_focus = MOL_dem_neutral_path
+		}
+	}
+}

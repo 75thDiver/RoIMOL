@@ -1,0 +1,10 @@
+ROM_MOL_bucharest_category = {
+	icon = generic_political_actions
+	allowed = {
+		original_tag = MOL
+	}
+	visible = {
+		is_subject_of = ROM
+		has_country_flag = ROM_MOL_autonomic
+	}
+}

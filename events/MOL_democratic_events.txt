@@ -1,0 +1,271 @@
+add_namespace = MOL_dem_events
+
+# =============================================
+# СОБЫТИЕ: Ultimatum Румынии (демократический путь)
+# =============================================
+country_event = {
+	id = MOL_dem_events.1
+	title = MOL_dem_events.1.t
+	desc = MOL_dem_events.1.d
+	picture = GFX_report_event_generic_conference
+
+	is_triggered_only = yes
+
+	# Принять: уступить Бессарабию
+	option = {
+		name = MOL_dem_events.1.a
+		ai_chance = {
+			factor = 20
+			modifier = {
+				factor = 2
+				strength_ratio = { tag = MOL ratio < 0.5 }
+			}
+			modifier = {
+				factor = 0
+				has_government = fascism
+			}
+		}
+		add_stability = -0.15
+		add_political_power = -100
+		# Румыния принимает ультиматум: правительство падает, к власти приходят демократы
+		set_politics = {
+			ruling_party = democratic
+			elections_allowed = yes
+		}
+		add_popularity = {
+			ideology = democratic
+			popularity = 0.3
+		}
+		MOL = {
+			add_opinion_modifier = {
+				target = ROOT
+				modifier = MOL_accepted_demands
+			}
+			set_country_flag = MOL_dem_ultimatum_accepted
+		}
+		every_state = {
+			limit = {
+				OR = { state = 78 state = 766 state = 79 state = 80 }
+				is_owned_by = ROOT
+			}
+			MOL = { transfer_state = PREV }
+		}
+		hidden_effect = {
+			MOL = { country_event = { id = MOL_dem_events.2 days = 1 } }
+		}
+	}
+
+	# Отказ: никогда!
+	option = {
+		name = MOL_dem_events.1.b
+		ai_chance = {
+			factor = 80
+			modifier = {
+				factor = 2
+				strength_ratio = { tag = MOL ratio > 1.5 }
+			}
+		}
+		add_war_support = 0.10
+		add_political_power = 50
+		MOL = {
+			add_opinion_modifier = {
+				target = ROOT
+				modifier = MOL_rejected_demands
+			}
+			set_country_flag = MOL_dem_ultimatum_rejected
+			create_wargoal = {
+				type = take_state_focus
+				target = ROOT
+				generator = { 79 80 }
+			}
+		}
+		hidden_effect = {
+			MOL = { country_event = { id = MOL_dem_events.3 days = 1 } }
+		}
+	}
+}
+
+# =============================================
+# Румыния уступила
+# =============================================
+country_event = {
+	id = MOL_dem_events.2
+	title = MOL_dem_events.2.t
+	desc = MOL_dem_events.2.d
+	picture = GFX_report_event_generic_sign_treaty
+
+	is_triggered_only = yes
+
+	option = {
+		name = MOL_dem_events.2.a
+		add_stability = 0.10
+		add_political_power = 100
+		every_state = {
+			limit = {
+				OR = { state = 78 state = 766 state = 79 state = 80 }
+			}
+			add_core_of = MOL
+		}
+	}
+}
+
+# =============================================
+# Румыния отказала
+# =============================================
+country_event = {
+	id = MOL_dem_events.3
+	title = MOL_dem_events.3.t
+	desc = MOL_dem_events.3.d
+	picture = GFX_report_event_generic_rally
+
+	is_triggered_only = yes
+
+	option = {
+		name = MOL_dem_events.3.a
+		add_war_support = 0.05
+	}
+}
+
+# =============================================
+# Ultimatum СССР (вернуть Приднестровье)
+# =============================================
+country_event = {
+	id = MOL_dem_events.4
+	title = MOL_dem_events.4.t
+	desc = MOL_dem_events.4.d
+	picture = GFX_report_event_generic_conference
+
+	is_triggered_only = yes
+
+	# Уступить Приднестровье
+	option = {
+		name = MOL_dem_events.4.a
+		ai_chance = {
+			factor = 10
+			modifier = {
+				factor = 0
+				has_government = communism
+			}
+			modifier = {
+				factor = 3
+				strength_ratio = { tag = MOL ratio < 0.3 }
+			}
+		}
+		add_stability = -0.20
+		every_state = {
+			limit = {
+				OR = { state = 834 state = 192 state = 196 }
+				is_owned_by = ROOT
+			}
+			MOL = { transfer_state = PREV }
+		}
+	}
+
+	# Отказ: Приднестровье наше!
+	option = {
+		name = MOL_dem_events.4.b
+		ai_chance = {
+			factor = 90
+			modifier = {
+				factor = 2
+				strength_ratio = { tag = MOL ratio > 2.0 }
+			}
+		}
+		add_war_support = 0.15
+		MOL = {
+			create_wargoal = {
+				type = take_state_focus
+				target = ROOT
+				generator = { 834 192 196 }
+			}
+		}
+	}
+}
+
+# =============================================
+# СОБЫТИЕ: Поддержка демократической оппозиции в Румынии
+# =============================================
+country_event = {
+	id = MOL_dem_events.5
+	title = MOL_dem_events.5.t
+	desc = MOL_dem_events.5.d
+	picture = GFX_report_event_generic_conference
+
+	is_triggered_only = yes
+
+	# Принять: реформы
+	option = {
+		name = MOL_dem_events.5.a
+		ai_chance = {
+			factor = 30
+			modifier = {
+				factor = 2
+				democratic > 0.3
+			}
+		}
+		add_stability = -0.05
+		add_popularity = {
+			ideology = democratic
+			popularity = 0.10
+		}
+		MOL = {
+			add_opinion_modifier = {
+				target = ROOT
+				modifier = MOL_democratic_cooperation
+			}
+		}
+	}
+
+	# Отказ: не ваше дело
+	option = {
+		name = MOL_dem_events.5.b
+		ai_chance = {
+			factor = 70
+			modifier = {
+				factor = 0.5
+				democratic > 0.4
+			}
+		}
+		add_stability = 0.05
+		MOL = {
+			add_opinion_modifier = {
+				target = ROOT
+				modifier = MOL_rejected_cooperation
+			}
+		}
+	}
+}
+
+# =============================================
+# Новости: Объединение Молдовы (демократический путь)
+# =============================================
+add_namespace = MOL_dem_news
+
+country_event = {
+	id = MOL_dem_news.1
+	title = MOL_dem_news.1.t
+	desc = MOL_dem_news.1.d
+	picture = GFX_report_event_generic_sign_treaty
+
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	option = {
+		name = MOL_dem_news.1.a
+		trigger = { tag = MOL }
+	}
+	option = {
+		name = MOL_dem_news.1.b
+		trigger = {
+			NOT = { tag = MOL }
+			has_government = democratic
+		}
+	}
+	option = {
+		name = MOL_dem_news.1.c
+		trigger = {
+			NOT = { tag = MOL }
+			NOT = { has_government = democratic }
+		}
+	}
+}

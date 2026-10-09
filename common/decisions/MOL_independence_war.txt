@@ -1,0 +1,106 @@
+MOL_independence_war_category = {
+
+	MOL_thirty_days_of_fire = {
+		icon = generic_civil_war
+		allowed = { original_tag = MOL }
+		activation = { always = no }
+		available = { always = no }
+		selectable_mission = no
+		days_mission_timeout = 30
+		is_good = yes
+		fire_only_once = yes
+		cancel_trigger = {
+			OR = {
+				has_global_flag = MOL_white_peace_done
+				has_capitulated = yes
+				NOT = { country_exists = ROM }
+				AND = {
+					has_country_flag = MOL_independence_war
+					NOT = { has_war_with = ROM }
+				}
+			}
+		}
+		cancel_effect = {
+			clr_country_flag = MOL_independence_war
+			ROM = {
+				clr_country_flag = MOL_independence_war
+				remove_mission = ROM_thirty_days_of_fire
+			}
+		}
+		timeout_effect = {
+			if = {
+				limit = { NOT = { has_global_flag = MOL_white_peace_done } }
+				set_global_flag = MOL_white_peace_done
+				white_peace = ROM
+				set_country_flag = MOL_independence_secured
+				add_stability = 0.10
+				add_war_support = -0.10
+				add_political_power = 100
+				clr_country_flag = MOL_independence_war
+				ROM = {
+					add_stability = -0.10
+					add_war_support = -0.15
+					add_political_power = -50
+					clr_country_flag = MOL_independence_war
+					remove_mission = ROM_thirty_days_of_fire
+				}
+				hidden_effect = {
+					country_event = { id = moldavia.15 hours = 1 }
+					complete_national_focus = MOL_victory
+				}
+			}
+		}
+	}
+
+	ROM_thirty_days_of_fire = {
+		icon = generic_civil_war
+		allowed = { original_tag = ROM }
+		activation = { always = no }
+		available = { always = no }
+		selectable_mission = no
+		days_mission_timeout = 30
+		is_good = no
+		fire_only_once = yes
+		cancel_trigger = {
+			OR = {
+				has_global_flag = MOL_white_peace_done
+				NOT = { country_exists = MOL }
+				MOL = { has_capitulated = yes }
+				AND = {
+					has_country_flag = MOL_independence_war
+					NOT = { has_war_with = MOL }
+				}
+			}
+		}
+		cancel_effect = {
+			clr_country_flag = MOL_independence_war
+			MOL = {
+				clr_country_flag = MOL_independence_war
+				remove_mission = MOL_thirty_days_of_fire
+			}
+		}
+		timeout_effect = {
+			if = {
+				limit = { NOT = { has_global_flag = MOL_white_peace_done } }
+				set_global_flag = MOL_white_peace_done
+				MOL = {
+					white_peace = ROM
+					set_country_flag = MOL_independence_secured
+					add_stability = 0.10
+					add_war_support = -0.10
+					add_political_power = 100
+					clr_country_flag = MOL_independence_war
+					remove_mission = MOL_thirty_days_of_fire
+					hidden_effect = {
+						country_event = { id = moldavia.15 hours = 1 }
+						complete_national_focus = MOL_victory
+					}
+				}
+				add_stability = -0.10
+				add_war_support = -0.15
+				add_political_power = -50
+				clr_country_flag = MOL_independence_war
+			}
+		}
+	}
+}

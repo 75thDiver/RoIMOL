@@ -1,0 +1,192 @@
+add_namespace = transnistria_events
+
+# Восстание в Приднестровье
+country_event = {
+	id = transnistria_events.1
+	title = transnistria_events.1.t
+	desc = transnistria_events.1.d
+	picture = GFX_report_event_generic_guerrilla
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	option = {
+		name = transnistria_events.1.a
+		ai_chance = {
+			factor = 100
+		}
+
+		# Проверяем, что штат 834 не принадлежит Молдове или Румынии
+		if = {
+			limit = {
+				834 = {
+					NOT = { is_owned_by = MOL }
+					NOT = { is_owned_by = ROM }
+				}
+			}
+
+			# ШАГ 1: запоминаем СТРАНУ-владельца 834 (до передачи штата!)
+			# Баг раньше: save_event_target_as в скоупе штата сохранял ШТАТ,
+			# из-за чего declare_war_on целился в штат и война не начиналась
+			834 = {
+				owner = {
+					save_event_target_as = transnistria_owner
+				}
+			}
+
+			# ШАГ 2: Приднестровье появляется: идеология, шаблон, людские ресурсы, снаряжение, штат
+			PMR = {
+				if = {
+					limit = { MOL = { has_government = communism } }
+					set_politics = {
+						ruling_party = communism
+					}
+				}
+				else_if = {
+					limit = { MOL = { has_government = democratic } }
+					set_politics = {
+						ruling_party = democratic
+					}
+				}
+				else_if = {
+					limit = { MOL = { has_government = fascism } }
+					set_politics = {
+						ruling_party = fascism
+					}
+				}
+				else = {
+					set_politics = {
+						ruling_party = neutrality
+					}
+				}
+				# Процарские лоялисты: ПМР получает другой косметический тег
+				if = {
+					limit = { MOL = { has_country_flag = MOL_mon_romanov_dniester_rising } }
+					set_cosmetic_tag = PMR_tsarist_loyalists
+				}
+
+				hidden_effect = {
+					# Шаблон должен существовать ДО create_unit
+					division_template = {
+						name = "Ополчение ПМР"
+						regiments = {
+							infantry = { x = 0 y = 0 }
+							infantry = { x = 0 y = 1 }
+							infantry = { x = 0 y = 2 }
+							infantry = { x = 1 y = 0 }
+							infantry = { x = 1 y = 1 }
+							infantry = { x = 1 y = 2 }
+							infantry = { x = 2 y = 0 }
+							infantry = { x = 2 y = 1 }
+							infantry = { x = 2 y = 2 }
+						}
+					}
+					# Буфер людей и винтовок, чтобы 20 дивизий реально спавнились
+					add_manpower = 200000
+					add_equipment_to_stockpile = {
+						type = infantry_equipment
+						amount = 12000
+					}
+				}
+
+				# Забираем штат 834
+				transfer_state = 834
+			}
+
+			# ШАГ 3: 20 дивизий ополчения НА ТЕРРИТОРИИ ПМР (штат 834 уже её)
+			# spawn_units не существует в HOI4 - используем create_unit в state-скоупе
+			834 = {
+				create_unit = {
+					division = "name = \"Ополчение ПМР\" division_template = \"Ополчение ПМР\" start_experience_factor = 0.1 start_equipment_factor = 0.6 start_manpower_factor = 0.8"
+					owner = PMR
+					count = 20
+				}
+			}
+
+			# ШАГ 4: ВОЙНА - владелец объявляет войну ПМР (до выставления флагов миссий!)
+			# Баг раньше: purpose = annex_state и tension = 5 - несуществующие параметры declare_war_on
+			event_target:transnistria_owner = {
+				declare_war_on = {
+					target = PMR
+					type = take_state
+					generator = { 834 }
+				}
+				add_stability = -0.15
+				add_war_support = -0.1
+				add_political_power = -75
+			}
+
+			# ШАГ 5: флаги и миссии ТОЛЬКО после того, как война уже существует
+			# (иначе cancel_trigger "нет войны" гасит миссию в тот же тик)
+			hidden_effect = {
+				PMR = {
+					set_country_flag = PMR_independence_war
+					activate_mission = PMR_thirty_days_of_fire
+				}
+				event_target:transnistria_owner = {
+					set_country_flag = PMR_independence_war_opponent
+					activate_mission = SOV_thirty_days_of_fire
+				}
+			}
+		}
+
+		add_stability = -0.1
+		add_war_support = 0.15
+		set_country_flag = transnistria_uprising_done
+	}
+}
+
+# =============================================
+# СОБЫТИЕ: Приднестровье выстояло
+# Вызывается миссиями PMR_thirty_days_of_fire / SOV_thirty_days_of_fire
+# (timeout_effect, hidden_effect) В СКОУПЕ PMR после белого мира за 30 дней
+# =============================================
+country_event = {
+	id = transnistria_events.2
+	title = transnistria_events.2.t
+	desc = transnistria_events.2.d
+	picture = GFX_report_event_generic_guerrilla
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	option = {
+		name = transnistria_events.2.a
+		ai_chance = {
+			factor = 100
+		}
+		add_stability = 0.05
+		add_war_support = 0.05
+		add_political_power = 50
+	}
+}
+
+# =============================================
+# СОБЫТИЕ: Воссоединение берегов
+# Вызывается фокусами воссоединения (MOL_mon_native_reunion,
+# MOL_mon_romanov_reunion, MOL_dem_unification_of_banks) В СКОУПЕ MOL
+# =============================================
+country_event = {
+	id = transnistria_events.3
+	title = transnistria_events.3.t
+	desc = transnistria_events.3.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	option = {
+		name = transnistria_events.3.a
+		ai_chance = {
+			factor = 100
+		}
+		add_stability = 0.10
+		add_political_power = 75
+		if = {
+			limit = {
+				country_exists = PMR
+			}
+			annex_country = {
+				target = PMR
+				transfer_troops = yes
+			}
+		}
+	}
+}

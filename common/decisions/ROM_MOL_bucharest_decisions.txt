@@ -1,0 +1,84 @@
+ROM_MOL_bucharest_category = {
+
+	ROM_MOL_tribute_king = {
+		icon = generic_political_actions
+		cost = 50
+		days_remove = 30
+		days_re_enable = 120
+		visible = {
+			is_subject_of = ROM
+		}
+		remove_effect = {
+			add_stability = 0.03
+			add_to_variable = { rom_mol_trust = 10 }
+			clamp_variable = { var = rom_mol_trust min = 0 max = 100 }
+			custom_effect_tooltip = rom_mol_trust_up_tt
+		}
+		ai_will_do = {
+			factor = 2
+		}
+	}
+
+	ROM_MOL_national_festival = {
+		icon = generic_propaganda
+		cost = 40
+		days_remove = 35
+		days_re_enable = 90
+		visible = {
+			is_subject_of = ROM
+		}
+		remove_effect = {
+			add_stability = 0.05
+			add_war_support = 0.05
+			add_to_variable = { rom_mol_trust = -5 }
+			clamp_variable = { var = rom_mol_trust min = 0 max = 100 }
+			custom_effect_tooltip = rom_mol_trust_down_tt
+		}
+		ai_will_do = {
+			factor = 2
+		}
+	}
+
+	ROM_MOL_negotiate_rights = {
+		icon = generic_independence
+		cost = 75
+		days_remove = 60
+		days_re_enable = 150
+		visible = {
+			is_subject_of = ROM
+		}
+		remove_effect = {
+			add_autonomy_progress = {
+				value = 0.08
+				freedom = 0.75
+			}
+			add_to_variable = { rom_mol_trust = -5 }
+			clamp_variable = { var = rom_mol_trust min = 0 max = 100 }
+			custom_effect_tooltip = rom_mol_trust_down_tt
+		}
+		ai_will_do = {
+			factor = 3
+		}
+	}
+
+	ROM_MOL_crackdown_radicals = {
+		icon = generic_civil_war
+		cost = 50
+		days_remove = 45
+		days_re_enable = 120
+		visible = {
+			is_subject_of = ROM
+		}
+		remove_effect = {
+			add_stability = -0.05
+			add_war_support = -0.05
+			add_to_variable = { rom_mol_trust = 10 }
+			clamp_variable = { var = rom_mol_trust min = 0 max = 100 }
+			custom_effect_tooltip = rom_mol_trust_up_tt
+		}
+		ai_will_do = {
+			factor = 1
+		}
+	}
+
+}

@@ -1,0 +1,13 @@
+MOL_independence_war_category = {
+	icon = generic_civil_war
+	allowed = {
+		OR = {
+			original_tag = MOL
+			original_tag = ROM
+		}
+	}
+	visible = {
+		has_country_flag = MOL_independence_war
+	}
+	priority = 100
+}

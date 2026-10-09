@@ -1,0 +1,91 @@
+MOL_transnistria_category = {
+
+    MOL_prepare_agents = {
+        icon = GFX_decision_generic_support_communists
+        cost = 75
+        days_remove = 45
+        fire_only_once = yes
+        visible = {
+            has_country_flag = transnistria_rising
+            NOT = { has_country_flag = transnistria_agents_ready }
+            NOT = { has_country_flag = transnistria_agents_in_progress }
+            NOT = { has_country_flag = transnistria_uprising_started }
+        }
+        available = {
+            has_political_power > 75
+            has_equipment = { infantry_equipment > 500 }
+        }
+        complete_effect = {
+            add_political_power = -75
+            set_country_flag = transnistria_agents_in_progress
+        }
+        remove_effect = {
+            clr_country_flag = transnistria_agents_in_progress
+            set_country_flag = transnistria_agents_ready
+            add_stability = -0.05
+            add_equipment_to_stockpile = { type = infantry_equipment_0 amount = 500 }
+        }
+        cancel_trigger = { has_country_flag = transnistria_uprising_started }
+        ai_will_do = { factor = 5 }
+    }
+
+    MOL_arm_rebels = {
+        icon = GFX_decision_generic_support_partisans
+        cost = 100
+        days_remove = 60
+        fire_only_once = yes
+        visible = {
+            has_country_flag = transnistria_agents_ready
+            NOT = { has_country_flag = transnistria_rebels_armed }
+            NOT = { has_country_flag = transnistria_rebels_arming }
+            NOT = { has_country_flag = transnistria_uprising_started }
+        }
+        available = {
+            has_political_power > 100
+            has_army_experience > 20
+            has_equipment = { infantry_equipment > 3000 }
+        }
+        complete_effect = {
+            add_political_power = -100
+            set_country_flag = transnistria_rebels_arming
+        }
+        remove_effect = {
+            clr_country_flag = transnistria_rebels_arming
+            set_country_flag = transnistria_rebels_armed
+            add_manpower = -15000
+            add_stability = -0.10
+            add_equipment_to_stockpile = { type = infantry_equipment_0 amount = 3000 }
+        }
+        cancel_trigger = { has_country_flag = transnistria_uprising_started }
+        ai_will_do = { factor = 4 }
+    }
+
+    MOL_start_uprising = {
+        icon = GFX_decision_generic_casus_belli
+        cost = 150
+        days_remove = 75
+        fire_only_once = yes
+        visible = {
+            has_country_flag = transnistria_rebels_armed
+            NOT = { has_country_flag = transnistria_uprising_started }
+            NOT = { has_country_flag = transnistria_uprising_in_progress }
+        }
+        available = {
+            has_political_power > 150
+            has_army_experience > 10
+            has_equipment = { infantry_equipment > 1000 }
+        }
+        complete_effect = {
+            add_political_power = -150
+            set_country_flag = transnistria_uprising_in_progress
+        }
+        remove_effect = {
+            clr_country_flag = transnistria_uprising_in_progress
+            set_country_flag = transnistria_uprising_started
+            add_equipment_to_stockpile = { type = infantry_equipment_0 amount = 1000 }
+            country_event = { id = transnistria_events.1 days = 1 }
+        }
+        cancel_trigger = { has_country_flag = transnistria_uprising_started }
+        ai_will_do = { factor = 6 }
+    }
+}

@@ -1,0 +1,43 @@
+﻿l_russian:
+ MOL_democratic_party: "Местные органы власти жудец Бессарабии"
+ MOL_democratic_party_long: "Местные органы власти жудец Бессарабии"
+ MOL_fascism_party: "Железная Гвардия"
+ MOL_fascism_party_long: "Железная Гвардия"
+ MOL_communism_party: "РКП"
+ MOL_communism_party_long: "Румынская коммунистическая партия"
+ MOL_neutrality_party: "ФНВ"
+ MOL_neutrality_party_long: "Фронт национального возрождения"
+ 
+ Free_MOL_democratic_party: "Национальный блок"
+ Free_MOL_democratic_party_long: "Национальный блок спасения Молдавского народа"
+ Free_MOL_communism_party: "КПМ"
+ Free_MOL_communism_party_long: "Коммунистическая партия Молдовы"
+ Free_MOL_neutrality_party: "МТФ"
+ Free_MOL_neutrality_party_long: "Молдаский традиционный фронт"
+ Free_MOL_fascism_party: "Железная Гвардия в Молдавии"
+ Free_MOL_fascism_party_long: "Железная Гвардия в Молдавии"
+ 
+ Tinut_MOL_democratic_party: "НЛП"
+ Tinut_MOL_democratic_party_long: "Национальная либеральная партия"
+ 
+ ROM_MOL_democratic_party: "Сфатул Цэрий"
+ ROM_MOL_democratic_party_long: "Сфатул Цэрий"
+ ROM_MOL_neutrality_party: "Сфатул Цэрий"
+ ROM_MOL_neutrality_party_long: "Сфатул Цэрий"
+ 
+ MOL_monarchist_party: "Монархическая партия"
+ MOL_monarchist_party_long: "Молдавская Монархическая Партия Возрождения"
+
+ MOL_new_communism_party: "ПКМ"
+ MOL_new_communism_party_long: "Партия Коммунистов Молдовы"
+ MOLBAL_communist_party_balkan: "БКП"
+ MOLBAL_communist_party_balkan_long: "Балканская Коммунистическая Партия"
+
+ # Династии и фракция зелёной ветки
+ MOL_bogdanovici_party: "Дом Богдановичей"
+ MOL_bogdanovici_party_long: "Правящий Дом Молдавского Господарства"
+ MOL_habsburg_party: "Габсбургско-Молдавский двор"
+ MOL_habsburg_party_long: "Династический союз Габсбург-Лотарингского дома и Молдовы"
+ MOL_romanov_party: "Романовы в изгнании"
+ MOL_romanov_party_long: "Российский императорский двор в Кишинёве"
+ MOL_danubian_pact: "Дунайский пакт"

@@ -1,0 +1,118 @@
+PMR_independence_war_category = {
+
+	PMR_thirty_days_of_fire = {
+		icon = generic_civil_war
+		allowed = { original_tag = PMR }
+		activation = { always = no }
+		available = { always = no }
+		selectable_mission = no
+		days_mission_timeout = 30
+		is_good = yes
+		fire_only_once = yes
+		cancel_trigger = {
+			OR = {
+				has_global_flag = PMR_white_peace_done
+				has_capitulated = yes
+				AND = {
+					has_country_flag = PMR_independence_war
+					NOT = {
+						any_country = {
+							has_country_flag = PMR_independence_war_opponent
+							has_war_with = ROOT
+						}
+					}
+				}
+			}
+		}
+		cancel_effect = {
+			clr_country_flag = PMR_independence_war
+			every_country = {
+				limit = { has_country_flag = PMR_independence_war_opponent }
+				clr_country_flag = PMR_independence_war_opponent
+				remove_mission = SOV_thirty_days_of_fire
+			}
+		}
+		timeout_effect = {
+			if = {
+				limit = { NOT = { has_global_flag = PMR_white_peace_done } }
+				set_global_flag = PMR_white_peace_done
+				every_country = {
+					limit = {
+						has_country_flag = PMR_independence_war_opponent
+						has_war_with = ROOT
+					}
+					white_peace = ROOT
+					add_stability = -0.10
+					add_war_support = -0.15
+					add_political_power = -50
+					clr_country_flag = PMR_independence_war_opponent
+					remove_mission = SOV_thirty_days_of_fire
+				}
+				set_country_flag = PMR_independence_secured
+				add_stability = 0.10
+				add_war_support = -0.10
+				add_political_power = 100
+				clr_country_flag = PMR_independence_war
+				hidden_effect = {
+					country_event = { id = transnistria_events.2 hours = 1 }
+				}
+			}
+		}
+	}
+
+	SOV_thirty_days_of_fire = {
+		icon = generic_civil_war
+		allowed = {
+			OR = {
+				original_tag = SOV
+				original_tag = UKR
+			}
+		}
+		activation = { always = no }
+		available = { always = no }
+		selectable_mission = no
+		days_mission_timeout = 30
+		is_good = no
+		fire_only_once = yes
+		cancel_trigger = {
+			OR = {
+				has_global_flag = PMR_white_peace_done
+				NOT = { country_exists = PMR }
+				PMR = { has_capitulated = yes }
+				AND = {
+					has_country_flag = PMR_independence_war_opponent
+					NOT = { has_war_with = PMR }
+				}
+			}
+		}
+		cancel_effect = {
+			clr_country_flag = PMR_independence_war_opponent
+			PMR = {
+				clr_country_flag = PMR_independence_war
+				remove_mission = PMR_thirty_days_of_fire
+			}
+		}
+		timeout_effect = {
+			if = {
+				limit = { NOT = { has_global_flag = PMR_white_peace_done } }
+				set_global_flag = PMR_white_peace_done
+				white_peace = PMR
+				add_stability = -0.10
+				add_war_support = -0.15
+				add_political_power = -50
+				clr_country_flag = PMR_independence_war_opponent
+				PMR = {
+					set_country_flag = PMR_independence_secured
+					add_stability = 0.10
+					add_war_support = -0.10
+					add_political_power = 100
+					clr_country_flag = PMR_independence_war
+					remove_mission = PMR_thirty_days_of_fire
+					hidden_effect = {
+						country_event = { id = transnistria_events.2 hours = 1 }
+					}
+				}
+			}
+		}
+	}
+}

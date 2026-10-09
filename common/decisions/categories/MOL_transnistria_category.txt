@@ -1,0 +1,11 @@
+MOL_transnistria_category = {
+    icon = GFX_decision_generic_demand_territory
+
+    allowed = {
+        original_tag = MOL
+    }
+
+    visible = {
+        has_country_flag = transnistria_rising
+    }
+}

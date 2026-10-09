@@ -1,0 +1,7 @@
+# Цвета косметических тегов RoIMOL
+# Формат как в colors.txt; применяется через set_cosmetic_tag.
+
+PMR_tsarist_loyalists = {
+	color = rgb { 70 50 25 }
+	color_ui = rgb { 210 185 120 }
+}

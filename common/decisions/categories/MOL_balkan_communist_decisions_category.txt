@@ -1,0 +1,18 @@
+MOL_balkan_communist_federation_category = {
+    icon = generic_communism
+    picture = GFX_decision_cat_picture_balkan_communist_federation
+
+    priority = 800
+
+    allowed = {
+        original_tag = MOL
+    }
+
+    visible = {
+        has_government = communism
+        OR = {
+            has_completed_focus = MOL_red_balkan_communist_federation
+            has_completed_focus = MOL_red_work_with_revolutionary_orgs
+        }
+    }
+}

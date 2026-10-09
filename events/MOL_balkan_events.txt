@@ -1,0 +1,131 @@
+add_namespace = MOL_balkan_events
+
+# =============================================
+# УЛЬТИМАТУМ ОТ МОЛДОВЫ: Принять коммунизм или столкнуться с последствиями
+# =============================================
+country_event = {
+	id = MOL_balkan_events.1
+	title = MOL_balkan_events.1.t
+	desc = MOL_balkan_events.1.d
+	picture = GFX_report_event_generic_conference
+
+	is_triggered_only = yes
+
+	# Принять: становимся коммунистическим правительством
+	option = {
+		name = MOL_balkan_events.1.a
+		ai_chance = {
+			factor = 30
+			modifier = {
+				factor = 2
+				communism > 0.5
+			}
+			modifier = {
+				factor = 0.5
+				communism < 0.3
+			}
+			modifier = {
+				factor = 3
+				strength_ratio = { tag = MOL ratio < 0.5 }
+			}
+		}
+		add_stability = -0.10
+		add_political_power = -100
+		MOL = {
+			add_opinion_modifier = {
+				target = ROOT
+				modifier = MOL_accepted_ultimatum
+			}
+		}
+		if = {
+			limit = { NOT = { has_government = communism } }
+			start_civil_war = {
+				ideology = communism
+				size = 0.5
+			}
+		}
+		hidden_effect = {
+			MOL = { country_event = { id = MOL_balkan_events.2 days = 1 } }
+		}
+	}
+
+	# Отказ: мы не поддадимся давлению!
+	option = {
+		name = MOL_balkan_events.1.b
+		ai_chance = {
+			factor = 70
+			modifier = {
+				factor = 0.5
+				communism > 0.5
+			}
+			modifier = {
+				factor = 2
+				strength_ratio = { tag = MOL ratio > 1.5 }
+			}
+		}
+		add_stability = 0.05
+		add_war_support = 0.10
+		add_political_power = 50
+		MOL = {
+			add_opinion_modifier = {
+				target = ROOT
+				modifier = MOL_rejected_ultimatum
+			}
+			create_wargoal = {
+				type = puppet_wargoal_focus
+				target = ROOT
+			}
+		}
+		hidden_effect = {
+			MOL = { country_event = { id = MOL_balkan_events.3 days = 1 } }
+		}
+	}
+}
+
+# =============================================
+# ОТВЕТ ДЛЯ МОЛДОВЫ: Они приняли!
+# =============================================
+country_event = {
+	id = MOL_balkan_events.2
+	title = MOL_balkan_events.2.t
+	desc = MOL_balkan_events.2.d
+	picture = GFX_report_event_generic_sign_treaty
+
+	is_triggered_only = yes
+
+	option = {
+		name = MOL_balkan_events.2.a
+		ai_chance = { factor = 100 }
+		add_political_power = 50
+		add_stability = 0.05
+		# Приглашаем в фракцию, если коммунистическое правительство победит
+		if = {
+			limit = { is_faction_leader = yes }
+			FROM = {
+				if = {
+					limit = { has_government = communism is_in_faction = no is_subject = no }
+					country_event = generic.5
+				}
+			}
+		}
+	}
+}
+
+# =============================================
+# ОТВЕТ ДЛЯ МОЛДОВЫ: Они отказались!
+# =============================================
+country_event = {
+	id = MOL_balkan_events.3
+	title = MOL_balkan_events.3.t
+	desc = MOL_balkan_events.3.d
+	picture = GFX_report_event_generic_rally
+
+	is_triggered_only = yes
+
+	option = {
+		name = MOL_balkan_events.3.a
+		ai_chance = { factor = 100 }
+		add_war_support = 0.05
+		# Цель войны уже создана в ультиматуме
+	}
+}

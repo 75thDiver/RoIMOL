@@ -1,0 +1,147 @@
+# =====================================================
+# МОДИФИКАТОРЫ МНЕНИЙ ДЛЯ МОЛДОВЫ
+# =====================================================
+
+# Идеологическая солидарность (от фокуса Вступление в Коминтерн)
+MOL_ideological_solidarity = {
+    value = 30
+    level = 3
+    min_trust = -50
+    max_trust = 100
+    decay = 0.0
+}
+
+# Торговый партнёр
+MOL_trading_partner = {
+    value = 20
+    level = 2
+    min_trust = -30
+    max_trust = 80
+    decay = 0.1
+}
+
+# Снижение торговых отношений
+MOL_trading_partner_less = {
+    value = -15
+    level = -2
+    min_trust = -80
+    max_trust = 30
+    decay = 0.1
+}
+
+# Предпочтение в торговле
+MOL_favouritism_in_trading = {
+    value = 25
+    level = 3
+    min_trust = -20
+    max_trust = 90
+    decay = 0.05
+}
+
+# Торговое соглашение
+MOL_trade_agreement = {
+    value = 15
+    level = 2
+    min_trust = -20
+    max_trust = 80
+    decay = 0.1
+}
+
+# Подрывная дипломатия
+MOL_subversive_diplomacy = {
+    value = -40
+    level = -4
+    min_trust = -100
+    max_trust = 10
+    decay = 0.0
+}
+
+# Разочарование СССР (после отказа)
+MOL_disappointed_soviet = {
+    value = -30
+    level = -3
+    min_trust = -90
+    max_trust = 20
+    decay = 0.05
+}
+
+# Принял ультиматум
+MOL_accepted_ultimatum = {
+    value = 20
+    level = 2
+    min_trust = -20
+    max_trust = 90
+    decay = 0.1
+}
+
+# Отказал ультиматум
+MOL_rejected_ultimatum = {
+    value = -50
+    level = -5
+    min_trust = -100
+    max_trust = 0
+    decay = 0.0
+}
+
+# Дружественные отношения (базовый)
+friendly_relations = {
+    value = 20
+    level = 2
+    min_trust = -20
+    max_trust = 80
+    decay = 0.1
+}
+
+# Улучшенные отношения
+improved_relations = {
+    value = 15
+    level = 2
+    min_trust = -20
+    max_trust = 80
+    decay = 0.1
+}
+
+# Демократическое сотрудничество
+MOL_democratic_cooperation = {
+    value = 30
+    level = 3
+    min_trust = -20
+    max_trust = 100
+    decay = 0.05
+}
+
+# Антифашистская дипломатия
+MOL_anti_fascist_diplomacy = {
+    value = -30
+    level = -3
+    min_trust = -100
+    max_trust = 20
+    decay = 0.0
+}
+
+# Отказ от сотрудничества
+MOL_rejected_cooperation = {
+    value = -20
+    level = -2
+    min_trust = -80
+    max_trust = 30
+    decay = 0.1
+}
+
+# Принятые требования
+MOL_accepted_demands = {
+    value = 25
+    level = 3
+    min_trust = -10
+    max_trust = 100
+    decay = 0.05
+}
+
+# Отклонённые требования
+MOL_rejected_demands = {
+    value = -40
+    level = -4
+    min_trust = -100
+    max_trust = 10
+    decay = 0.0
+}

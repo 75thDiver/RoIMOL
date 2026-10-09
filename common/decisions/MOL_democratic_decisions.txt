@@ -1,0 +1,286 @@
+# =====================================================
+# ДЕМОКРАТИЧЕСКИЕ РЕШЕНИЯ
+# =====================================================
+
+MOL_democratic_decisions_category = {
+
+	# =============================================
+	# ПРОСОЮЗНИЧЕСКИЕ РЕШЕНИЯ
+	# =============================================
+
+	MOL_dem_request_british_investment = {
+		icon = generic_construction
+		allowed = { original_tag = MOL }
+		available = {
+			has_government = democratic
+			has_completed_focus = MOL_dem_british_trade
+			ENG = { exists = yes NOT = { has_war_with = ROOT } }
+			has_political_power > 49
+		}
+		visible = {
+			has_government = democratic
+			has_completed_focus = MOL_dem_british_trade
+		}
+		cost = 50
+		days_re_enable = 365
+		complete_effect = {
+			add_political_power = -50
+			random_owned_controlled_state = {
+				limit = {
+					free_building_slots = { building = industrial_complex size > 0 include_locked = yes }
+				}
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+			ENG = {
+				add_opinion_modifier = { target = ROOT modifier = MOL_democratic_cooperation }
+			}
+		}
+		ai_will_do = { factor = 10 }
+	}
+
+	MOL_dem_joint_military_exercises = {
+		icon = generic_military
+		allowed = { original_tag = MOL }
+		available = {
+			has_government = democratic
+			has_completed_focus = MOL_dem_british_military_mission
+			has_war = no
+			ENG = { exists = yes has_war = no NOT = { has_war_with = ROOT } }
+		}
+		visible = {
+			has_government = democratic
+			has_completed_focus = MOL_dem_british_military_mission
+		}
+		cost = 25
+		days_re_enable = 180
+		complete_effect = {
+			army_experience = 25
+			add_doctrine_cost_reduction = {
+				name = MOL_dem_exercises
+				cost_reduction = 0.25
+				uses = 1
+				category = land_doctrine
+			}
+		}
+		ai_will_do = { factor = 10 }
+	}
+
+	MOL_dem_support_democratic_romania = {
+		icon = generic_civil_support
+		allowed = { original_tag = MOL }
+		targets = { ROM }
+		available = {
+			has_government = democratic
+			has_completed_focus = MOL_dem_anti_fascist_diplomacy
+			FROM = {
+				exists = yes
+				NOT = { has_government = democratic }
+				NOT = { has_country_flag = MOL_dem_supported_flag }
+			}
+		}
+		visible = {
+			has_government = democratic
+			FROM = { exists = yes NOT = { has_government = democratic } }
+		}
+		cost = 75
+		days_remove = 90
+		fire_only_once = yes
+		remove_effect = {
+			FROM = {
+				add_popularity = { ideology = democratic popularity = 0.10 }
+				add_stability = -0.05
+				set_country_flag = MOL_dem_supported_flag
+			}
+		}
+		complete_effect = {
+		}
+		ai_will_do = { factor = 100 }
+	}
+
+	MOL_dem_guarantee_independence = {
+		icon = generic_nationalism
+		allowed = { original_tag = MOL }
+		targets = { ROM BUL GRE ALB YUG }
+		available = {
+			has_government = democratic
+			has_completed_focus = MOL_dem_guarantee_balkans
+			FROM = {
+				exists = yes
+				is_subject = no
+				has_government = democratic
+				NOT = { is_in_faction_with = ROOT }
+			}
+		}
+		visible = {
+			has_government = democratic
+			has_completed_focus = MOL_dem_guarantee_balkans
+			FROM = { exists = yes has_government = democratic }
+		}
+		cost = 25
+		fire_only_once = yes
+		complete_effect = {
+			give_guarantee = FROM
+			add_opinion_modifier = { target = FROM modifier = MOL_democratic_cooperation }
+		}
+		ai_will_do = { factor = 50 }
+	}
+
+	MOL_dem_send_volunteers = {
+		icon = generic_volunteer_expedition
+		allowed = { original_tag = MOL }
+		available = {
+			has_government = democratic
+			has_completed_focus = MOL_dem_volunteers_for_democracy
+			has_war = no
+			has_manpower > 4999
+			any_country = {
+				has_government = democratic
+				has_war = yes
+				NOT = { is_in_faction_with = ROOT }
+			}
+		}
+		visible = {
+			has_government = democratic
+			has_completed_focus = MOL_dem_volunteers_for_democracy
+		}
+		cost = 50
+		days_re_enable = 180
+		complete_effect = {
+			add_manpower = -5000
+			add_equipment_to_stockpile = { type = infantry_equipment amount = 1000 }
+			every_country = {
+				limit = { has_government = democratic has_war = yes NOT = { is_in_faction_with = ROOT } }
+				add_manpower = 5000
+				add_equipment_to_stockpile = { type = infantry_equipment amount = 1000 }
+			}
+		}
+		ai_will_do = { factor = 5 }
+	}
+
+	# =============================================
+	# НЕЙТРАЛЬНЫЕ РЕШЕНИЯ (Оборона)
+	# =============================================
+
+	MOL_dem_build_fortifications = {
+		icon = generic_fortification
+		allowed = { original_tag = MOL }
+		available = {
+			has_government = democratic
+			has_completed_focus = MOL_dem_fortify_borders
+			has_political_power > 74
+		}
+		visible = {
+			has_government = democratic
+			has_completed_focus = MOL_dem_fortify_borders
+		}
+		cost = 75
+		days_re_enable = 365
+		complete_effect = {
+			add_political_power = -75
+			every_owned_state = {
+				limit = { is_core_of = ROOT any_neighbor_state = { NOT = { is_owned_by = ROOT } } }
+				add_building_construction = { type = bunker level = 1 province = { all_provinces = yes limit_to_border = yes } instant_build = yes }
+			}
+		}
+		ai_will_do = { factor = 5 }
+	}
+
+	MOL_dem_expand_militia = {
+		icon = generic_infantry
+		allowed = { original_tag = MOL }
+		available = {
+			has_government = democratic
+			has_completed_focus = MOL_dem_militia_system
+			has_political_power > 49
+		}
+		visible = {
+			has_government = democratic
+			has_completed_focus = MOL_dem_militia_system
+		}
+		cost = 50
+		days_re_enable = 180
+		complete_effect = {
+			add_political_power = -50
+			add_manpower = 10000
+			add_equipment_to_stockpile = { type = infantry_equipment amount = 2000 }
+		}
+		ai_will_do = { factor = 5 }
+	}
+
+	# =============================================
+	# ИРРЕДЕНТИСТСКИЕ РЕШЕНИЯ
+	# =============================================
+
+	MOL_dem_incite_unrest_romania = {
+		icon = generic_revolution
+		allowed = { original_tag = MOL }
+		targets = { ROM }
+		available = {
+			has_government = democratic
+			has_completed_focus = MOL_dem_claim_moldovan_lands
+			FROM = {
+				exists = yes
+				NOT = { has_war_with = ROOT }
+				owns_state = 78
+			}
+		}
+		visible = {
+			has_government = democratic
+			has_completed_focus = MOL_dem_claim_moldovan_lands
+			FROM = { exists = yes owns_state = 78 }
+		}
+		cost = 75
+		days_remove = 60
+		fire_only_once = no
+		days_re_enable = 180
+		modifier = {
+			political_power_gain = -0.1
+		}
+		remove_effect = {
+			FROM = {
+				add_stability = -0.05
+				78 = { add_resistance = 10 }
+				766 = { add_resistance = 10 }
+			}
+		}
+		complete_effect = {
+		}
+		ai_will_do = { factor = 10 }
+	}
+
+	MOL_dem_support_ukrainian_dissidents = {
+		icon = generic_revolution
+		allowed = { original_tag = MOL }
+		targets = { SOV UKR }
+		available = {
+			has_government = democratic
+			has_completed_focus = MOL_dem_revolution_in_ukraine
+			FROM = {
+				exists = yes
+				NOT = { has_government = democratic }
+			}
+		}
+		visible = {
+			has_government = democratic
+			has_completed_focus = MOL_dem_revolution_in_ukraine
+			FROM = { exists = yes NOT = { has_government = democratic } }
+		}
+		cost = 75
+		days_remove = 90
+		fire_only_once = no
+		days_re_enable = 365
+		modifier = {
+			political_power_gain = -0.1
+		}
+		remove_effect = {
+			FROM = {
+				add_stability = -0.05
+				add_popularity = { ideology = democratic popularity = 0.05 }
+			}
+		}
+		complete_effect = {
+		}
+		ai_will_do = { factor = 10 }
+	}
+}

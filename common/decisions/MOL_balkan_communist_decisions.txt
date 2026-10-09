@@ -1,0 +1,850 @@
+# =====================================================
+# БАЛКАНСКИЕ КОММУНИСТИЧЕСКИЕ РЕШЕНИЯ
+# Распространение коммунизма и интеграция Балкан
+# =====================================================
+
+MOL_balkan_communist_federation_category = {
+
+	# =============================================
+	# РЕВОЛЮЦИОННЫЕ УЛЬТИМАТУМЫ
+	# =============================================
+
+	MOL_communist_ultimatum_romania = {
+		icon = generic_prepare_civil_war
+		allowed = { original_tag = MOL }
+		targets = { ROM }
+		available = {
+			is_subject = no
+			has_government = communism
+			FROM = {
+				communism > 0.4
+				NOT = { has_government = communism }
+				NOT = { has_country_flag = MOL_communist_balkan_flag }
+			}
+		}
+		visible = {
+			has_completed_focus = MOL_red_work_with_revolutionary_orgs
+			FROM = {
+				exists = yes
+				NOT = { has_government = communism }
+				NOT = { has_country_flag = MOL_communist_balkan_flag }
+			}
+		}
+		cost = 50
+		days_remove = 10
+		fire_only_once = no
+		remove_effect = {
+			FROM = {
+				country_event = MOL_balkan_events.1
+				set_country_flag = MOL_communist_balkan_flag
+			}
+		}
+		complete_effect = {
+		}
+		ai_will_do = { factor = 100 }
+	}
+
+	MOL_communist_ultimatum_bulgaria = {
+		icon = generic_prepare_civil_war
+		allowed = { original_tag = MOL }
+		targets = { BUL }
+		available = {
+			is_subject = no
+			has_government = communism
+			FROM = {
+				communism > 0.4
+				NOT = { has_government = communism }
+				NOT = { has_country_flag = MOL_communist_balkan_flag }
+			}
+		}
+		visible = {
+			has_completed_focus = MOL_red_work_with_revolutionary_orgs
+			FROM = {
+				exists = yes
+				NOT = { has_government = communism }
+				NOT = { has_country_flag = MOL_communist_balkan_flag }
+			}
+		}
+		cost = 50
+		days_remove = 10
+		fire_only_once = no
+		remove_effect = {
+			FROM = {
+				country_event = MOL_balkan_events.1
+				set_country_flag = MOL_communist_balkan_flag
+			}
+		}
+		complete_effect = {
+		}
+		ai_will_do = { factor = 100 }
+	}
+
+	MOL_communist_ultimatum_greece = {
+		icon = generic_prepare_civil_war
+		allowed = { original_tag = MOL }
+		targets = { GRE }
+		available = {
+			is_subject = no
+			has_government = communism
+			FROM = {
+				communism > 0.4
+				NOT = { has_government = communism }
+				NOT = { has_country_flag = MOL_communist_balkan_flag }
+			}
+		}
+		visible = {
+			has_completed_focus = MOL_red_work_with_revolutionary_orgs
+			FROM = {
+				exists = yes
+				NOT = { has_government = communism }
+				NOT = { has_country_flag = MOL_communist_balkan_flag }
+			}
+		}
+		cost = 50
+		days_remove = 10
+		fire_only_once = no
+		remove_effect = {
+			FROM = {
+				country_event = MOL_balkan_events.1
+				set_country_flag = MOL_communist_balkan_flag
+			}
+		}
+		complete_effect = {
+		}
+		ai_will_do = { factor = 100 }
+	}
+
+	MOL_communist_ultimatum_albania = {
+		icon = generic_prepare_civil_war
+		allowed = { original_tag = MOL }
+		targets = { ALB }
+		available = {
+			is_subject = no
+			has_government = communism
+			FROM = {
+				communism > 0.4
+				NOT = { has_government = communism }
+				NOT = { has_country_flag = MOL_communist_balkan_flag }
+			}
+		}
+		visible = {
+			has_completed_focus = MOL_red_work_with_revolutionary_orgs
+			FROM = {
+				exists = yes
+				NOT = { has_government = communism }
+				NOT = { has_country_flag = MOL_communist_balkan_flag }
+			}
+		}
+		cost = 50
+		days_remove = 10
+		fire_only_once = no
+		remove_effect = {
+			FROM = {
+				country_event = MOL_balkan_events.1
+				set_country_flag = MOL_communist_balkan_flag
+			}
+		}
+		complete_effect = {
+		}
+		ai_will_do = { factor = 100 }
+	}
+
+	MOL_communist_ultimatum_turkey = {
+		icon = generic_prepare_civil_war
+		allowed = { original_tag = MOL }
+		targets = { TUR }
+		available = {
+			is_subject = no
+			has_government = communism
+			FROM = {
+				communism > 0.4
+				NOT = { has_government = communism }
+				NOT = { has_country_flag = MOL_communist_balkan_flag }
+			}
+		}
+		visible = {
+			has_completed_focus = MOL_red_work_with_revolutionary_orgs
+			FROM = {
+				exists = yes
+				NOT = { has_government = communism }
+				NOT = { has_country_flag = MOL_communist_balkan_flag }
+			}
+		}
+		cost = 50
+		days_remove = 10
+		fire_only_once = no
+		remove_effect = {
+			FROM = {
+				country_event = MOL_balkan_events.1
+				set_country_flag = MOL_communist_balkan_flag
+			}
+		}
+		complete_effect = {
+		}
+		ai_will_do = { factor = 100 }
+	}
+
+	# =============================================
+	# ОРГАНИЗАЦИЯ ЗАБАСТОВОК
+	# =============================================
+
+	MOL_organize_workers_strikes_rom = {
+		icon = generic_merge_plant_materiel
+		allowed = { original_tag = MOL }
+		targets = { ROM }
+		available = {
+			is_subject = no
+			has_government = communism
+			FROM = {
+				NOT = { has_government = communism }
+				NOT = { has_country_flag = MOL_communist_balkan_flag }
+			}
+		}
+		visible = {
+			has_completed_focus = MOL_red_work_with_revolutionary_orgs
+			FROM = {
+				exists = yes
+				NOT = { has_government = communism }
+			}
+		}
+		cost = 50
+		days_remove = 90
+		fire_only_once = no
+		modifier = {
+			political_power_gain = -0.15
+		}
+		remove_effect = {
+		}
+		complete_effect = {
+			FROM = {
+				add_dynamic_modifier = { modifier = MOL_worker_strikes days = 90 }
+			}
+		}
+		ai_will_do = { factor = 100 }
+	}
+
+	MOL_organize_workers_strikes_bul = {
+		icon = generic_merge_plant_materiel
+		allowed = { original_tag = MOL }
+		targets = { BUL }
+		available = {
+			is_subject = no
+			has_government = communism
+			FROM = {
+				NOT = { has_government = communism }
+				NOT = { has_country_flag = MOL_communist_balkan_flag }
+			}
+		}
+		visible = {
+			has_completed_focus = MOL_red_work_with_revolutionary_orgs
+			FROM = {
+				exists = yes
+				NOT = { has_government = communism }
+			}
+		}
+		cost = 50
+		days_remove = 90
+		fire_only_once = no
+		modifier = {
+			political_power_gain = -0.15
+		}
+		remove_effect = {
+		}
+		complete_effect = {
+			FROM = {
+				add_dynamic_modifier = { modifier = MOL_worker_strikes days = 90 }
+			}
+		}
+		ai_will_do = { factor = 100 }
+	}
+
+	MOL_organize_workers_strikes_gre = {
+		icon = generic_merge_plant_materiel
+		allowed = { original_tag = MOL }
+		targets = { GRE }
+		available = {
+			is_subject = no
+			has_government = communism
+			FROM = {
+				NOT = { has_government = communism }
+				NOT = { has_country_flag = MOL_communist_balkan_flag }
+			}
+		}
+		visible = {
+			has_completed_focus = MOL_red_work_with_revolutionary_orgs
+			FROM = {
+				exists = yes
+				NOT = { has_government = communism }
+			}
+		}
+		cost = 50
+		days_remove = 90
+		fire_only_once = no
+		modifier = {
+			political_power_gain = -0.15
+		}
+		remove_effect = {
+		}
+		complete_effect = {
+			FROM = {
+				add_dynamic_modifier = { modifier = MOL_worker_strikes days = 90 }
+			}
+		}
+		ai_will_do = { factor = 100 }
+	}
+
+	# =============================================
+	# ПРОПАГАНДА
+	# =============================================
+
+	MOL_panslavic_propaganda_bulgaria = {
+		icon = eng_propaganda_campaigns
+		allowed = { original_tag = MOL }
+		targets = { BUL }
+		available = {
+			is_subject = no
+			has_government = communism
+			FROM = {
+				NOT = { has_government = communism }
+				NOT = { has_country_flag = MOL_communist_balkan_flag }
+			}
+		}
+		visible = {
+			has_completed_focus = MOL_red_work_with_revolutionary_orgs
+			FROM = {
+				exists = yes
+				NOT = { has_government = communism }
+			}
+		}
+		cost = 40
+		days_remove = 90
+		fire_only_once = no
+		remove_effect = {
+		}
+		complete_effect = {
+			FROM = {
+				add_dynamic_modifier = { modifier = MOL_panslavic_propaganda days = 90 }
+			}
+		}
+		ai_will_do = { factor = 100 }
+	}
+
+	MOL_panbalkan_propaganda_rom = {
+		icon = eng_propaganda_campaigns
+		allowed = { original_tag = MOL }
+		targets = { ROM }
+		available = {
+			is_subject = no
+			has_government = communism
+			FROM = {
+				NOT = { has_government = communism }
+				NOT = { has_country_flag = MOL_communist_balkan_flag }
+			}
+		}
+		visible = {
+			has_completed_focus = MOL_red_work_with_revolutionary_orgs
+			FROM = {
+				exists = yes
+				NOT = { has_government = communism }
+			}
+		}
+		cost = 35
+		days_remove = 90
+		fire_only_once = no
+		remove_effect = {
+		}
+		complete_effect = {
+			FROM = {
+				add_dynamic_modifier = { modifier = MOL_panbalkan_propaganda days = 90 }
+			}
+		}
+		ai_will_do = { factor = 100 }
+	}
+
+	MOL_panbalkan_propaganda_gre = {
+		icon = eng_propaganda_campaigns
+		allowed = { original_tag = MOL }
+		targets = { GRE }
+		available = {
+			is_subject = no
+			has_government = communism
+			FROM = {
+				NOT = { has_government = communism }
+				NOT = { has_country_flag = MOL_communist_balkan_flag }
+			}
+		}
+		visible = {
+			has_completed_focus = MOL_red_work_with_revolutionary_orgs
+			FROM = {
+				exists = yes
+				NOT = { has_government = communism }
+			}
+		}
+		cost = 35
+		days_remove = 90
+		fire_only_once = no
+		remove_effect = {
+		}
+		complete_effect = {
+			FROM = {
+				add_dynamic_modifier = { modifier = MOL_panbalkan_propaganda days = 90 }
+			}
+		}
+		ai_will_do = { factor = 100 }
+	}
+
+	MOL_panbalkan_propaganda_alb = {
+		icon = eng_propaganda_campaigns
+		allowed = { original_tag = MOL }
+		targets = { ALB }
+		available = {
+			is_subject = no
+			has_government = communism
+			FROM = {
+				NOT = { has_government = communism }
+				NOT = { has_country_flag = MOL_communist_balkan_flag }
+			}
+		}
+		visible = {
+			has_completed_focus = MOL_red_work_with_revolutionary_orgs
+			FROM = {
+				exists = yes
+				NOT = { has_government = communism }
+			}
+		}
+		cost = 35
+		days_remove = 90
+		fire_only_once = no
+		remove_effect = {
+		}
+		complete_effect = {
+			FROM = {
+				add_dynamic_modifier = { modifier = MOL_panbalkan_propaganda days = 90 }
+			}
+		}
+		ai_will_do = { factor = 100 }
+	}
+
+	MOL_panbalkan_propaganda_tur = {
+		icon = eng_propaganda_campaigns
+		allowed = { original_tag = MOL }
+		targets = { TUR }
+		available = {
+			is_subject = no
+			has_government = communism
+			FROM = {
+				NOT = { has_government = communism }
+				NOT = { has_country_flag = MOL_communist_balkan_flag }
+			}
+		}
+		visible = {
+			has_completed_focus = MOL_red_work_with_revolutionary_orgs
+			FROM = {
+				exists = yes
+				NOT = { has_government = communism }
+			}
+		}
+		cost = 35
+		days_remove = 90
+		fire_only_once = no
+		remove_effect = {
+		}
+		complete_effect = {
+			FROM = {
+				add_dynamic_modifier = { modifier = MOL_panbalkan_propaganda days = 90 }
+			}
+		}
+		ai_will_do = { factor = 100 }
+	}
+
+	# =============================================
+	# ПОДДЕРЖКА КОММУНИСТИЧЕСКИХ ПАРТИЙ
+	# =============================================
+
+	MOL_support_communist_party_rom = {
+		icon = generic_civil_support
+		allowed = { original_tag = MOL }
+		targets = { ROM }
+		available = {
+			is_subject = no
+			has_government = communism
+			FROM = {
+				NOT = { has_government = communism }
+				NOT = { has_country_flag = MOL_communist_balkan_flag }
+			}
+		}
+		visible = {
+			has_completed_focus = MOL_red_work_with_revolutionary_orgs
+			FROM = {
+				exists = yes
+				NOT = { has_government = communism }
+			}
+		}
+		cost = 25
+		days_remove = 20
+		fire_only_once = no
+		remove_effect = {
+			FROM = {
+				add_popularity = {
+					ideology = communism
+					popularity = 0.05
+				}
+			}
+		}
+		complete_effect = {
+		}
+		ai_will_do = { factor = 100 }
+	}
+
+	MOL_support_communist_party_bul = {
+		icon = generic_civil_support
+		allowed = { original_tag = MOL }
+		targets = { BUL }
+		available = {
+			is_subject = no
+			has_government = communism
+			FROM = {
+				NOT = { has_government = communism }
+				NOT = { has_country_flag = MOL_communist_balkan_flag }
+			}
+		}
+		visible = {
+			has_completed_focus = MOL_red_work_with_revolutionary_orgs
+			FROM = {
+				exists = yes
+				NOT = { has_government = communism }
+			}
+		}
+		cost = 25
+		days_remove = 20
+		fire_only_once = no
+		remove_effect = {
+			FROM = {
+				add_popularity = {
+					ideology = communism
+					popularity = 0.05
+				}
+			}
+		}
+		complete_effect = {
+		}
+		ai_will_do = { factor = 100 }
+	}
+
+	MOL_support_communist_party_gre = {
+		icon = generic_civil_support
+		allowed = { original_tag = MOL }
+		targets = { GRE }
+		available = {
+			is_subject = no
+			has_government = communism
+			FROM = {
+				NOT = { has_government = communism }
+				NOT = { has_country_flag = MOL_communist_balkan_flag }
+			}
+		}
+		visible = {
+			has_completed_focus = MOL_red_work_with_revolutionary_orgs
+			FROM = {
+				exists = yes
+				NOT = { has_government = communism }
+			}
+		}
+		cost = 25
+		days_remove = 20
+		fire_only_once = no
+		remove_effect = {
+			FROM = {
+				add_popularity = {
+					ideology = communism
+					popularity = 0.05
+				}
+			}
+		}
+		complete_effect = {
+		}
+		ai_will_do = { factor = 100 }
+	}
+
+	MOL_support_communist_party_alb = {
+		icon = generic_civil_support
+		allowed = { original_tag = MOL }
+		targets = { ALB }
+		available = {
+			is_subject = no
+			has_government = communism
+			FROM = {
+				NOT = { has_government = communism }
+				NOT = { has_country_flag = MOL_communist_balkan_flag }
+			}
+		}
+		visible = {
+			has_completed_focus = MOL_red_work_with_revolutionary_orgs
+			FROM = {
+				exists = yes
+				NOT = { has_government = communism }
+			}
+		}
+		cost = 25
+		days_remove = 20
+		fire_only_once = no
+		remove_effect = {
+			FROM = {
+				add_popularity = {
+					ideology = communism
+					popularity = 0.05
+				}
+			}
+		}
+		complete_effect = {
+		}
+		ai_will_do = { factor = 100 }
+	}
+
+	MOL_support_communist_party_tur = {
+		icon = generic_civil_support
+		allowed = { original_tag = MOL }
+		targets = { TUR }
+		available = {
+			is_subject = no
+			has_government = communism
+			FROM = {
+				NOT = { has_government = communism }
+				NOT = { has_country_flag = MOL_communist_balkan_flag }
+			}
+		}
+		visible = {
+			has_completed_focus = MOL_red_work_with_revolutionary_orgs
+			FROM = {
+				exists = yes
+				NOT = { has_government = communism }
+			}
+		}
+		cost = 25
+		days_remove = 20
+		fire_only_once = no
+		remove_effect = {
+			FROM = {
+				add_popularity = {
+					ideology = communism
+					popularity = 0.05
+				}
+			}
+		}
+		complete_effect = {
+		}
+		ai_will_do = { factor = 100 }
+	}
+
+	# =============================================
+	# ПРИГЛАШЕНИЕ В БАЛКАНСКУЮ ФЕДЕРАЦИЮ
+	# =============================================
+
+	MOL_invite_to_balkan_federation = {
+		icon = hol_exchange_intelligence_data
+		allowed = { original_tag = MOL }
+		targets = { ROM BUL GRE ALB TUR YUG }
+		available = {
+			is_faction_leader = yes
+			has_government = communism
+			FROM = {
+				has_government = communism
+				is_subject = no
+				is_in_faction = no
+				NOT = { has_war_with = ROOT }
+			}
+		}
+		visible = {
+			has_completed_focus = MOL_red_balkan_communist_federation
+			FROM = {
+				has_government = communism
+				is_subject = no
+				NOT = { is_in_faction_with = ROOT }
+			}
+		}
+		cost = 10
+		days_remove = 10
+		fire_only_once = no
+		remove_effect = {
+			FROM = {
+				country_event = generic.5
+			}
+		}
+		complete_effect = {
+		}
+		ai_will_do = { factor = 100 }
+	}
+
+	# =============================================
+	# ЭКОНОМИЧЕСКАЯ ИНТЕГРАЦИЯ
+	# =============================================
+
+	MOL_invite_to_economic_integration = {
+		icon = generic_construction
+		allowed = { original_tag = MOL }
+		targets = { ROM BUL GRE ALB TUR YUG }
+		available = {
+			is_subject = no
+			has_government = communism
+			is_faction_leader = yes
+			FROM = {
+				is_in_faction_with = ROOT
+				NOT = { has_dynamic_modifier = MOL_balkan_economic_integration }
+			}
+		}
+		visible = {
+			has_completed_focus = MOL_red_economic_integration
+			FROM = {
+				is_in_faction_with = ROOT
+				NOT = { has_dynamic_modifier = MOL_balkan_economic_integration }
+			}
+		}
+		cost = 50
+		days_remove = 20
+		fire_only_once = no
+		modifier = {
+			political_power_gain = -0.1
+		}
+		remove_effect = {
+			FROM = {
+				add_dynamic_modifier = { modifier = MOL_balkan_economic_integration }
+			}
+		}
+		complete_effect = {
+		}
+		ai_will_do = { factor = 100 }
+	}
+
+	# =============================================
+	# ПОЛИТИЧЕСКАЯ ИНТЕГРАЦИЯ
+	# =============================================
+
+	MOL_invite_to_political_integration = {
+		icon = generic_improve_administration
+		allowed = { original_tag = MOL }
+		targets = { ROM BUL GRE ALB TUR YUG }
+		available = {
+			is_subject = no
+			has_government = communism
+			is_faction_leader = yes
+			FROM = {
+				is_in_faction_with = ROOT
+				NOT = { has_dynamic_modifier = MOL_balkan_political_integration }
+			}
+		}
+		visible = {
+			has_completed_focus = MOL_red_political_integration
+			FROM = {
+				is_in_faction_with = ROOT
+				NOT = { has_dynamic_modifier = MOL_balkan_political_integration }
+			}
+		}
+		cost = 50
+		days_remove = 20
+		fire_only_once = no
+		modifier = {
+			political_power_gain = -0.1
+		}
+		remove_effect = {
+			FROM = {
+				add_dynamic_modifier = { modifier = MOL_balkan_political_integration }
+			}
+		}
+		complete_effect = {
+		}
+		ai_will_do = { factor = 100 }
+	}
+
+	# =============================================
+	# ВОЕННАЯ ИНТЕГРАЦИЯ
+	# =============================================
+
+	MOL_invite_to_military_integration = {
+		icon = generic_military_deal
+		allowed = { original_tag = MOL }
+		targets = { ROM BUL GRE ALB TUR YUG }
+		available = {
+			is_subject = no
+			has_government = communism
+			is_faction_leader = yes
+			FROM = {
+				is_in_faction_with = ROOT
+				NOT = { has_dynamic_modifier = MOL_balkan_military_integration }
+			}
+		}
+		visible = {
+			has_completed_focus = MOL_red_military_integration
+			FROM = {
+				is_in_faction_with = ROOT
+				NOT = { has_dynamic_modifier = MOL_balkan_military_integration }
+			}
+		}
+		cost = 50
+		days_remove = 20
+		fire_only_once = no
+		modifier = {
+			political_power_gain = -0.1
+		}
+		remove_effect = {
+			FROM = {
+				add_dynamic_modifier = { modifier = MOL_balkan_military_integration }
+			}
+		}
+		complete_effect = {
+		}
+		ai_will_do = { factor = 100 }
+	}
+
+	# =============================================
+	# ФИНАЛЬНАЯ ИНТЕГРАЦИЯ (АННЕКСИЯ)
+	# =============================================
+
+	MOL_integrate_balkan_country = {
+		icon = generic_form_nation
+		allowed = { original_tag = MOL }
+		targets = { ROM BUL GRE ALB TUR YUG }
+		available = {
+			is_subject = no
+			has_government = communism
+			is_faction_leader = yes
+			has_completed_focus = MOL_red_unification_of_balkans
+			FROM = {
+				is_in_faction_with = ROOT
+				has_government = communism
+				has_dynamic_modifier = MOL_balkan_economic_integration
+				has_dynamic_modifier = MOL_balkan_political_integration
+				has_dynamic_modifier = MOL_balkan_military_integration
+			}
+		}
+		visible = {
+			has_completed_focus = MOL_red_unification_of_balkans
+			FROM = {
+				is_in_faction_with = ROOT
+				has_dynamic_modifier = MOL_balkan_economic_integration
+				has_dynamic_modifier = MOL_balkan_political_integration
+				has_dynamic_modifier = MOL_balkan_military_integration
+			}
+		}
+		cost = 100
+		days_remove = 120
+		fire_only_once = no
+		modifier = {
+			political_power_gain = -0.4
+		}
+		remove_effect = {
+			ROOT = {
+				annex_country = {
+					target = FROM
+					transfer_troops = yes
+				}
+			}
+			every_state = {
+				limit = { is_core_of = FROM NOT = { is_core_of = ROOT } }
+				ROOT = { add_state_core = PREV }
+			}
+		}
+		complete_effect = {
+		}
+		ai_will_do = { factor = 100 }
+	}
+}

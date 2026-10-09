@@ -1,0 +1,18 @@
+spriteTypes = {
+		spriteType = {
+			name = "GFX_MOL_LGOV"
+			texturefile = "gfx/leaders/MOL_LGOV.png"
+		}
+		spriteType = {
+			name = "GFX_grigore_cazacliu"
+			texturefile = "gfx/leaders/grigore_cazacliu.png"
+		}
+		spriteType = {
+			name = "GFX_ion_inculet"
+			texturefile = "gfx/leaders/ion_inculet.png"
+		}
+		spriteType = {
+			name = "GFX_focus_MOL_resistance"
+			texturefile = "gfx/interface/goals/focus_MOL_resistance.dds"
+		}
+	}

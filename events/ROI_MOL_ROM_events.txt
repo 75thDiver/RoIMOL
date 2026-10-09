@@ -1,0 +1,172 @@
+﻿add_namespace = romania
+
+country_event = {
+	id = romania.1
+	title = romania.1.t
+	desc = romania.1.d
+	picture = GFX_report_event_generic_read_write
+	
+	is_triggered_only = yes
+
+	# ========== ОПЦИЯ A: Принять ультиматум (Румыния решает сама) ==========
+	option = {
+		name = romania.1.a
+		trigger = {
+			ROOT = {
+				is_puppet = no
+				NOT = {
+					has_autonomy_state = autonomy_dominion
+				}
+				MOL = {
+					NOT = { has_country_flag = Moldavia_have_choice }
+				}
+			}
+		}
+		ai_chance = {
+			factor = 90
+			modifier = {
+				factor = 0
+				has_war_with = FROM
+				NOT = { is_in_faction_with = FROM }
+				OR = {
+					any_other_country = {
+						is_major = yes
+						NOT = { tag = SOV }
+						OR = {
+							is_in_faction_with = ROM
+							has_guaranteed = ROM
+						}
+					}
+					has_idea = anti_soviet_pact
+				}
+			}
+			modifier = {
+				factor = 0.1
+				is_historical_focus_on = no
+			}
+		}
+		SOV = {
+			country_event = { days = 1 id = soviet.4 }
+			if = { 
+				limit = {
+					OR = {
+						ROOT = { owns_state = 80 }
+						MOL = {
+							AND = {
+								is_puppet_of = ROOT
+								owns_state = 80
+							}
+						}
+					}
+				}
+				transfer_state = 80
+			}
+			if = { 
+				limit = {
+					OR = {
+						ROOT = { owns_state = 78 }
+						MOL = {
+							AND = {
+								is_puppet_of = ROOT
+								owns_state = 78
+							}
+						}
+					}
+				}
+				transfer_state = 78
+			}
+			if = { 
+				limit = {
+					OR = {
+						ROOT = { owns_state = 766 }
+						MOL = {
+							AND = {
+								is_puppet_of = ROOT
+								owns_state = 766
+							}
+						}
+					}
+				}
+				transfer_state = 766
+			}
+		}
+	}
+
+	# ========== ОПЦИЯ B: Отказаться (Румыния решает сама) ==========
+	option = {
+		name = romania.1.b
+		trigger = {
+			ROOT = {
+				is_puppet = no
+				NOT = {
+					has_autonomy_state = autonomy_dominion
+				}
+				MOL = {
+					NOT = { has_country_flag = Moldova_have_choice }
+				}
+			}
+		}
+		ai_chance = {
+			base = 0
+			modifier = {
+				add = 10
+				is_in_faction = yes
+				NOT = { is_in_faction_with = FROM }
+			}
+			modifier = {
+				add = 100
+				has_war_with = FROM
+			}
+			modifier = {
+				is_historical_focus_on = yes
+				NOT = { has_war_with = FROM }
+				factor = 0
+			}
+			modifier = {
+				factor = 0
+				is_in_faction_with = FROM
+			}
+		}
+		FROM = {
+			country_event = { days = 1 id = soviet.5 }
+			effect_tooltip = {
+				create_wargoal = {
+					type = take_state
+					target = ROOT
+					generator = { 78 }
+				}
+			}
+		}
+	}
+
+	# ========== ОПЦИЯ C: Страна — чья-то марионетка ==========
+	option = {
+		name = romania.1.c
+		trigger = {
+			ROOT = {
+				OR = {
+					is_puppet = yes
+					has_autonomy_state = autonomy_dominion
+				}
+			}
+		}
+	}
+
+	# ========== ОПЦИЯ D: У Молдовы есть право выбора — передаём решение ей ==========
+	option = {
+		name = romania.1.d
+		trigger = {
+			ROOT = {
+				MOL = {
+					has_country_flag = Moldavia_have_choice
+				}
+			}
+		}
+		ai_chance = {
+			base = 100
+		}
+		MOL = {
+			country_event = { days = 1 id = moldavia.9 }
+		}
+	}
+}

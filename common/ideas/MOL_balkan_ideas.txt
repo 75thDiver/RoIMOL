@@ -1,0 +1,41 @@
+ideas = {
+
+	# =============================================
+	# БАЛКАНСКИЕ ВРЕМЕННЫЕ ИДЕИ (используются в решениях)
+	# =============================================
+
+	# Забастовки рабочих (применяется к целевым странам)
+	MOL_worker_strikes = {
+		allowed = { always = no }
+		removal_cost = -1
+		picture = generic_production_not_met
+		modifier = {
+			production_speed_buildings_factor = -0.15
+			industrial_capacity_factory = -0.10
+			stability_weekly = -0.02
+		}
+	}
+
+	# Панславянская пропаганда (Болгария)
+	MOL_panslavic_propaganda = {
+		allowed = { always = no }
+		removal_cost = -1
+		picture = generic_communism_drift_bonus
+		modifier = {
+			communism_drift = 0.05
+			stability_weekly = -0.01
+		}
+	}
+
+	# Панбалканская пропаганда (Румыния, Греция, Албания, Турция)
+	MOL_panbalkan_propaganda = {
+		allowed = { always = no }
+		removal_cost = -1
+		picture = generic_propaganda
+		modifier = {
+			communism_drift = 0.03
+			stability_weekly = -0.005
+			democratic_drift = -0.02
+		}
+	}
+}

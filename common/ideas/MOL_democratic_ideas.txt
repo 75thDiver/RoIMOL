@@ -1,0 +1,118 @@
+ideas = {
+	# =============================================
+	# ДЕМОКРАТИЧЕСКИЕ ВРЕМЕННЫЕ ИДЕИ
+	# =============================================
+
+	# Британская торговая миссия
+	MOL_british_trade_mission = {
+		allowed = { always = no }
+		removal_cost = -1
+		picture = generic_goods_red_bonus
+		modifier = {
+			consumer_goods_factor = -0.05
+			trade_opinion_factor = 0.15
+		}
+	}
+
+	# Демократическая оппозиция (применяется к целевым странам)
+	MOL_democratic_opposition = {
+		allowed = { always = no }
+		removal_cost = -1
+		picture = generic_democratic_revolt
+		modifier = {
+			democratic_drift = 0.03
+			stability_weekly = -0.01
+			political_power_factor = -0.05
+		}
+	}
+
+	# Вооружённый нейтралитет
+	MOL_armed_neutrality_idea = {
+		allowed = { always = no }
+		removal_cost = -1
+		picture = generic_neutrality_drift_bonus
+		modifier = {
+			army_core_defence_factor = 0.15
+			army_org_factor = 0.05
+			drift_defence_factor = 0.25
+			enemy_justify_war_goal_time = 0.25
+		}
+	}
+
+	# Демократическая мобилизация
+	MOL_democratic_mobilization = {
+		allowed = { always = no }
+		removal_cost = -1
+		picture = generic_manpower_bonus
+		modifier = {
+			conscription = 0.02
+			war_support_factor = 0.10
+			army_core_attack_factor = 0.05
+			army_core_defence_factor = 0.10
+		}
+	}
+
+	# Швейцарская модель
+	MOL_swiss_model = {
+		allowed = { always = no }
+		removal_cost = -1
+		picture = generic_neutrality_drift_bonus
+		modifier = {
+			army_core_defence_factor = 0.20
+			dig_in_speed_factor = 0.25
+			production_speed_bunker_factor = 0.30
+			enemy_justify_war_goal_time = 0.50
+			consumer_goods_factor = -0.05
+			stability_weekly = 0.02
+		}
+	}
+
+	# Демократическая пропаганда (применяется к соседям)
+	MOL_democratic_propaganda = {
+		allowed = { always = no }
+		removal_cost = -1
+		picture = generic_propaganda
+		modifier = {
+			democratic_drift = 0.03
+			stability_weekly = -0.005
+		}
+	}
+
+	# Поддержка диссидентов (применяется к СССР)
+	MOL_dissident_support = {
+		allowed = { always = no }
+		removal_cost = -1
+		picture = generic_democratic_revolt
+		modifier = {
+			democratic_drift = 0.02
+			stability_weekly = -0.01
+			resistance_target = 0.05
+		}
+	}
+
+	# Объединённая демократическая Молдова
+	MOL_united_democratic_moldova = {
+		allowed = { always = no }
+		removal_cost = -1
+		picture = generic_democratic_revolt
+		modifier = {
+			stability_weekly = 0.03
+			war_support_factor = 0.10
+			political_power_factor = 0.15
+			production_speed_buildings_factor = 0.10
+			army_core_defence_factor = 0.10
+		}
+	}
+
+	# Демократическое влияние (применяется к целевым странам через демократические фокусы)
+	MOL_democratic_influence = {
+		allowed = { always = no }
+		removal_cost = -1
+		picture = generic_democratic_revolt
+		modifier = {
+			democratic_drift = 0.05
+			stability_weekly = -0.02
+			political_power_factor = -0.10
+		}
+	}
+}

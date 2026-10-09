@@ -1,0 +1,5770 @@
+﻿search_filter_prios = {
+	FOCUS_FILTER_POLITICAL = 1010
+	
+	FOCUS_FILTER_RESEARCH = 522
+	
+	FOCUS_FILTER_INDUSTRY = 509
+
+	FOCUS_FILTER_BALANCE_OF_POWER = 200
+	FOCUS_FILTER_SOV_POLITICAL_PARANOIA = 111
+	FOCUS_FILTER_PROPAGANDA = 110
+	FOCUS_FILTER_MISSIOLINI = 110
+	FOCUS_FILTER_ARMY_XP = 103
+	FOCUS_FILTER_NAVY_XP = 102
+	FOCUS_FILTER_AIR_XP = 101
+
+}
+
+focus_tree = {
+	id = moldova_focus
+	
+	country = {
+		factor = 0
+		
+		modifier = {
+			add = 10
+			tag = MOL
+		}
+	}
+	
+	default = yes
+	reset_on_civilwar = no
+
+	initial_show_position = {
+		focus = MOL_ind_bessarabian_soil
+	}
+
+	# ==================== АРМИЯ: «Днестровский щит» ====================
+	focus = {
+		id = MOL_arm_army_reform
+		icon = GFX_goal_generic_army_doctrines
+		x = 1
+		y = 0
+		cost = 10
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_RESEARCH }
+		available_if_capitulated = yes
+		completion_reward = {
+			army_experience = 30
+			add_doctrine_cost_reduction = {
+				name = MOL_land_doctrine_bonus
+				cost_reduction = 0.5
+				uses = 1
+				category = land_doctrine
+			}
+		}
+	}
+
+	focus = {
+		id = MOL_arm_river_defense
+		icon = GFX_goal_generic_fortify_city
+		prerequisite = { focus = MOL_arm_army_reform }
+		x = 0
+		y = 1
+		cost = 10
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_dynamic_modifier = { modifier = MOL_river_defense }
+			78 = {
+				add_building_construction = { type = bunker level = 2 province = 9683 instant_build = yes }
+				add_building_construction = { type = bunker level = 2 province = 11686 instant_build = yes }
+				add_building_construction = { type = bunker level = 2 province = 3707 instant_build = yes }
+			}
+			766 = {
+				add_building_construction = { type = bunker level = 2 province = 6727 instant_build = yes }
+			}
+		}
+	}
+
+	focus = {
+		id = MOL_arm_officer_school
+		icon = GFX_focus_generic_military_academy
+		prerequisite = { focus = MOL_arm_army_reform }
+		x = 2
+		y = 1
+		cost = 10
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_ARMY_XP }
+		available_if_capitulated = yes
+		completion_reward = {
+			army_experience = 25
+		}
+	}
+
+	focus = {
+		id = MOL_arm_romanian_officers
+		icon = GFX_goal_generic_military_deal
+		prerequisite = { focus = MOL_arm_officer_school }
+		mutually_exclusive = { focus = MOL_arm_local_officers }
+		x = 1
+		y = 2
+		cost = 10
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_dynamic_modifier = { modifier = MOL_ro_officers }
+			ROM = { add_opinion_modifier = { target = ROOT modifier = military_cooperation } }
+		}
+	}
+
+	focus = {
+		id = MOL_arm_local_officers
+		icon = GFX_goal_generic_small_arms
+		prerequisite = { focus = MOL_arm_officer_school }
+		mutually_exclusive = { focus = MOL_arm_romanian_officers }
+		x = 3
+		y = 2
+		cost = 10
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_MANPOWER }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_dynamic_modifier = { modifier = MOL_local_officers }
+			add_manpower = 5000
+		}
+	}
+
+	focus = {
+		id = MOL_arm_militia_reserves
+		icon = GFX_goal_generic_allies_build_infantry
+		prerequisite = { focus = MOL_arm_river_defense }
+		x = 0
+		y = 2
+		cost = 10
+		search_filters = { FOCUS_FILTER_MANPOWER }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_dynamic_modifier = { modifier = MOL_militia_reserves }
+			add_manpower = 15000
+			division_template = {
+				name = "Moldavian Militia"
+				is_locked = no
+				regiments = {
+					infantry = { x = 0 y = 0 }
+					infantry = { x = 0 y = 1 }
+					infantry = { x = 0 y = 2 }
+					infantry = { x = 1 y = 0 }
+					infantry = { x = 1 y = 1 }
+					infantry = { x = 1 y = 2 }
+				}
+			}
+			capital_scope = {
+				create_unit = {
+					division = "name = \"1st Moldavian Militia\" division_template = \"Moldavian Militia\" start_experience_factor = 0.3"
+					owner = MOL
+				}
+				create_unit = {
+					division = "name = \"2nd Moldavian Militia\" division_template = \"Moldavian Militia\" start_experience_factor = 0.3"
+					owner = MOL
+				}
+			}
+		}
+	}
+
+	focus = {
+		id = MOL_arm_artillery_school
+		icon = GFX_goal_generic_army_artillery2
+		prerequisite = { focus = MOL_arm_romanian_officers focus = MOL_arm_local_officers }
+		x = 2
+		y = 3
+		cost = 10
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_dynamic_modifier = { modifier = MOL_artillery_school }
+			add_tech_bonus = {
+				name = MOL_artillery_bonus
+				bonus = 1.0
+				uses = 1
+				category = artillery
+			}
+		}
+	}
+
+	focus = {
+		id = MOL_arm_field_exercises
+		icon = GFX_goal_generic_army_doctrines
+		prerequisite = { focus = MOL_arm_militia_reserves }
+		prerequisite = { focus = MOL_arm_artillery_school }
+		x = 1
+		y = 4
+		cost = 15
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_ARMY_XP }
+		available_if_capitulated = yes
+		completion_reward = {
+			army_experience = 40
+			add_doctrine_cost_reduction = {
+				name = MOL_land_doctrine_bonus_2
+				cost_reduction = 0.75
+				uses = 1
+				category = land_doctrine
+			}
+		}
+	}
+
+	# ==================== АВИАЦИЯ: «Молдавские крылья» ====================
+	focus = {
+		id = MOL_air_club
+		icon = GFX_goal_generic_build_airforce
+		x = 5
+		y = 0
+		cost = 10
+		search_filters = { FOCUS_FILTER_AIR_XP FOCUS_FILTER_RESEARCH }
+		available_if_capitulated = yes
+		completion_reward = {
+			air_experience = 25
+			add_dynamic_modifier = { modifier = MOL_air_club_modifier }
+			add_doctrine_cost_reduction = {
+				name = MOL_air_doctrine_bonus
+				cost_reduction = 0.5
+				uses = 1
+				category = air_doctrine
+			}
+			capital_scope = {
+				add_building_construction = { type = air_base level = 1 instant_build = yes }
+			}
+		}
+	}
+
+	focus = {
+		id = MOL_air_licenses
+		icon = GFX_goal_generic_air_fighter
+		prerequisite = { focus = MOL_air_club }
+		x = 5
+		y = 1
+		cost = 10
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_dynamic_modifier = { modifier = MOL_air_licenses_modifier }
+			add_tech_bonus = {
+				name = MOL_light_fighter_bonus
+				bonus = 1.0
+				uses = 1
+				category = light_fighter
+			}
+		}
+	}
+
+	focus = {
+		id = MOL_air_ground_support
+		icon = GFX_goal_generic_CAS
+		prerequisite = { focus = MOL_air_licenses }
+		x = 5
+		y = 2
+		cost = 10
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_dynamic_modifier = { modifier = MOL_cas_support }
+			add_tech_bonus = {
+				name = MOL_cas_bonus
+				bonus = 1.0
+				uses = 1
+				category = cas_bomber
+			}
+		}
+	}
+
+	# ==================== ФЛОТ: «Днестровская флотилия» ====================
+	focus = {
+	id = MOL_nav_danube_flotilla
+	icon = GFX_goal_generic_construct_naval_dockyard
+	x = 9
+	y = 0
+		cost = 10
+	search_filters = { FOCUS_FILTER_NAVY_XP FOCUS_FILTER_INDUSTRY }
+	available_if_capitulated = yes
+	available = {
+			any_owned_state = {
+				is_coastal = yes
+	  is_controlled_by = ROOT
+	}
+	}
+	completion_reward = {
+	navy_experience = 25
+	 add_dynamic_modifier = { modifier = MOL_danube_flotilla_modifier }
+			if = {
+	  limit = {
+	  any_owned_state = {
+	   is_coastal = yes
+	   free_building_slots = { building = dockyard size > 0 include_locked = yes }
+	 }
+	}
+	random_owned_controlled_state = {
+	  limit = { is_coastal = yes free_building_slots = { building = dockyard size > 0 include_locked = yes } }
+	   add_extra_state_shared_building_slots = 1
+	   add_building_construction = { type = dockyard level = 1 instant_build = yes }
+	  }
+	}
+	}
+	}
+
+	focus = {
+	id = MOL_nav_izmail_port
+	icon = GFX_goal_generic_build_navy
+	prerequisite = { focus = MOL_nav_danube_flotilla }
+	x = 9
+	y = 1
+	cost = 10
+	search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_NAVY_XP }
+	available_if_capitulated = yes
+	available = {
+	owns_state = 766
+	766 = { is_controlled_by = ROOT }
+	}
+	completion_reward = {
+	add_dynamic_modifier = { modifier = MOL_port_izmail }
+	766 = {
+	add_extra_state_shared_building_slots = 1
+	add_building_construction = { type = dockyard level = 1 instant_build = yes }
+	}
+	navy_experience = 20
+	}
+	}
+
+	focus = {
+	id = MOL_nav_monitors
+	icon = GFX_goal_generic_navy_cruiser
+	prerequisite = { focus = MOL_nav_izmail_port }
+	x = 9
+	y = 2
+	cost = 10
+	search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_NAVY_XP }
+	available_if_capitulated = yes
+	completion_reward = {
+	add_dynamic_modifier = { modifier = MOL_monitors }
+	add_doctrine_cost_reduction = {
+	name = MOL_naval_doctrine_bonus
+	cost_reduction = 0.5
+	uses = 1
+	category = naval_doctrine
+	}
+	add_tech_bonus = {
+	name = MOL_destroyer_bonus
+	bonus = 1.0
+	uses = 1
+	category = dd_tech
+	}
+	}
+	}
+
+	# ==================== ПРОМЫШЛЕННОСТЬ: «Бессарабский чернозём» ====================
+	focus = {
+		id = MOL_ind_bessarabian_soil
+		icon = GFX_goal_generic_construction
+		x = 13
+		y = 0
+		cost = 10
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_RESEARCH }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_dynamic_modifier = { modifier = MOL_agrarian_economy }
+			add_tech_bonus = {
+				name = MOL_industrial_bonus
+				bonus = 1.0
+				uses = 1
+				category = industry
+			}
+		}
+
+		ai_will_do = {
+			factor = 3
+			modifier = {
+				factor = 6
+				original_tag = SIA
+			}
+			modifier = {
+				factor = 6
+				is_in_array = {
+					array = RAJ.raj_releasables
+					value = THIS
+				}
+				is_subject_of = RAJ
+			}
+			modifier = {
+				factor = 0
+				date < 1939.1.1
+				OR = { 
+					# we dont want chinese minors to go crazy on slots early since they get eaten
+					tag = GXC 
+					tag = YUN
+					tag = SHX
+					tag = XSM
+					tag = BEL
+					tag = LUX
+					tag = HOL
+					tag = DEN
+
+					# we also dont want tiny nations to go crazy with slots right away
+					num_of_controlled_states < 2
+				}	
+				NOT = {
+					is_in_array = {
+						array = RAJ.raj_releasables
+						value = THIS
+					}
+				}			
+			}
+		}
+	}
+
+	focus = {
+		id = MOL_ind_vineyards
+		icon = GFX_goal_generic_trade
+		prerequisite = { focus = MOL_ind_bessarabian_soil }
+		x = 11
+		y = 1
+		cost = 10
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_dynamic_modifier = { modifier = MOL_vineyard_economy }
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+		}
+	}
+
+	focus = {
+		id = MOL_ind_food_processing
+		icon = GFX_goal_generic_consumer_goods
+		prerequisite = { focus = MOL_ind_bessarabian_soil }
+		x = 15
+		y = 1
+		cost = 10
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_dynamic_modifier = { modifier = MOL_light_industry }
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+		}
+	}
+
+	focus = {
+		id = MOL_ind_military_workshops
+		icon = GFX_goal_generic_construct_mil_factory
+		prerequisite = { focus = MOL_ind_vineyards }
+		prerequisite = { focus = MOL_ind_food_processing }
+		x = 12
+		y = 2
+		cost = 10
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_dynamic_modifier = { modifier = MOL_war_workshops }
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+			}
+		}
+	}
+
+	focus = {
+		id = MOL_ind_railways
+		icon = GFX_goal_generic_construct_infrastructure
+		prerequisite = { focus = MOL_ind_food_processing }
+		x = 14
+		y = 2
+		cost = 10
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		available_if_capitulated = yes
+		completion_reward = {
+			78 = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+			766 = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+			build_railway = {
+				level = 2
+				start_province = 6600
+				target_province = 6727
+			}
+		}
+	}
+
+	focus = {
+		id = MOL_ind_resource_survey
+		icon = GFX_focus_generic_resource_extraction
+		prerequisite = { focus = MOL_ind_military_workshops }
+		prerequisite = { focus = MOL_ind_railways }
+		x = 13
+		y = 3
+		cost = 10
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_resource = { type = oil amount = 4 state = 78 }
+			add_resource = { type = steel amount = 6 state = 78 }
+			add_resource = { type = aluminium amount = 3 state = 766 }
+		}
+	}
+
+	focus = {
+		id = MOL_ind_chisinau_university
+		icon = GFX_focus_research
+		prerequisite = { focus = MOL_ind_military_workshops }
+		x = 12
+		y = 4
+		cost = 10
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		available = {
+			num_of_factories > 15
+		}
+		cancel_if_invalid = no
+		continue_if_invalid = yes
+		available_if_capitulated = yes
+		completion_reward = {
+			add_research_slot = 1
+		}
+	}
+
+	focus = {
+		id = MOL_ind_modernization
+		icon = GFX_goal_generic_production2
+		prerequisite = { focus = MOL_ind_resource_survey }
+		x = 14
+		y = 4
+		cost = 10
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_INDUSTRY }
+		available_if_capitulated = yes
+		completion_reward = {
+			remove_dynamic_modifier = { modifier = MOL_agrarian_economy }
+			add_tech_bonus = {
+				name = MOL_industry_bonus
+				bonus = 1.0
+				uses = 1
+				category = industry
+			}
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = { type = industrial_complex level = 2 instant_build = yes }
+			}
+		}
+	}
+	
+# Polit_Focuses
+	focus = {
+		id = MOL_political_effort
+		icon = GFX_goal_generic_demand_territory
+		x = 50
+		y = 0
+		cost = 5
+	
+		search_filters = { FOCUS_FILTER_POLITICAL }
+	
+		available_if_capitulated = yes
+
+		completion_reward = {
+			add_political_power = 120
+		}
+	}
+	# Pro-Romanian
+	focus = {
+		id = MOL_we_are_romanians
+		icon = GFX_focus_invite_romania
+		prerequisite = { focus = MOL_political_effort }
+		x = -15
+		y = 1
+		relative_position_id = MOL_political_effort
+		mutually_exclusive = { focus = MOL_we_are_moldovans }
+		cost = 10
+
+		ai_will_do = {
+			factor = 0.5
+		}
+		
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		
+		available = {
+			is_puppet_of = ROM
+		}
+		
+		available_if_capitulated = yes
+
+		completion_reward = {
+			add_stability = 0.15
+			add_political_power = 100
+			add_popularity = {
+				ideology = communism
+				popularity = -0.15
+			}
+			add_popularity = {
+				ideology = fascism
+				popularity = 0.2
+			}
+		}
+	}
+	
+	# Historical
+	focus = {
+		id = MOL_bessarabia
+		icon = GFX_focus_rom_royal_dictatorship
+		prerequisite = { focus = MOL_we_are_romanians }
+		x = -5
+		y = 1
+		relative_position_id = MOL_we_are_romanians
+		mutually_exclusive = { focus = ROM_MOL_autonomy }
+		cost = 10
+
+		ai_will_do = {
+			factor = 0.5
+		}
+		
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		
+		available = {
+			is_puppet_of = ROM
+		}
+		
+		available_if_capitulated = yes
+
+		completion_reward = {
+			add_stability = 0.05
+			add_popularity = {
+				ideology = communism
+				popularity = -0.05
+			}
+			add_popularity = {
+				ideology = neutrality
+				popularity = 0.12
+			}
+		}
+	}
+	focus = {
+		id = MOL_bessarabia_reform
+		icon = GFX_focus_generic_monarchy_1
+		prerequisite = { focus = MOL_bessarabia }
+		x = 0
+		y = 1
+		relative_position_id = MOL_bessarabia
+		cost = 10
+		
+		search_filters = { FOCUS_FILTER_POLITICAL } 
+		
+		available = {
+			is_puppet_of = ROM
+		}
+		
+		available_if_capitulated = yes
+
+		completion_reward = {
+			add_stability = 0.1
+			add_tech_bonus = {
+				name = electronics_bonus
+				bonus = 1.0
+				uses = 1
+				category = electronics
+			}
+			add_tech_bonus = {
+				name = industrial_bonus
+				bonus = 1.0
+				uses = 1
+				category = industry
+			}
+		}
+	}
+	focus = {
+		id = MOL_bessarabia_reform_industry
+		icon = GFX_focus_generic_modernize_industry
+		prerequisite = { focus = MOL_bessarabia_reform }
+		x = -3
+		y = 1
+		relative_position_id = MOL_bessarabia_reform
+		cost = 10
+		
+		search_filters = { FOCUS_FILTER_POLITICAL } 
+		
+		available = {
+			is_puppet_of = ROM
+		}
+		
+		available_if_capitulated = yes
+
+		completion_reward = {
+			78 = {
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = {
+					type = industrial_complex
+					level = 2
+					instant_build = yes
+				}
+			}
+			766 = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = {
+					type = industrial_complex
+					level = 1
+					instant_build = yes
+				}
+			}
+			overlord = {
+				add_dynamic_modifier = {
+					modifier = ROM_bessarabian_industry
+					days = 365
+				}
+			}
+		}
+	}
+	focus = {
+		id = MOL_bessarabia_reform_railways
+		icon = GFX_goal_generic_construct_infrastructure
+		prerequisite = { focus = MOL_bessarabia_reform_industry }
+		x = 0
+		y = 1
+		relative_position_id = MOL_bessarabia_reform_industry
+		cost = 10
+		
+		search_filters = { FOCUS_FILTER_POLITICAL } 
+		
+		available = {
+			is_puppet_of = ROM
+		}
+		
+		available_if_capitulated = yes
+
+		completion_reward = {
+			build_railway = {
+				path = { 6727 6743 9683 11686 }
+				level = 2
+			}
+			build_railway = {
+				path = { 6727 3701 687 }
+				level = 2
+			}
+			build_railway = {
+				path = { 6727 6743 3724 6729 9701 }
+				level = 2
+			}
+			build_railway = {
+				path = { 3577 6600 }
+				level = 2
+			}
+			build_railway = {
+				path = { 11686 11705 6600 414 3407 577 9548 }
+				level = 2
+			}
+			build_railway = {
+				path = { 3707 565 3577 11534 6584 9548 }
+				level = 2
+			}
+			78 = {
+				add_building_construction = {
+					type = supply_node
+					level = 1
+					province = 6600
+					instant_build = yes
+				}
+			}
+			79 = {
+				add_building_construction = {
+					type = supply_node
+					level = 1
+					province = 9701
+					instant_build = yes
+				}
+			}
+		}
+	}
+	focus = {
+		id = MOL_bessarabia_reform_resources
+		icon = GFX_focus_generic_resource_extraction
+		prerequisite = { focus = MOL_bessarabia_reform_railways }
+		x = 0
+		y = 1
+		relative_position_id = MOL_bessarabia_reform_railways
+		cost = 10
+		
+		search_filters = { FOCUS_FILTER_POLITICAL } 
+		
+		available = {
+			is_puppet_of = ROM
+		}
+		
+		available_if_capitulated = yes
+
+		completion_reward = {
+			add_resource = {
+				type = oil
+				amount = 8
+				state = 78
+			}
+			add_resource = {
+				type = steel
+				amount = 10
+				state = 78
+			}
+			add_resource = {
+				type = steel
+				amount = 5
+				state = 766
+			}
+			add_resource = {
+				type = aluminium
+				amount = 7
+				state = 766
+			}
+		}
+	}
+	focus = {
+		id = MOL_bessarabia_reform_regional_1
+		icon = GFX_focus_generic_full_employment
+		prerequisite = { focus = MOL_bessarabia_reform }
+		x = 0
+		y = 1
+		relative_position_id = MOL_bessarabia_reform
+		cost = 5
+		
+		search_filters = { FOCUS_FILTER_POLITICAL } 
+		
+		available = {
+			is_puppet_of = ROM
+		}
+		
+		available_if_capitulated = yes
+
+		completion_reward = {
+			add_stability = 0.05
+			if = {
+				limit = {
+					overlord = {
+						has_government = communism
+					}
+				}
+				add_popularity = {
+					ideology = communism
+					popularity = 0.05
+				}
+			}
+			else_if = {
+				limit = {
+					overlord = {
+						has_government = democratic
+					}
+				}
+				add_popularity = {
+					ideology = democratic
+					popularity = 0.05
+				}
+			}
+			else_if = {
+				limit = {
+					overlord = {
+						has_government = fascism
+					}
+				}
+				add_popularity = {
+					ideology = fascism
+					popularity = 0.05
+				}
+			}
+			else_if = {
+				limit = {
+					overlord = {
+						has_government = neutrality
+					}
+				}
+				add_popularity = {
+					ideology = neutrality
+					popularity = 0.05
+				}
+			}
+		}
+	}
+	focus = {
+		id = MOL_bessarabia_reform_regional_2
+		icon = GFX_focus_generic_limited_social_mobilization
+		prerequisite = { focus = MOL_bessarabia_reform_regional_1 }
+		x = 0
+		y = 1
+		relative_position_id = MOL_bessarabia_reform_regional_1
+		cost = 10
+		
+		search_filters = { FOCUS_FILTER_POLITICAL } 
+		
+		available = {
+			is_puppet_of = ROM
+		}
+		
+		available_if_capitulated = yes
+
+		completion_reward = {
+			add_stability = 0.05
+			if = {
+				limit = {
+					overlord = {
+						has_government = communism
+					}
+				}
+				add_popularity = {
+					ideology = communism
+					popularity = 0.05
+				}
+			}
+			else_if = {
+				limit = {
+					overlord = {
+						has_government = democratic
+					}
+				}
+				add_popularity = {
+					ideology = democratic
+					popularity = 0.05
+				}
+			}
+			else_if = {
+				limit = {
+					overlord = {
+						has_government = fascism
+					}
+				}
+				add_popularity = {
+					ideology = fascism
+					popularity = 0.05
+				}
+			}
+			else_if = {
+				limit = {
+					overlord = {
+						has_government = neutrality
+					}
+				}
+				add_popularity = {
+					ideology = neutrality
+					popularity = 0.05
+				}
+			}
+			add_war_support = 0.05
+			
+			overlord = {
+				add_dynamic_modifier = {
+					modifier = ROM_bessarabian_patriots
+					days = 365
+				}
+			}
+		}
+	}
+	focus = {
+		id = MOL_bessarabia_reform_regional_3
+		icon = GFX_goal_generic_improve_relations
+		prerequisite = { focus = MOL_bessarabia_reform_regional_2 }
+		x = 0
+		y = 1
+		relative_position_id = MOL_bessarabia_reform_regional_2
+		cost = 5
+		
+		search_filters = { FOCUS_FILTER_POLITICAL } 
+		
+		available = {
+			is_puppet_of = ROM
+		}
+		
+		available_if_capitulated = yes
+
+		completion_reward = {
+			add_stability = 0.1
+			if = {
+				limit = {
+					overlord = {
+						has_government = communism
+					}
+				}
+				add_popularity = {
+					ideology = communism
+					popularity = 0.1
+				}
+			}
+			else_if = {
+				limit = {
+					overlord = {
+						has_government = democratic
+					}
+				}
+				add_popularity = {
+					ideology = democratic
+					popularity = 0.1
+				}
+			}
+			else_if = {
+				limit = {
+					overlord = {
+						has_government = fascism
+					}
+				}
+				add_popularity = {
+					ideology = fascism
+					popularity = 0.1
+				}
+			}
+			else_if = {
+				limit = {
+					overlord = {
+						has_government = neutrality
+					}
+				}
+				add_popularity = {
+					ideology = neutrality
+					popularity = 0.1
+				}
+			}
+			add_dynamic_modifier = {
+				modifier = MOL_regional_stability
+				days = 180
+			}
+		}
+	}
+	focus = {
+		id = MOL_bessarabia_reform_mil_factory
+		icon = GFX_goal_generic_construct_mil_factory
+		prerequisite = { focus = MOL_bessarabia_reform }
+		x = 3
+		y = 1
+		relative_position_id = MOL_bessarabia_reform
+		cost = 10
+		
+		search_filters = { FOCUS_FILTER_POLITICAL } 
+		
+		available = {
+			is_puppet_of = ROM
+		}
+		
+		available_if_capitulated = yes
+
+		completion_reward = {
+			78 = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = {
+					type = arms_factory
+					level = 1
+					instant_build = yes
+				}
+			}
+			766 = {
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = {
+					type = arms_factory
+					level = 2
+					instant_build = yes
+				}
+			}
+		}
+	}
+	focus = {
+		id = MOL_bessarabia_reform_manpower
+		icon = GFX_focus_rom_preserve_romania
+		prerequisite = { focus = MOL_bessarabia_reform_mil_factory }
+		x = 0
+		y = 1
+		relative_position_id = MOL_bessarabia_reform_mil_factory
+		cost = 10
+		
+		search_filters = { FOCUS_FILTER_POLITICAL } 
+		
+		available = {
+			is_puppet_of = ROM
+		}
+		
+		available_if_capitulated = yes
+
+		completion_reward = {
+			add_manpower = 25000
+			overlord = {
+				add_manpower = 50000
+				add_dynamic_modifier = {
+					modifier = ROM_bessarabian_volunteers
+					days = 720
+				}
+			}
+		}
+	}
+	focus = {
+		id = MOL_bessarabia_reform_bunkers
+		icon = GFX_goal_generic_fortify_city
+		prerequisite = { focus = MOL_bessarabia_reform_manpower }
+		x = 0
+		y = 1
+		relative_position_id = MOL_bessarabia_reform_manpower
+		cost = 13
+		
+		search_filters = { FOCUS_FILTER_POLITICAL } 
+		
+		available = {
+			is_puppet_of = ROM
+		}
+		
+		available_if_capitulated = yes
+
+		completion_reward = {
+			766 = {
+				add_building_construction = {
+					type = bunker
+					level = 5
+					province = 6727
+					instant_build = yes
+				}
+				add_building_construction = {
+					type = bunker
+					level = 3
+					province = 6743
+					instant_build = yes
+				}
+			}
+			78 = {
+				add_building_construction = {
+					type = bunker
+					level = 4
+					province = 9683
+					instant_build = yes
+				}
+				add_building_construction = {
+					type = bunker
+					level = 5
+					province = 11686
+					instant_build = yes
+				}
+				add_building_construction = {
+					type = bunker
+					level = 5
+					province = 3707
+					instant_build = yes
+				}
+				add_building_construction = {
+					type = bunker
+					level = 4
+					province = 11705
+					instant_build = yes
+				}
+				add_building_construction = {
+					type = bunker
+					level = 3
+					province = 6600
+					instant_build = yes
+				}
+				add_building_construction = {
+					type = bunker
+					level = 3
+					province = 414
+					instant_build = yes
+				}
+				add_building_construction = {
+					type = bunker
+					level = 3
+					province = 3407
+					instant_build = yes
+				}
+			}
+		}
+	}
+	focus = {
+		id = MOL_bessarabian_tinut_focus
+		icon = GFX_focus_rom_preserve_romania
+		prerequisite = { focus = MOL_bessarabia_reform_bunkers }
+		prerequisite = { focus = MOL_bessarabia_reform_regional_3 }
+		prerequisite = { focus = MOL_bessarabia_reform_resources }
+		x = 0
+		y = 1
+		relative_position_id = MOL_bessarabia_reform_regional_3
+		cost = 10
+		
+		search_filters = { FOCUS_FILTER_POLITICAL } 
+		
+		available = {
+			is_puppet_of = ROM
+			ROM = {
+				NOT = {
+					has_government = communism
+				}
+			}
+		}
+		
+		available_if_capitulated = yes
+		
+		completion_reward = {
+			retire_ideology_leader = fascism
+			retire_ideology_leader = democratic
+			retire_ideology_leader = neutrality
+			set_cosmetic_tag = MOL_Bessarabian_Tinut
+			add_country_leader_role = {
+				character = MOL_ROM_Grigore_Cazacliu
+				promote_leader = yes
+				country_leader = {
+					ideology = conservatism
+				}
+			}
+			add_country_leader_role = {
+				character = MOL_ROM_Grigore_Cazacliu
+				promote_leader = yes
+				country_leader = {
+					ideology = fascism_ideology
+				}
+			}
+			add_country_leader_role = {
+				character = MOL_ROM_Grigore_Cazacliu
+				promote_leader = yes
+				country_leader = {
+					ideology = despotism
+				}
+			}
+			set_party_name = {
+				ideology = democratic
+				long_name = Tinut_MOL_democratic_party_long
+				name = Tinut_MOL_democratic_party
+			}
+		}
+	}
+	
+	#MOL_autonomy
+	focus = {
+		id = ROM_MOL_autonomy
+		icon = GFX_focus_generic_support_the_left_right
+		prerequisite = { focus = MOL_we_are_romanians }
+		x = 5
+		y = 1
+		relative_position_id = MOL_we_are_romanians
+		cost = 10
+		mutually_exclusive = { focus = MOL_bessarabia }
+
+		ai_will_do = {
+			factor = 0.5
+		}
+		
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		
+		available = {
+			is_puppet_of = ROM
+		}
+		
+		available_if_capitulated = yes
+
+		completion_reward = {
+			ROM = {
+				country_event = {
+					days = 3
+					id = moldavia.3
+				}
+			}
+		}
+	}
+	focus = {
+		id = ROM_MOL_autonomy_success
+		icon = GFX_focus_generic_improve_the_administration
+		prerequisite = { focus = ROM_MOL_autonomy }
+		x = 0
+		y = 1
+		relative_position_id = ROM_MOL_autonomy
+		cost = 1
+		
+		search_filters = { FOCUS_FILTER_POLITICAL } 
+		
+		available = {
+			always = false
+		}
+		
+		available_if_capitulated = yes
+
+		completion_reward = {
+			set_cosmetic_tag = ROM_MOL_autonomic_state
+			ROM = {
+				set_autonomy = {
+					target = MOL
+					autonomous_state = autonomy_dominion
+					end_wars = no
+					end_civil_wars = no
+				}
+			}
+			retire_ideology_leader = neutrality
+			retire_ideology_leader = democratic
+			add_country_leader_role = {
+				character = ROM_MOL_Ion_Inculet
+				promote_leader = yes
+				country_leader = {
+					ideology = conservatism
+				}
+			}
+			add_country_leader_role = {
+				character = ROM_MOL_Ion_Inculet
+				promote_leader = yes
+				country_leader = {
+					ideology = despotism
+				}
+			}
+			set_party_name = {
+				ideology = democratic
+				long_name = ROM_MOL_democratic_party_long
+				name = ROM_MOL_democratic_party
+			}
+			set_party_name = {
+				ideology = neutrality
+				long_name = ROM_MOL_neutrality_party_long
+				name = ROM_MOL_neutrality_party
+			}
+			set_country_flag = ROM_MOL_autonomic
+			# СТАРТ МЕХАНИКИ ДОВЕРИЯ: 50 из 100
+			set_variable = { rom_mol_trust = 50 }
+		}
+	}
+	focus = {
+		id = ROM_MOL_workers
+		icon = GFX_focus_generic_workers
+		prerequisite = { focus = ROM_MOL_autonomy_success }
+		x = 0
+		y = 1
+		relative_position_id = ROM_MOL_autonomy_success
+		cost = 5
+		
+		search_filters = { FOCUS_FILTER_POLITICAL } 
+		
+		available = {
+		}
+		
+		available_if_capitulated = yes
+
+		completion_reward = {
+			overlord = {
+				add_manpower = -5000
+			}
+			add_manpower = 5000
+			add_to_variable = { rom_mol_trust = 5 }
+			clamp_variable = { var = rom_mol_trust min = 0 max = 100 }
+			custom_effect_tooltip = rom_mol_trust_up_tt
+		}
+	}
+	# --- Культурная подветка ---
+	focus = {
+		id = ROM_MOL_moldovan_schools
+		icon = GFX_focus_research
+		prerequisite = { focus = ROM_MOL_workers }
+		x = -4
+		y = 0
+		relative_position_id = ROM_MOL_workers
+		cost = 10
+		
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		
+		available = {
+			is_subject_of = ROM
+		}
+		
+		available_if_capitulated = yes
+
+		completion_reward = {
+			add_political_power = 25
+			add_stability = 0.05
+			add_popularity = {
+				ideology = neutrality
+				popularity = 0.05
+			}
+			add_to_variable = { rom_mol_trust = -10 }
+			clamp_variable = { var = rom_mol_trust min = 0 max = 100 }
+			custom_effect_tooltip = rom_mol_trust_down_tt
+		}
+	}
+	focus = {
+		id = ROM_MOL_orthodox_church
+		icon = GFX_goal_generic_national_unity
+		prerequisite = { focus = ROM_MOL_moldovan_schools }
+		x = 0
+		y = 1
+		relative_position_id = ROM_MOL_moldovan_schools
+		cost = 10
+		
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		
+		available = {
+			is_subject_of = ROM
+		}
+		
+		available_if_capitulated = yes
+
+		completion_reward = {
+			add_political_power = 50
+			add_stability = 0.10
+			add_to_variable = { rom_mol_trust = -5 }
+			clamp_variable = { var = rom_mol_trust min = 0 max = 100 }
+			custom_effect_tooltip = rom_mol_trust_down_tt
+		}
+	}
+	focus = {
+		id = ROM_MOL_national_revival
+		icon = GFX_goal_generic_propaganda
+		prerequisite = { focus = ROM_MOL_orthodox_church }
+		x = 0
+		y = 1
+		relative_position_id = ROM_MOL_orthodox_church
+		cost = 15
+		
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		
+		available = {
+			is_subject_of = ROM
+		}
+		
+		available_if_capitulated = yes
+
+		completion_reward = {
+			add_war_support = 0.05
+			add_popularity = {
+				ideology = neutrality
+				popularity = 0.08
+			}
+			add_dynamic_modifier = {
+				modifier = MOL_cultural_autonomy
+			}
+			add_to_variable = { rom_mol_trust = -10 }
+			clamp_variable = { var = rom_mol_trust min = 0 max = 100 }
+			custom_effect_tooltip = rom_mol_trust_down_tt
+		}
+	}
+	# --- Дипломатическая подветка ---
+	focus = {
+		id = ROM_MOL_foreign_mission
+		icon = GFX_goal_generic_improve_relations
+		prerequisite = { focus = ROM_MOL_workers }
+		x = 4
+		y = 0
+		relative_position_id = ROM_MOL_workers
+		cost = 10
+		
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		
+		available = {
+			is_subject_of = ROM
+		}
+		
+		available_if_capitulated = yes
+
+		completion_reward = {
+			add_political_power = 50
+			add_autonomy_progress = {
+				value = 0.05
+				freedom = 0.75
+			}
+			set_country_flag = MOL_foreign_mission
+			add_to_variable = { rom_mol_trust = -10 }
+			clamp_variable = { var = rom_mol_trust min = 0 max = 100 }
+			custom_effect_tooltip = rom_mol_trust_down_tt
+		}
+	}
+	focus = {
+		id = ROM_MOL_wine_diplomacy
+		icon = GFX_goal_generic_trade
+		prerequisite = { focus = ROM_MOL_foreign_mission }
+		x = 0
+		y = 1
+		relative_position_id = ROM_MOL_foreign_mission
+		cost = 10
+		
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		
+		available = {
+			is_subject_of = ROM
+		}
+		
+		available_if_capitulated = yes
+
+		completion_reward = {
+			add_dynamic_modifier = {
+				modifier = MOL_wine_exports
+			}
+			add_to_variable = { rom_mol_trust = 5 }
+			clamp_variable = { var = rom_mol_trust min = 0 max = 100 }
+			custom_effect_tooltip = rom_mol_trust_up_tt
+		}
+	}
+	focus = {
+		id = ROM_MOL_reform_industry_1
+		icon = GFX_focus_generic_industry_2
+		prerequisite = { focus = ROM_MOL_workers }
+		x = -2
+		y = 0
+		relative_position_id = ROM_MOL_workers
+		cost = 10
+		
+		search_filters = { FOCUS_FILTER_POLITICAL } 
+		
+		available = {
+			is_subject_of = ROM
+		}
+		
+		available_if_capitulated = yes
+
+		completion_reward = {
+			add_building_construction = {
+				type = industrial_complex
+				level = 1
+			}
+			add_building_construction = {
+				type = industrial_complex
+				level = 1
+			}
+		}
+	}
+	focus = {
+		id = ROM_MOL_reform_mining_1
+		icon = GFX_focus_generic_mining_industry
+		prerequisite = { focus = ROM_MOL_workers }
+		x = 2
+		y = 0
+		relative_position_id = ROM_MOL_workers
+		cost = 10
+		
+		search_filters = { FOCUS_FILTER_POLITICAL } 
+		
+		available = {
+			is_subject_of = ROM
+		}
+		
+		available_if_capitulated = yes
+
+		completion_reward = {
+			random_owned_controlled_state = {
+				add_resource = {
+				type = oil
+				amount = 3
+				}
+				add_resource = {
+					type = steel
+					amount = 5
+				} 
+			}
+			random_owned_controlled_state = {
+				add_resource = {
+				type = aluminium
+				amount = 4
+				}
+				add_resource = {
+					type = steel
+					amount = 1
+				} 
+			}
+		}
+	}
+	focus = {
+		id = ROM_MOL_new_cities
+		icon = GFX_focus_generic_low_cost_housing
+		prerequisite = { focus = ROM_MOL_workers }
+		prerequisite = { focus = ROM_MOL_reform_industry_1 }
+		prerequisite = { focus = ROM_MOL_reform_mining_1  }
+		x = 0
+		y = 1
+		relative_position_id = ROM_MOL_workers
+		cost = 10
+		
+		search_filters = { FOCUS_FILTER_POLITICAL } 
+		
+		available = {
+			is_subject_of = ROM
+		}
+		
+		available_if_capitulated = yes
+
+		completion_reward = {
+			add_building_construction = {
+				type = infrastructure
+				level = 2
+			}
+			add_building_construction = {
+				type = infrastructure
+				level = 2
+			}
+			add_building_construction = {
+				type = infrastructure
+				level = 1
+			}
+			78 = {
+				add_manpower = 300000 
+			}
+			766 = {
+				add_manpower = 150000
+			}
+			79 = {
+				add_manpower = -250000
+			}
+			80 = {
+				add_manpower = -70000
+			}
+			76 = {
+				add_manpower = -50000
+			}
+
+			971 = {
+				add_manpower = -30000
+			}
+			84 = {
+				add_manpower = -15000
+			}
+			83 = {
+				add_manpower = -10000
+			}
+			82 = {
+				add_manpower = -10000
+			}
+			81 = {
+				add_manpower = -10000
+			}
+			77 = {
+				add_manpower = -5000
+			}
+			overlord = {
+				add_manpower = -30000
+			}
+			add_manpower = 30000
+			add_to_variable = { rom_mol_trust = -5 }
+			clamp_variable = { var = rom_mol_trust min = 0 max = 100 }
+			custom_effect_tooltip = rom_mol_trust_down_tt
+		}
+	}
+	focus = {
+		id = ROM_MOL_reform_industry_2
+		icon = GFX_focus_generic_industry_3
+		prerequisite = { focus = ROM_MOL_new_cities }
+		prerequisite = { focus = ROM_MOL_reform_industry_1 }
+		x = -2
+		y = 0
+		relative_position_id = ROM_MOL_new_cities
+		cost = 15
+		
+		search_filters = { FOCUS_FILTER_POLITICAL } 
+		
+		available = {
+			is_subject_of = ROM
+		}
+		
+		available_if_capitulated = yes
+
+		completion_reward = {
+			add_building_construction = {
+				type = industrial_complex
+				level = 3
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 2
+			}
+			add_dynamic_modifier = {
+				modifier = ROM_MOL_industry_idea
+			}
+		}
+	}
+	focus = {
+		id = ROM_MOL_reform_separate_army
+		icon = GFX_focus_generic_manpower
+		prerequisite = { focus = ROM_MOL_new_cities }
+		x = 2
+		y = 0
+		relative_position_id = ROM_MOL_new_cities
+		cost = 35
+		
+		search_filters = { FOCUS_FILTER_POLITICAL } 
+		
+		available = {
+			is_subject_of = ROM
+		}
+		
+		available_if_capitulated = yes
+
+		completion_reward = {
+			add_political_power = 100
+			add_manpower = 30000
+			army_experience = 200
+			set_variable = { rom_mol_army_attack = 0.05 }
+			set_variable = { rom_mol_army_defence = 0.05 }
+
+			add_dynamic_modifier = {
+				modifier = ROM_MOL_army_idea
+			}
+			add_to_variable = { rom_mol_trust = -10 }
+			clamp_variable = { var = rom_mol_trust min = 0 max = 100 }
+			custom_effect_tooltip = rom_mol_trust_down_tt
+		}
+	}
+	focus = {
+		id = ROM_MOL_border_guard
+		icon = GFX_goal_generic_defence
+		prerequisite = { focus = ROM_MOL_reform_separate_army }
+		x = 0
+		y = 1
+		relative_position_id = ROM_MOL_wine_diplomacy
+		cost = 15
+		
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		
+		available = {
+			is_subject_of = ROM
+		}
+		
+		available_if_capitulated = yes
+
+		completion_reward = {
+			army_experience = 25
+			78 = {
+				add_building_construction = {
+					type = bunker
+					level = 3
+					province = 3707
+					instant_build = yes
+				}
+				add_building_construction = {
+					type = bunker
+					level = 3
+					province = 11705
+					instant_build = yes
+				}
+				add_building_construction = {
+					type = bunker
+					level = 2
+					province = 6600
+					instant_build = yes
+				}
+			}
+			766 = {
+				add_building_construction = {
+					type = bunker
+					level = 2
+					province = 6727
+					instant_build = yes
+				}
+			}
+			add_to_variable = { rom_mol_trust = 10 }
+			clamp_variable = { var = rom_mol_trust min = 0 max = 100 }
+			custom_effect_tooltip = rom_mol_trust_up_tt
+		}
+	}
+	focus = {
+		id = ROM_MOL_economic_miracle
+		icon = GFX_focus_generic_infrastructure_2
+		prerequisite = { focus = ROM_MOL_reform_industry_2 }
+		x = 0
+		y = 1
+		relative_position_id = ROM_MOL_reform_industry_2
+		cost = 15
+		
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		
+		available = {
+			is_subject_of = ROM
+		}
+		
+		available_if_capitulated = yes
+
+		completion_reward = {
+			add_stability = 0.05
+			add_building_construction = {
+				type = industrial_complex
+				level = 2
+			}
+			add_building_construction = {
+				type = arms_factory
+				level = 1
+			}
+			add_to_variable = { rom_mol_trust = 5 }
+			clamp_variable = { var = rom_mol_trust min = 0 max = 100 }
+			custom_effect_tooltip = rom_mol_trust_up_tt
+		}
+	}
+	focus = {
+		id = ROM_MOL_autonomy_expansion
+		icon = GFX_focus_generic_standing_army
+		prerequisite = { focus = ROM_MOL_reform_separate_army }
+		x = 0
+		y = 1
+		relative_position_id = ROM_MOL_reform_separate_army
+		cost = 20
+		
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		
+		available = {
+			is_subject_of = ROM
+		}
+		
+		available_if_capitulated = yes
+
+		completion_reward = {
+			add_political_power = 50
+			add_manpower = 10000
+			army_experience = 100
+			add_to_variable = {
+   				var = rom_mol_army_attack
+   				value = 0.05
+   				tooltip = rom_mol_army_attack.t
+			}
+			add_to_variable = {
+   				var = rom_mol_army_defence
+   				value = 0.15
+   				tooltip = rom_mol_army_defence.t
+			}
+			add_to_variable = { rom_mol_trust = -10 }
+			clamp_variable = { var = rom_mol_trust min = 0 max = 100 }
+			custom_effect_tooltip = rom_mol_trust_down_tt
+		}
+	}
+	# --- Дилемма: верность или давление ---
+	focus = {
+		id = ROM_MOL_loyal_service
+		icon = GFX_goal_generic_military_deal
+		prerequisite = { focus = ROM_MOL_economic_miracle }
+		mutually_exclusive = { focus = ROM_MOL_pressure_bucharest }
+		x = 0
+		y = 1
+		relative_position_id = ROM_MOL_economic_miracle
+		cost = 10
+		
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		
+		available = {
+			is_subject_of = ROM
+			NOT = { has_country_flag = Moldova_have_unite_romania }
+		}
+		
+		available_if_capitulated = yes
+
+		completion_reward = {
+			add_stability = 0.05
+			add_political_power = 50
+			send_equipment = {
+				target = ROM
+				type = infantry_equipment
+				amount = 1000
+			}
+			ROM = {
+				add_manpower = 10000
+			}
+			add_to_variable = { rom_mol_trust = 15 }
+			clamp_variable = { var = rom_mol_trust min = 0 max = 100 }
+			custom_effect_tooltip = rom_mol_trust_up_tt
+		}
+	}
+	focus = {
+		id = ROM_MOL_pressure_bucharest
+		icon = GFX_goal_generic_forceful_treaty
+		prerequisite = { focus = ROM_MOL_autonomy_expansion }
+		mutually_exclusive = { focus = ROM_MOL_loyal_service }
+		x = 0
+		y = 1
+		relative_position_id = ROM_MOL_autonomy_expansion
+		cost = 15
+		
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		
+		available = {
+			is_subject_of = ROM
+			NOT = { has_country_flag = Moldova_have_unite_romania }
+		}
+		
+		available_if_capitulated = yes
+
+		completion_reward = {
+			add_war_support = 0.10
+			add_stability = -0.05
+			add_autonomy_progress = {
+				value = 0.25
+				freedom = 0.75
+			}
+			add_to_variable = { rom_mol_trust = -15 }
+			clamp_variable = { var = rom_mol_trust min = 0 max = 100 }
+			custom_effect_tooltip = rom_mol_trust_down_tt
+			ROM = {
+				country_event = { days = 1 id = moldavia.13 }
+			}
+		}
+	}
+	focus = {
+		id = ROM_MOL_moldavian_assembly
+		icon = GFX_focus_generic_congress
+		prerequisite = { focus = ROM_MOL_economic_miracle }
+		prerequisite = { focus = ROM_MOL_autonomy_expansion }
+		prerequisite = { focus = ROM_MOL_new_cities }
+		x = 0
+		y = 1
+		relative_position_id = ROM_MOL_new_cities
+		cost = 25
+		
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		
+		available = {
+			is_subject_of = ROM
+		}
+		
+		available_if_capitulated = yes
+
+		completion_reward = {
+			add_to_variable = { rom_mol_trust = -10 }
+			clamp_variable = { var = rom_mol_trust min = 0 max = 100 }
+			custom_effect_tooltip = rom_mol_trust_down_tt
+			country_event = { days = 1 id = moldavia.5 }
+		}
+	}
+
+	focus = {
+		id = MOL_we_are_romania
+		icon = GFX_goal_generic_demand_territory
+		prerequisite = { focus = ROM_MOL_moldavian_assembly }
+		x = 0
+		y = 2
+		relative_position_id = ROM_MOL_moldavian_assembly
+		cost = 15
+
+		search_filters = { FOCUS_FILTER_POLITICAL }
+
+		available = {
+			always = false
+		}
+
+		available_if_capitulated = yes
+
+		completion_reward = {
+			set_country_flag = Moldova_have_choice
+			clr_country_flag = MOL_loyal_assembly
+			clr_country_flag = Moldova_have_choice
+			set_country_flag = Moldova_have_unite_romania
+
+			add_political_power = 100
+			add_stability = 0.1
+			add_popularity = {
+				ideology = fascism
+				popularity = 0.1
+			}
+
+			ROM = {
+				country_event = { days = 1 id = moldavia.7 }
+			}
+		}
+	}
+	focus = {
+		id = MOL_greater_moldavia
+		icon = GFX_goal_generic_improve_relations
+		prerequisite = { focus = MOL_we_are_romania }
+		x = 0
+		y = 1
+		relative_position_id = MOL_we_are_romania
+		cost = 10
+
+		search_filters = { FOCUS_FILTER_POLITICAL }
+
+		available = {
+		}
+
+		available_if_capitulated = yes
+
+		completion_reward = {
+			ROM = {
+				country_event = { days = 1 id = moldavia.8 }
+			}
+		}
+	}
+		# Взаимоисключающие фокусы после "Великая Молдавия"
+	focus = {
+		id = MOL_transnistria_fire
+		icon = GFX_goal_generic_demand_territory
+		prerequisite = { focus = MOL_greater_moldavia }
+		mutually_exclusive = { focus = MOL_internal_affairs }
+		x = -2
+		y = 1
+		relative_position_id = MOL_greater_moldavia
+		cost = 15
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available = {
+			OR = {
+				tag = MOL
+				tag = ROM
+			}
+		}
+		available_if_capitulated = yes
+
+		completion_reward = {
+			add_political_power = 50
+			add_stability = -0.05
+			set_country_flag = transnistria_rising
+			if = {
+				limit = { tag = MOL }
+				MOL = { set_country_flag = transnistria_rising }
+			}
+		}
+	}
+
+	focus = {
+		id = MOL_internal_affairs
+		icon = GFX_goal_generic_improve_relations
+		prerequisite = { focus = MOL_greater_moldavia }
+		mutually_exclusive = { focus = MOL_transnistria_fire }
+		x = 2
+		y = 1
+		relative_position_id = MOL_greater_moldavia
+		cost = 15
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available = {
+			OR = {
+				tag = MOL
+				tag = ROM
+			}
+		}
+		available_if_capitulated = yes
+
+		completion_reward = {
+			add_political_power = 100
+			add_stability = 0.15
+			add_popularity = {
+				ideology = democratic
+				popularity = 0.05
+			}
+			766 = {
+				add_core_of = MOL
+				remove_core_of = UKR
+			}
+		}
+	}
+
+	# --- Подветка А: Наследие приднестровского похода ---
+	focus = {
+		id = MOL_transnistria_agents
+		icon = GFX_goal_generic_intelligence_exchange
+		prerequisite = { focus = MOL_transnistria_fire }
+		x = 0
+		y = 1
+		relative_position_id = MOL_transnistria_fire
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available = {
+			OR = { tag = MOL tag = ROM }
+			has_country_flag = transnistria_rising
+		}
+		available_if_capitulated = yes
+		completion_reward = {
+			add_political_power = 50
+			add_war_support = 0.05
+			set_country_flag = transnistria_agents_bonus
+		}
+	}
+	focus = {
+		id = MOL_transnistria_volunteers
+		icon = GFX_goal_generic_allies_build_infantry
+		prerequisite = { focus = MOL_transnistria_agents }
+		x = 0
+		y = 1
+		relative_position_id = MOL_transnistria_agents
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available = {
+			OR = { tag = MOL tag = ROM }
+			has_country_flag = transnistria_rising
+		}
+		available_if_capitulated = yes
+		completion_reward = {
+			add_manpower = 5000
+			add_equipment_to_stockpile = {
+				type = infantry_equipment
+				amount = 1500
+			}
+			add_war_support = 0.05
+			set_country_flag = transnistria_volunteers_bonus
+		}
+	}
+	focus = {
+		id = MOL_transnistria_aftermath
+		icon = GFX_goal_generic_demand_territory
+		prerequisite = { focus = MOL_transnistria_volunteers }
+		x = 0
+		y = 1
+		relative_position_id = MOL_transnistria_volunteers
+		cost = 15
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available = {
+			OR = { tag = MOL tag = ROM }
+			country_exists = PMR
+			PMR = {
+				is_in_faction = no
+				has_war = no
+			}
+		}
+		available_if_capitulated = yes
+		completion_reward = {
+			add_stability = 0.05
+			add_dynamic_modifier = {
+				modifier = MOL_transnistria_reunion
+			}
+			MOL = {
+				country_event = { id = transnistria_events.3 days = 1 }
+			}
+		}
+	}
+
+	# --- Подветка Б: Внутренние дела и единство ---
+	focus = {
+		id = MOL_minority_rights
+		icon = GFX_goal_generic_national_unity
+		prerequisite = { focus = MOL_internal_affairs }
+		x = 0
+		y = 1
+		relative_position_id = MOL_internal_affairs
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available = {
+			OR = { tag = MOL tag = ROM }
+		}
+		available_if_capitulated = yes
+		completion_reward = {
+			add_stability = 0.10
+			add_political_power = 50
+			add_popularity = {
+				ideology = democratic
+				popularity = 0.05
+			}
+			add_dynamic_modifier = {
+				modifier = MOL_minority_harmony
+			}
+		}
+	}
+	focus = {
+		id = MOL_gagauz_autonomy
+		icon = GFX_goal_generic_improve_relations
+		prerequisite = { focus = MOL_minority_rights }
+		x = 0
+		y = 1
+		relative_position_id = MOL_minority_rights
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available = {
+			OR = { tag = MOL tag = ROM }
+		}
+		available_if_capitulated = yes
+		completion_reward = {
+			add_stability = 0.05
+			add_manpower = 15000
+			766 = {
+				add_building_construction = {
+					type = infrastructure
+					level = 1
+					instant_build = yes
+				}
+			}
+		}
+	}
+	focus = {
+		id = MOL_economic_integration
+		icon = GFX_goal_generic_construct_civ_factory
+		prerequisite = { focus = MOL_gagauz_autonomy }
+		x = 0
+		y = 1
+		relative_position_id = MOL_gagauz_autonomy
+		cost = 15
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available = {
+			OR = { tag = MOL tag = ROM }
+		}
+		available_if_capitulated = yes
+		completion_reward = {
+			add_stability = 0.05
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = {
+					type = industrial_complex
+					level = 1
+					instant_build = yes
+				}
+			}
+			add_dynamic_modifier = {
+				modifier = MOL_autonomy_prosperity
+			}
+		}
+	}
+
+	# ========== ВЕТКА "МЫ МОЛДОВАНЕ!" ==========
+	focus = {
+		id = MOL_we_are_moldovans
+		icon = GFX_focus_MOL_resistance
+		prerequisite = { focus = MOL_political_effort }
+		mutually_exclusive = { focus = MOL_we_are_romanians }
+		x = 30
+		y = 1
+		relative_position_id = MOL_political_effort
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available = { is_puppet_of = ROM }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_stability = -0.10
+			add_war_support = 0.15
+			add_political_power = 50
+			add_popularity = { ideology = neutrality popularity = 0.10 }
+			add_popularity = { ideology = communism popularity = 0.05 }
+			set_country_flag = MOL_separatist_path
+		}
+	}
+	focus = {
+		id = MOL_underground_militias
+		icon = GFX_goal_generic_small_arms
+		prerequisite = { focus = MOL_we_are_moldovans }
+		x = -5
+		y = 1
+		relative_position_id = MOL_we_are_moldovans
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available = { is_puppet_of = ROM }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_manpower = 15000
+			add_equipment_to_stockpile = { type = infantry_equipment amount = 3000 }
+			add_stability = -0.05
+		}
+	}
+	focus = {
+		id = MOL_partisan_networks
+		icon = GFX_goal_generic_intelligence_agency
+		prerequisite = { focus = MOL_underground_militias }
+		x = 0
+		y = 1
+		relative_position_id = MOL_underground_militias
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available = { is_puppet_of = ROM }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_political_power = 100
+			add_dynamic_modifier = { modifier = MOL_partisan_defense }
+		}
+	}
+	focus = {
+		id = MOL_seek_foreign_aid
+		icon = GFX_goal_generic_major_alliance
+		prerequisite = { focus = MOL_we_are_moldovans }
+		x = 5
+		y = 1
+		relative_position_id = MOL_we_are_moldovans
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available = { is_puppet_of = ROM }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_political_power = 100
+			if = {
+				limit = { SOV = { exists = yes } }
+				SOV = { add_opinion_modifier = { target = ROOT modifier = supported_independence } }
+			}
+			add_war_support = 0.10
+		}
+	}
+	focus = {
+		id = MOL_smuggle_weapons
+		icon = GFX_focus_generic_military_mission
+		prerequisite = { focus = MOL_seek_foreign_aid }
+		x = 0
+		y = 1
+		relative_position_id = MOL_seek_foreign_aid
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available = { is_puppet_of = ROM }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_equipment_to_stockpile = { type = infantry_equipment amount = 5000 }
+			add_manpower = 10000
+			add_stability = -0.05
+		}
+	}
+	# --- СТОРОНА: КРАСНЫЕ ---
+	focus = {
+		id = MOL_prep_red
+		icon = GFX_focus_generic_support_the_left_right
+		prerequisite = { focus = MOL_we_are_moldovans }
+		mutually_exclusive = { focus = MOL_prep_blue }
+		mutually_exclusive = { focus = MOL_prep_green }
+		x = -2
+		y = 1
+		relative_position_id = MOL_we_are_moldovans
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available = { is_puppet_of = ROM }
+		available_if_capitulated = yes
+		ai_will_do = { factor = 1 modifier = { factor = 5 has_government = communism } }
+		completion_reward = {
+			add_popularity = { ideology = communism popularity = 0.15 }
+			add_popularity = { ideology = democratic popularity = -0.05 }
+			add_manpower = 5000
+			set_country_flag = MOL_prep_red
+		}
+	}
+	focus = {
+		id = MOL_red_cells
+		icon = GFX_focus_generic_industry_2
+		prerequisite = { focus = MOL_prep_red }
+		x = 0
+		y = 1
+		relative_position_id = MOL_prep_red
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available = { is_puppet_of = ROM has_country_flag = MOL_prep_red }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_manpower = 10000
+			add_equipment_to_stockpile = { type = infantry_equipment amount = 1500 }
+			add_stability = -0.03
+		}
+	}
+	focus = {
+		id = MOL_red_agitators
+		icon = GFX_goal_generic_propaganda
+		prerequisite = { focus = MOL_red_cells }
+		x = 0
+		y = 1
+		relative_position_id = MOL_red_cells
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available = { is_puppet_of = ROM has_country_flag = MOL_prep_red }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_war_support = 0.10
+			add_political_power = 25
+			add_stability = -0.05
+		}
+	}
+	# --- СТОРОНА: СИНИЕ ---
+	focus = {
+		id = MOL_prep_blue
+		icon = GFX_focus_generic_congress
+		prerequisite = { focus = MOL_we_are_moldovans }
+		mutually_exclusive = { focus = MOL_prep_red }
+		mutually_exclusive = { focus = MOL_prep_green }
+		x = 0
+		y = 1
+		relative_position_id = MOL_we_are_moldovans
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available = { is_puppet_of = ROM }
+		available_if_capitulated = yes
+		ai_will_do = { factor = 1 modifier = { factor = 5 has_government = democratic } }
+		completion_reward = {
+			add_popularity = { ideology = democratic popularity = 0.15 }
+			add_popularity = { ideology = communism popularity = -0.05 }
+			add_political_power = 50
+			set_country_flag = MOL_prep_blue
+		}
+	}
+	focus = {
+		id = MOL_blue_councils
+		icon = GFX_focus_generic_low_cost_housing
+		prerequisite = { focus = MOL_prep_blue }
+		x = 0
+		y = 1
+		relative_position_id = MOL_prep_blue
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available = { is_puppet_of = ROM has_country_flag = MOL_prep_blue }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_political_power = 75
+			add_stability = 0.05
+		}
+	}
+	focus = {
+		id = MOL_blue_arms
+		icon = GFX_goal_generic_trade
+		prerequisite = { focus = MOL_blue_councils }
+		x = 0
+		y = 1
+		relative_position_id = MOL_blue_councils
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available = { is_puppet_of = ROM has_country_flag = MOL_prep_blue }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_equipment_to_stockpile = { type = infantry_equipment amount = 2500 }
+			add_war_support = 0.05
+		}
+	}
+	# --- СТОРОНА: ЗЕЛЁНЫЕ ---
+	focus = {
+		id = MOL_prep_green
+		icon = GFX_focus_generic_monarchy_1
+		prerequisite = { focus = MOL_we_are_moldovans }
+		mutually_exclusive = { focus = MOL_prep_red }
+		mutually_exclusive = { focus = MOL_prep_blue }
+		x = 2
+		y = 1
+		relative_position_id = MOL_we_are_moldovans
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available = { is_puppet_of = ROM }
+		available_if_capitulated = yes
+		ai_will_do = { factor = 1 modifier = { factor = 5 has_government = neutrality } }
+		completion_reward = {
+			add_popularity = { ideology = neutrality popularity = 0.15 }
+			add_stability = 0.05
+			add_war_support = 0.05
+			set_country_flag = MOL_prep_green
+		}
+	}
+	focus = {
+		id = MOL_green_haiduks
+		icon = GFX_goal_generic_special_forces
+		prerequisite = { focus = MOL_prep_green }
+		x = 0
+		y = 1
+		relative_position_id = MOL_prep_green
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available = { is_puppet_of = ROM has_country_flag = MOL_prep_green }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_manpower = 8000
+			add_equipment_to_stockpile = { type = infantry_equipment amount = 1000 }
+		}
+	}
+	focus = {
+		id = MOL_green_church
+		icon = GFX_goal_generic_national_unity
+		prerequisite = { focus = MOL_green_haiduks }
+		x = 0
+		y = 1
+		relative_position_id = MOL_green_haiduks
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available = { is_puppet_of = ROM has_country_flag = MOL_prep_green }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_stability = 0.10
+			add_political_power = 25
+		}
+	}
+	# --- ТОЧКА НЕВОЗВРАТА: ВСЁ ВОЕННОЕ ЗДЕСЬ ---
+	focus = {
+		id = MOL_point_of_no_return
+		icon = GFX_focus_generic_declare_war
+		prerequisite = { focus = MOL_partisan_networks }
+		prerequisite = { focus = MOL_smuggle_weapons }
+		prerequisite = {
+			focus = MOL_green_church
+			focus = MOL_red_agitators
+			focus = MOL_blue_arms
+		}
+		x = 0
+		y = 1
+		relative_position_id = MOL_blue_arms
+		cost = 15
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available = {
+			is_puppet_of = ROM
+		}
+		available_if_capitulated = yes
+		completion_reward = {
+			add_war_support = 0.20
+			add_stability = -0.15
+			ROM = {
+				set_autonomy = {
+					target = ROOT
+					autonomous_state = autonomy_free
+					end_wars = no
+					end_civil_wars = no
+				}
+			}
+			if = {
+				limit = { has_country_flag = MOL_prep_red }
+				add_dynamic_modifier = { modifier = MOL_red_militia }
+			}
+			else_if = {
+				limit = { has_country_flag = MOL_prep_blue }
+				add_dynamic_modifier = { modifier = MOL_blue_guard }
+			}
+			else_if = {
+				limit = { has_country_flag = MOL_prep_green }
+				add_dynamic_modifier = { modifier = MOL_green_partisans }
+			}
+			hidden_effect = {
+				division_template = {
+					name = "Moldavian Rebels"
+					regiments = {
+						infantry = { x = 0 y = 0 }
+						infantry = { x = 0 y = 1 }
+						infantry = { x = 0 y = 2 }
+						infantry = { x = 0 y = 3 }
+						infantry = { x = 1 y = 0 }
+						infantry = { x = 1 y = 1 }
+						infantry = { x = 1 y = 2 }
+						infantry = { x = 1 y = 3 }
+						infantry = { x = 2 y = 0 }
+						infantry = { x = 2 y = 1 }
+						infantry = { x = 2 y = 2 }
+						infantry = { x = 2 y = 3 }
+					}
+					support = { }
+					priority = 0
+				}
+				add_equipment_to_stockpile = { type = infantry_equipment amount = 6500 }
+				capital_scope = {
+					create_unit = {
+						division = "name = \"Moldavian Rebels\" division_template = \"Moldavian Rebels\" start_experience_factor = 1.0 start_equipment_factor = 1.0"
+						owner = MOL
+						count = 5
+					}
+				}
+				set_country_flag = MOL_war_buffs_revealed
+			}
+			ROM = { country_event = { id = moldavia.10 days = 1 } }
+		}
+	}
+
+	# ========== ПОБЕДА И ВЫБОРЫ ==========
+	focus = {
+		id = MOL_victory
+		icon = GFX_goal_generic_national_unity
+		prerequisite = { focus = MOL_point_of_no_return }
+		x = 0
+		y = 1
+		relative_position_id = MOL_point_of_no_return
+		cost = 1
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available = {
+			has_global_flag = MOL_white_peace_done
+		}
+		available_if_capitulated = yes
+		completion_reward = {
+			country_event = { id = moldavia.17 }
+		}
+	}
+
+	# ==================== КРАСНАЯ ВЕТКА (Коммунисты) ====================
+	focus = {
+		id = MOL_red_government
+		icon = GFX_goal_support_communism
+		prerequisite = { focus = MOL_victory }
+		x = -12
+		y = 1
+		relative_position_id = MOL_victory
+		cost = 5
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available = { always = no }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_stability = 0.05
+			add_political_power = 50
+			set_country_flag = MOL_red_path
+			set_cosmetic_tag = Free_MOL
+		}
+	}
+
+	# === Консолидация власти ===
+	focus = {
+		id = MOL_red_consolidation
+		icon = GFX_focus_generic_strike_at_democracy1
+		prerequisite = { focus = MOL_red_government }
+		x = 0
+		y = 1
+		relative_position_id = MOL_red_government
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_stability = 0.05
+			add_political_power = 75
+			add_popularity = { ideology = communism popularity = 0.10 }
+			add_popularity = { ideology = democratic popularity = -0.05 }
+			add_popularity = { ideology = fascism popularity = -0.05 }
+			add_popularity = { ideology = neutrality popularity = -0.05 }
+			if = {
+				limit = { has_dlc = "La Resistance" }
+			}
+			else = {
+				add_dynamic_modifier = { modifier = MOL_securitate }
+			}
+		}
+	}
+
+	# === Развилка: Просоветский или Самостоятельный ===
+	focus = {
+		id = MOL_red_soviet_alignment
+		icon = GFX_focus_chi_mission_to_the_soviet_union
+		prerequisite = { focus = MOL_red_consolidation }
+		mutually_exclusive = { focus = MOL_red_independent_path }
+		x = -6
+		y = 1
+		relative_position_id = MOL_red_consolidation
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		ai_will_do = { factor = 1 modifier = { factor = 3 SOV = { has_government = communism } } }
+		completion_reward = {
+			add_opinion_modifier = { target = SOV modifier = friendly_relations }
+			SOV = { add_opinion_modifier = { target = ROOT modifier = friendly_relations } }
+			add_political_power = 50
+			add_dynamic_modifier = { modifier = MOL_soviet_aid days = 550 }
+		}
+	}
+	focus = {
+		id = MOL_red_independent_path
+		icon = GFX_focus_YUG_market_socialism
+		prerequisite = { focus = MOL_red_consolidation }
+		mutually_exclusive = { focus = MOL_red_soviet_alignment }
+		x = 6
+		y = 1
+		relative_position_id = MOL_red_consolidation
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		ai_will_do = { factor = 1 modifier = { factor = 3 NOT = { SOV = { has_government = communism } } } }
+		completion_reward = {
+			add_stability = 0.10
+			add_war_support = 0.05
+			add_political_power = 75
+			add_popularity = { ideology = communism popularity = 0.10 }
+			add_dynamic_modifier = { modifier = MOL_independent_socialism }
+			set_party_name = {
+					ideology = communism
+					long_name = MOL_new_communism_party_long
+					name = MOL_new_communism_party
+				}
+		}
+	}
+
+	# ============================================
+	# ПРОСОВЕТСКАЯ ВЕТКА (компактная)
+	# ============================================
+	focus = {
+		id = MOL_red_comintern
+		icon = GFX_goal_generic_major_alliance
+		prerequisite = { focus = MOL_red_soviet_alignment }
+		x = -1
+		y = 1
+		relative_position_id = MOL_red_soviet_alignment
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_political_power = 100
+			add_stability = 0.05
+			add_popularity = { ideology = communism popularity = 0.10 }
+			SOV = {
+				add_opinion_modifier = { target = ROOT modifier = MOL_ideological_solidarity }
+			}
+			add_dynamic_modifier = { modifier = MOL_comintern_cooperation }
+			if = {
+				limit = { SOV = { has_government = communism is_faction_leader = yes } }
+				SOV = { country_event = generic.5 }
+			}
+		}
+	}
+	focus = {
+		id = MOL_red_soviet_advisors
+		icon = GFX_goal_generic_army_doctrines
+		prerequisite = { focus = MOL_red_comintern }
+		x = 0
+		y = 1
+		relative_position_id = MOL_red_comintern
+		cost = 10
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		available_if_capitulated = yes
+		completion_reward = {
+			army_experience = 50
+			add_doctrine_cost_reduction = {
+				name = land_doc_bonus
+				cost_reduction = 0.5
+				uses = 2
+				category = land_doctrine
+			}
+			add_dynamic_modifier = { modifier = MOL_soviet_military_advisors }
+		}
+	}
+	focus = {
+		id = MOL_red_soviet_industrial_aid
+		icon = GFX_focus_generic_industry_2
+		prerequisite = { focus = MOL_red_soviet_advisors }
+		x = -1
+		y = 1
+		relative_position_id = MOL_red_soviet_advisors
+		cost = 15
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_dynamic_modifier = { modifier = MOL_soviet_industrialization }
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = { type = industrial_complex level = 2 instant_build = yes }
+			}
+		}
+	}
+	focus = {
+		id = MOL_red_collectivization
+		icon = GFX_goal_generic_workers
+		prerequisite = { focus = MOL_red_soviet_advisors }
+		x = 1
+		y = 1
+		relative_position_id = MOL_red_soviet_advisors
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_stability = -0.10
+			add_political_power = 50
+			add_manpower = 20000
+			add_dynamic_modifier = { modifier = MOL_collectivized_farms }
+		}
+	}
+	focus = {
+		id = MOL_red_soviet_research_cooperation
+		icon = GFX_focus_generic_socialist_science
+		prerequisite = { focus = MOL_red_soviet_industrial_aid }
+		prerequisite = { focus = MOL_red_collectivization }
+		x = 0
+		y = 1
+		relative_position_id = MOL_red_soviet_industrial_aid
+		cost = 10
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_tech_bonus = {
+				name = MOL_soviet_research
+				bonus = 1
+				uses = 1
+				category = industry
+			}
+			add_tech_bonus = {
+				name = MOL_soviet_research
+				bonus = 1
+				uses = 2
+				category = armor
+			}
+		}
+	}
+	focus = {
+		id = MOL_red_claims
+		icon = GFX_goal_generic_demand_territory
+		prerequisite = { focus = MOL_red_soviet_research_cooperation }
+		x = 0
+		y = 1
+		relative_position_id = MOL_red_soviet_research_cooperation
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ANNEXATION }
+		available_if_capitulated = yes
+		available = {
+			is_subject = no
+		}
+		bypass = {
+			OR = {
+				owns_state = 78
+				owns_state = 766
+				owns_state = 79
+				owns_state = 80
+			}
+			ROM = { exists = no }
+		}
+		completion_reward = {
+			add_state_claim = 78
+			add_state_claim = 766
+			add_state_claim = 79
+			add_state_claim = 80
+			if = {
+				limit = { ROM = { exists = yes NOT = { is_in_faction_with = ROOT } } }
+				create_wargoal = { type = take_state_focus target = ROM generator = { 78 766 79 80 } }
+			}
+			add_war_support = 0.10
+			add_political_power = 50
+		}
+	}
+	focus = {
+		id = MOL_red_fortress
+		icon = GFX_goal_generic_fortify_city
+		prerequisite = { focus = MOL_red_claims }
+		x = 0
+		y = 1
+		relative_position_id = MOL_red_claims
+		cost = 15
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		completion_reward = {
+			78 = {
+				add_building_construction = { type = bunker level = 4 province = 9683 instant_build = yes }
+				add_building_construction = { type = bunker level = 4 province = 11686 instant_build = yes }
+				add_building_construction = { type = bunker level = 3 province = 3707 instant_build = yes }
+			}
+			766 = {
+				add_building_construction = { type = bunker level = 3 province = 6727 instant_build = yes }
+			}
+		}
+	}
+	focus = {
+		id = MOL_red_join_soviet_union
+		icon = GFX_focus_chi_mission_to_the_soviet_union
+		prerequisite = { focus = MOL_red_fortress }
+		mutually_exclusive = { focus = MOL_red_balkan_communist_federation }
+		x = 0
+		y = 1
+		relative_position_id = MOL_red_fortress
+		cost = 5
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		available = {
+			has_government = communism
+			is_subject = no
+			SOV = {
+				exists = yes
+				has_government = communism
+				has_civil_war = no
+			}
+			SOV = { has_opinion = { target = ROOT value > 49 } }
+		}
+		completion_reward = {
+			custom_effect_tooltip = MOL_red_join_soviet_union_tt
+			SOV = { country_event = { id = MOL_soviet.1 days = 1 } }
+		}
+	}
+
+	# ============================================
+	# САМОСТОЯТЕЛЬНАЯ КРАСНАЯ ВЕТКА (большая!)
+	# ============================================
+
+	# --- Экономика: Рыночный социализм vs Командная экономика ---
+	focus = {
+		id = MOL_red_workers_self_management
+		icon = GFX_focus_YUG_pan_slavic_congress
+		prerequisite = { focus = MOL_red_independent_path }
+		x = -3
+		y = 1
+		relative_position_id = MOL_red_independent_path
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_stability = 0.05
+			add_political_power = 50
+			add_popularity = { ideology = communism popularity = 0.10 }
+		}
+	}
+	focus = {
+		id = MOL_red_market_socialism
+		icon = GFX_focus_YUG_market_socialism
+		prerequisite = { focus = MOL_red_workers_self_management }
+		mutually_exclusive = { focus = MOL_red_command_economy }
+		x = -2
+		y = 1
+		relative_position_id = MOL_red_workers_self_management
+		cost = 10
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_dynamic_modifier = { modifier = MOL_market_socialism }
+		}
+	}
+	focus = {
+		id = MOL_red_command_economy
+		icon = GFX_goal_generic_soviet_construction
+		prerequisite = { focus = MOL_red_workers_self_management }
+		mutually_exclusive = { focus = MOL_red_market_socialism }
+		x = 2
+		y = 1
+		relative_position_id = MOL_red_workers_self_management
+		cost = 10
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_dynamic_modifier = { modifier = MOL_command_economy }
+		}
+	}
+
+	# --- Торговля: Независимая vs С СССР ---
+	focus = {
+		id = MOL_red_independent_trade_policy
+		icon = GFX_goal_generic_positive_trade_relations
+		prerequisite = { focus = MOL_red_market_socialism focus = MOL_red_command_economy }
+		mutually_exclusive = { focus = MOL_red_trade_with_ussr }
+		x = -1
+		y = 1
+		relative_position_id = MOL_red_market_socialism
+		cost = 7
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		available_if_capitulated = yes
+		completion_reward = {
+			every_country = {
+				limit = { OR = { original_tag = FRA original_tag = GER original_tag = ENG original_tag = ITA } }
+				add_opinion_modifier = { target = ROOT modifier = MOL_trading_partner }
+			}
+			SOV = { add_opinion_modifier = { target = ROOT modifier = MOL_trading_partner_less } }
+			add_dynamic_modifier = { modifier = MOL_independent_trade_policy }
+		}
+	}
+	focus = {
+		id = MOL_red_trade_with_ussr
+		icon = GFX_focus_YUG_soviet_trade_agreement
+		prerequisite = { focus = MOL_red_market_socialism focus = MOL_red_command_economy }
+		mutually_exclusive = { focus = MOL_red_independent_trade_policy }
+		x = 1
+		y = 1
+		relative_position_id = MOL_red_command_economy
+		cost = 7
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		available_if_capitulated = yes
+		available = {
+			SOV = { has_government = communism NOT = { has_war_with = ROOT } }
+		}
+		completion_reward = {
+			SOV = {
+				add_opinion_modifier = { target = ROOT modifier = MOL_favouritism_in_trading }
+				add_opinion_modifier = { target = ROOT modifier = MOL_trade_agreement }
+			}
+			add_opinion_modifier = { target = SOV modifier = MOL_trade_agreement }
+			random_owned_controlled_state = {
+				limit = { is_core_of = ROOT free_building_slots = { building = industrial_complex size > 0 include_locked = yes } }
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+			random_owned_controlled_state = {
+				limit = { is_core_of = ROOT free_building_slots = { building = industrial_complex size > 0 include_locked = yes } }
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+		}
+	}
+
+	# --- Национализация и индустриализация ---
+	focus = {
+		id = MOL_red_nationalize_industry
+		icon = GFX_focus_generic_industry_2
+		prerequisite = { focus = MOL_red_independent_trade_policy focus = MOL_red_trade_with_ussr }
+		x = 0
+		y = 1
+		relative_position_id = MOL_red_independent_trade_policy
+		cost = 10
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		available_if_capitulated = yes
+		completion_reward = {
+			random_owned_controlled_state = {
+				limit = { is_core_of = ROOT free_building_slots = { building = industrial_complex size > 1 include_locked = yes } }
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = { type = industrial_complex level = 2 instant_build = yes }
+			}
+			random_owned_controlled_state = {
+				limit = { is_core_of = ROOT free_building_slots = { building = arms_factory size > 1 include_locked = yes } }
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = { type = arms_factory level = 2 instant_build = yes }
+			}
+		}
+	}
+	focus = {
+		id = MOL_red_five_year_plan
+		icon = GFX_focus_generic_industry_3
+		prerequisite = { focus = MOL_red_nationalize_industry }
+		x = 0
+		y = 1
+		relative_position_id = MOL_red_nationalize_industry
+		cost = 15
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_dynamic_modifier = { modifier = MOL_soviet_industrialization }
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = { type = industrial_complex level = 2 instant_build = yes }
+			}
+		}
+	}
+
+	# --- Секуритате и чистки ---
+	focus = {
+		id = MOL_red_establish_securitate
+		icon = GFX_focus_generic_secret_service_agency
+		prerequisite = { focus = MOL_red_independent_path }
+		x = 3
+		y = 1
+		relative_position_id = MOL_red_independent_path
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		completion_reward = {
+			if = {
+				limit = { has_dlc = "La Resistance" }
+				if = {
+					limit = { has_intelligence_agency = no }
+					create_intelligence_agency = { name = "Securitate" icon = GFX_intelligence_agency_logo_generic_7 }
+				}
+				add_dynamic_modifier = { modifier = MOL_securitate_lar }
+			}
+			else = {
+				add_dynamic_modifier = { modifier = MOL_securitate }
+			}
+		}
+	}
+	focus = {
+		id = MOL_red_purge_opposition
+		icon = GFX_focus_generic_conspiracy
+		prerequisite = { focus = MOL_red_establish_securitate }
+		x = 0
+		y = 1
+		relative_position_id = MOL_red_establish_securitate
+		cost = 8
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		available = { has_government = communism }
+		completion_reward = {
+			add_popularity = { ideology = democratic popularity = -0.15 }
+			add_popularity = { ideology = fascism popularity = -0.10 }
+			add_popularity = { ideology = neutrality popularity = -0.10 }
+			add_stability = -0.05
+			add_political_power = 50
+		}
+	}
+	focus = {
+		id = MOL_red_collectivization_indep
+		icon = GFX_goal_generic_workers
+		prerequisite = { focus = MOL_red_purge_opposition }
+		x = 0
+		y = 1
+		relative_position_id = MOL_red_purge_opposition
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_stability = -0.05
+			add_political_power = 50
+			add_manpower = 20000
+			add_dynamic_modifier = { modifier = MOL_collectivized_farms }
+		}
+	}
+
+	# --- Армия и ополчение ---
+	focus = {
+		id = MOL_red_army_reform_indep
+		icon = GFX_focus_chi_army_reform
+		prerequisite = { focus = MOL_red_five_year_plan }
+		prerequisite = { focus = MOL_red_collectivization_indep }
+		x = 0
+		y = 1
+		relative_position_id = MOL_red_five_year_plan
+		cost = 10
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		available_if_capitulated = yes
+		completion_reward = {
+			army_experience = 50
+			add_doctrine_cost_reduction = {
+				name = land_doc_bonus
+				cost_reduction = 0.5
+				uses = 2
+				category = land_doctrine
+			}
+			add_dynamic_modifier = { modifier = MOL_red_army }
+		}
+	}
+	focus = {
+		id = MOL_red_militia_forces
+		icon = GFX_goal_generic_allies_build_infantry
+		prerequisite = { focus = MOL_red_army_reform_indep }
+		x = -1
+		y = 1
+		relative_position_id = MOL_red_army_reform_indep
+		cost = 10
+		search_filters = { FOCUS_FILTER_MANPOWER }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_manpower = 15000
+			army_experience = 25
+			add_dynamic_modifier = { modifier = MOL_red_militia_forces }
+			division_template = {
+				name = "Moldavian People's Militia"
+				is_locked = no
+				regiments = {
+					infantry = { x = 0 y = 0 }
+					infantry = { x = 0 y = 1 }
+					infantry = { x = 0 y = 2 }
+					infantry = { x = 1 y = 0 }
+					infantry = { x = 1 y = 1 }
+					infantry = { x = 1 y = 2 }
+				}
+			}
+			capital_scope = {
+				create_unit = {
+					division = "name = \"1st People's Militia\" division_template = \"Moldavian People's Militia\" start_experience_factor = 0.5"
+					owner = MOL
+				}
+				create_unit = {
+					division = "name = \"2nd People's Militia\" division_template = \"Moldavian People's Militia\" start_experience_factor = 0.5"
+					owner = MOL
+				}
+			}
+		}
+	}
+	focus = {
+		id = MOL_red_partisan_warfare
+		icon = GFX_focus_prc_infiltration
+		prerequisite = { focus = MOL_red_army_reform_indep }
+		x = 1
+		y = 1
+		relative_position_id = MOL_red_army_reform_indep
+		cost = 10
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		available_if_capitulated = yes
+		completion_reward = {
+			set_technology = { guerilla_warfare = 1 popup = no }
+			add_dynamic_modifier = { modifier = MOL_partisan_warfare }
+		}
+	}
+
+	# === ЭКСПОРТ РЕВОЛЮЦИИ ===
+	focus = {
+		id = MOL_red_spread_revolution
+		icon = GFX_focus_SOV_proclaim_soviet_hegemony
+		prerequisite = { focus = MOL_red_militia_forces }
+		prerequisite = { focus = MOL_red_partisan_warfare }
+		x = 0
+		y = 1
+		relative_position_id = MOL_red_militia_forces
+		cost = 7
+		search_filters = { FOCUS_FILTER_WAR_SUPPORT FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_war_support = 0.10
+			add_popularity = { ideology = communism popularity = 0.10 }
+		}
+	}
+
+	# --- Интербригады ---
+	focus = {
+		id = MOL_red_international_brigades
+		icon = GFX_focus_ITA_corpo_volontari_della_liberta
+		prerequisite = { focus = MOL_red_spread_revolution }
+		x = -3
+		y = 1
+		relative_position_id = MOL_red_spread_revolution
+		cost = 5
+		search_filters = { FOCUS_FILTER_MANPOWER }
+		available_if_capitulated = yes
+		completion_reward = {
+			set_rule = { can_send_volunteers = yes }
+			add_dynamic_modifier = { modifier = MOL_international_brigades }
+		}
+	}
+	focus = {
+		id = MOL_red_call_for_socialist_help
+		icon = GFX_focus_ETH_callout_to_the_world
+		prerequisite = { focus = MOL_red_international_brigades }
+		x = 0
+		y = 1
+		relative_position_id = MOL_red_international_brigades
+		cost = 10
+		search_filters = { FOCUS_FILTER_MANPOWER }
+		available_if_capitulated = yes
+		available = {
+			has_war = yes
+			any_country = { has_government = communism }
+		}
+		completion_reward = {
+			every_other_country = {
+				limit = { has_government = communism is_subject = no }
+				add_ai_strategy = { type = send_volunteers_desire id = MOL value = 100 }
+			}
+			custom_effect_tooltip = MOL_spawn_three_interbrigades_tt
+			hidden_effect = {
+				division_template = {
+					name = "International Brigade"
+					is_locked = yes
+					regiments = {
+						infantry = { x = 0 y = 0 }
+						infantry = { x = 0 y = 1 }
+						infantry = { x = 0 y = 2 }
+						infantry = { x = 1 y = 0 }
+						infantry = { x = 1 y = 1 }
+						infantry = { x = 1 y = 2 }
+					}
+				}
+				random_owned_controlled_state = {
+					create_unit = {
+						division = "name = \"International Brigade\" division_template = \"International Brigade\" start_experience_factor = 0.5"
+						owner = MOL
+					}
+					create_unit = {
+						division = "name = \"International Brigade\" division_template = \"International Brigade\" start_experience_factor = 0.5"
+						owner = MOL
+					}
+					create_unit = {
+						division = "name = \"International Brigade\" division_template = \"International Brigade\" start_experience_factor = 0.5"
+						owner = MOL
+					}
+				}
+			}
+		}
+	}
+
+	# --- Балканская Коммунистическая Федерация ---
+	focus = {
+		id = MOL_red_balkan_communist_federation
+		icon = GFX_focus_BUL_balkan_federation_of_socialist_republics
+		prerequisite = { focus = MOL_red_spread_revolution }
+		mutually_exclusive = { focus = MOL_red_join_soviet_union }
+		x = 0
+		y = 1
+		relative_position_id = MOL_red_spread_revolution
+		cost = 5
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		available = {
+			is_subject = no
+			has_government = communism
+		}
+		completion_reward = {
+			add_political_power = 50
+			if = {
+				limit = { NOT = { has_rule = can_create_factions } }
+				set_rule = { can_create_factions = yes }
+			}
+			create_faction = "balkan_communist_federation_faction"
+			every_other_country = {
+				limit = {
+					OR = { original_tag = ROM original_tag = BUL original_tag = GRE original_tag = ALB original_tag = YUG }
+					has_government = communism
+					is_subject = no
+				}
+				country_event = generic.5
+			}
+			custom_effect_tooltip = MOL_balkan_communist_federation_tt
+		}
+	}
+	focus = {
+		id = MOL_red_work_with_revolutionary_orgs
+		icon = GFX_focus_BUL_support_macedonian_organizations
+		prerequisite = { focus = MOL_red_balkan_communist_federation }
+		x = 0
+		y = 1
+		relative_position_id = MOL_red_balkan_communist_federation
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		available = { is_subject = no }
+		completion_reward = {
+			every_country = {
+				limit = { OR = { tag = GRE tag = BUL tag = ROM } }
+				add_dynamic_modifier = { modifier = MOL_revolutionary_organizations_activity days = 730 }
+			}
+			custom_effect_tooltip = MOL_balkan_communist_federation_decisions_tt
+		}
+	}
+	focus = {
+		id = MOL_red_influence_romania
+		icon = GFX_focus_generic_attack_romania
+		prerequisite = { focus = MOL_red_work_with_revolutionary_orgs }
+		x = -2
+		y = 1
+		relative_position_id = MOL_red_work_with_revolutionary_orgs
+		cost = 8
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		available = {
+			ROM = { exists = yes NOT = { has_government = communism } NOT = { is_in_faction_with = ROOT } }
+		}
+		completion_reward = {
+			ROM = { add_timed_idea = { idea = communist_influence days = 365 } }
+ 			add_opinion_modifier = { target = ROM modifier = MOL_subversive_diplomacy }
+		}
+	}
+	focus = {
+		id = MOL_red_influence_bulgaria
+		icon = GFX_focus_generic_befriend_bulgaria
+		prerequisite = { focus = MOL_red_work_with_revolutionary_orgs }
+		x = 0
+		y = 1
+		relative_position_id = MOL_red_work_with_revolutionary_orgs
+		cost = 8
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		completion_reward = {
+			BUL = { add_timed_idea = { idea = communist_influence days = 365 } }
+			if = {
+				limit = { is_faction_leader = yes BUL = { is_subject = no has_government = communism NOT = { is_in_faction_with = ROOT } } }
+				BUL = { country_event = generic.5 }
+			}
+		}
+	}
+	focus = {
+		id = MOL_red_influence_greece
+		icon = GFX_focus_generic_befriend_greece
+		prerequisite = { focus = MOL_red_work_with_revolutionary_orgs }
+		x = 2
+		y = 1
+		relative_position_id = MOL_red_work_with_revolutionary_orgs
+		cost = 8
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		completion_reward = {
+			GRE = { add_timed_idea = { idea = communist_influence days = 365 } }
+			if = {
+				limit = { is_faction_leader = yes GRE = { is_subject = no has_government = communism NOT = { is_in_faction_with = ROOT } } }
+				GRE = { country_event = generic.5 }
+			}
+		}
+	}
+
+	# --- Интеграция Балкан ---
+	focus = {
+		id = MOL_red_economic_integration
+		icon = GFX_focus_mex_privatisation
+		prerequisite = { focus = MOL_red_influence_romania }
+		prerequisite = { focus = MOL_red_influence_bulgaria }
+		prerequisite = { focus = MOL_red_influence_greece }
+		x = 0
+		y = 1
+		relative_position_id = MOL_red_influence_bulgaria
+		cost = 10
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		available_if_capitulated = yes
+		available = {
+			any_country = {
+				OR = { original_tag = ROM original_tag = BUL original_tag = GRE original_tag = ALB }
+				is_in_faction_with = ROOT
+			}
+			is_faction_leader = yes
+		}
+		completion_reward = {
+			every_country = {
+				limit = {
+					OR = { original_tag = ROM original_tag = BUL original_tag = GRE original_tag = ALB }
+					is_in_faction_with = ROOT
+				}
+				add_dynamic_modifier = { modifier = MOL_balkan_economic_integration }
+			}
+			add_dynamic_modifier = { modifier = MOL_balkan_economic_integration }
+		}
+	}
+	focus = {
+		id = MOL_red_political_integration
+		icon = GFX_focus_generic_improve_the_administration
+		prerequisite = { focus = MOL_red_economic_integration }
+		x = -1
+		y = 1
+		relative_position_id = MOL_red_economic_integration
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		available = {
+			any_country = {
+				OR = { original_tag = ROM original_tag = BUL original_tag = GRE original_tag = ALB }
+				is_in_faction_with = ROOT
+			}
+			is_faction_leader = yes
+		}
+		completion_reward = {
+			every_country = {
+				limit = {
+					OR = { original_tag = ROM original_tag = BUL original_tag = GRE original_tag = ALB }
+					is_in_faction_with = ROOT
+				}
+				add_dynamic_modifier = { modifier = MOL_balkan_political_integration }
+			}
+			add_dynamic_modifier = { modifier = MOL_balkan_political_integration }
+		}
+	}
+	focus = {
+		id = MOL_red_military_integration
+		icon = GFX_goal_generic_military_deal
+		prerequisite = { focus = MOL_red_economic_integration }
+		x = 1
+		y = 1
+		relative_position_id = MOL_red_economic_integration
+		cost = 10
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_ARMY_XP }
+		available_if_capitulated = yes
+		available = {
+			any_country = {
+				OR = { original_tag = ROM original_tag = BUL original_tag = GRE original_tag = ALB }
+				is_in_faction_with = ROOT
+			}
+			is_faction_leader = yes
+		}
+		completion_reward = {
+			every_country = {
+				limit = {
+					OR = { original_tag = ROM original_tag = BUL original_tag = GRE original_tag = ALB }
+					is_in_faction_with = ROOT
+				}
+				add_dynamic_modifier = { modifier = MOL_balkan_military_integration }
+			}
+			add_dynamic_modifier = { modifier = MOL_balkan_military_integration }
+		}
+	}
+	focus = {
+		id = MOL_red_unification_of_balkans
+		icon = GFX_focus_YUG_unification_of_the_balkans
+		prerequisite = { focus = MOL_red_political_integration }
+		prerequisite = { focus = MOL_red_military_integration }
+		x = 1
+		y = 1
+		relative_position_id = MOL_red_political_integration
+		cost = 10
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		available_if_capitulated = yes
+		available = {
+			any_country = {
+				OR = { original_tag = ROM original_tag = BUL original_tag = GRE original_tag = ALB }
+				is_in_faction_with = ROOT
+				has_dynamic_modifier = MOL_balkan_economic_integration
+				has_dynamic_modifier = MOL_balkan_political_integration
+				has_dynamic_modifier = MOL_balkan_military_integration
+			}
+			is_faction_leader = yes
+		}
+		completion_reward = {
+			if = {
+				limit = {
+					ROM = { is_in_faction_with = ROOT has_dynamic_modifier = MOL_balkan_economic_integration has_dynamic_modifier = MOL_balkan_political_integration has_dynamic_modifier = MOL_balkan_military_integration }
+				}
+				ROM = { every_unit_leader = { set_nationality = MOL } }
+			}
+			if = {
+				limit = {
+					BUL = { is_in_faction_with = ROOT has_dynamic_modifier = MOL_balkan_economic_integration has_dynamic_modifier = MOL_balkan_political_integration has_dynamic_modifier = MOL_balkan_military_integration }
+				}
+				BUL = { every_unit_leader = { set_nationality = MOL } }
+			}
+			if = {
+				limit = {
+					GRE = { is_in_faction_with = ROOT has_dynamic_modifier = MOL_balkan_economic_integration has_dynamic_modifier = MOL_balkan_political_integration has_dynamic_modifier = MOL_balkan_military_integration }
+				}
+				GRE = { every_unit_leader = { set_nationality = MOL } }
+			}
+			every_country = {
+				limit = {
+					OR = { original_tag = ROM original_tag = BUL original_tag = GRE original_tag = ALB }
+					is_in_faction_with = ROOT
+					has_dynamic_modifier = MOL_balkan_economic_integration
+					has_dynamic_modifier = MOL_balkan_political_integration
+					has_dynamic_modifier = MOL_balkan_military_integration
+				}
+				ROOT = { annex_country = { target = PREV transfer_troops = yes } }
+			}
+			set_cosmetic_tag = MOL_balkan_union
+			custom_effect_tooltip = MOL_balkan_unification_cores_tt
+			hidden_effect = {
+				every_state = {
+					limit = {
+						OR = { is_core_of = ROM is_core_of = BUL is_core_of = GRE is_core_of = ALB }
+						NOT = { is_core_of = ROOT }
+					}
+					ROOT = { add_state_core = PREV }
+				}
+			}
+			add_dynamic_modifier = { modifier = MOL_political_turmoil }
+			hidden_effect = { news_event = { id = MOL_news.1 random_hours = 24 } }
+		}
+	}
+	focus = {
+		id = MOL_red_political_stabilization
+		icon = GFX_goal_generic_neutrality_focus
+		prerequisite = { focus = MOL_red_unification_of_balkans }
+		x = 0
+		y = 1
+		relative_position_id = MOL_red_unification_of_balkans
+		cost = 5
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		available_if_capitulated = yes
+		completion_reward = {
+			remove_dynamic_modifier = MOL_political_turmoil
+			add_political_power = 50
+			add_stability = 0.15
+			set_party_name = {
+				ideology = communism
+				long_name = MOLBAL_communist_party_balkan_long
+				name = MOLBAL_communist_party_balkan
+			}
+			hidden_effect = {
+				if = { limit = { is_faction_leader = yes } set_faction_name = "pact_of_socialist_solidarity_faction" }
+			}
+		}
+	}
+
+	# --- Антифашистская коалиция ---
+	focus = {
+		id = MOL_red_anti_fascist_coalition
+		icon = GFX_focus_generic_anti_fascist_diplomacy
+		prerequisite = { focus = MOL_red_spread_revolution }
+		x = 3
+		y = 1
+		relative_position_id = MOL_red_spread_revolution
+		cost = 5
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		available = {
+			NOT = { has_government = fascism }
+			OR = { has_government = democratic has_government = communism }
+			is_subject = no
+			is_in_faction = no
+		}
+		completion_reward = {
+			if = {
+				limit = { NOT = { has_rule = can_create_factions } }
+				set_rule = { can_create_factions = yes }
+			}
+			if = {
+				limit = { is_faction_leader = no }
+				create_faction = "anti_fascist_pact_faction"
+			}
+			else = {
+				set_faction_name = "anti_fascist_pact_faction"
+				every_other_country = {
+					limit = { has_government = fascism is_in_faction_with = ROOT }
+					leave_faction = yes
+				}
+			}
+			add_popularity = { ideology = communism popularity = 0.15 }
+			add_dynamic_modifier = { modifier = MOL_fighting_fascism }
+			every_other_country = {
+				limit = { has_government = fascism }
+				ROOT = { send_embargo = PREV }
+			}
+		}
+	}
+	focus = {
+		id = MOL_red_decrease_fascist_influence
+		icon = GFX_goal_generic_propaganda
+		prerequisite = { focus = MOL_red_anti_fascist_coalition }
+		x = 0
+		y = 1
+		relative_position_id = MOL_red_anti_fascist_coalition
+		cost = 5
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		available = { NOT = { has_government = fascism } is_subject = no }
+		completion_reward = {
+			every_neighbor_country = {
+				limit = { capital_scope = { is_on_continent = europe } is_major = no }
+				add_dynamic_modifier = { modifier = MOL_anti_fascist_propaganda }
+			}
+			every_neighbor_country = {
+				limit = { capital_scope = { is_on_continent = europe } is_major = yes }
+				add_dynamic_modifier = { modifier = MOL_anti_fascist_propaganda days = 730 }
+			}
+		}
+	}
+	focus = {
+		id = MOL_red_fight_capitalism
+		icon = GFX_focus_eng_crush_the_dream
+		prerequisite = { focus = MOL_red_decrease_fascist_influence }
+		mutually_exclusive = { focus = MOL_red_destroy_reactionaries focus = MOL_red_crush_fascism }
+		x = -1
+		y = 1
+		relative_position_id = MOL_red_decrease_fascist_influence
+		cost = 10
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		available_if_capitulated = yes
+		available = {
+			is_subject = no
+			any_country = { OR = { is_major = yes is_neighbor_of = ROOT } has_government = democratic }
+		}
+		completion_reward = {
+			every_other_country = {
+				limit = { has_government = democratic OR = { is_major = yes is_neighbor_of = ROOT } }
+				ROOT = { create_wargoal = { type = puppet_wargoal_focus target = PREV } }
+			}
+		}
+	}
+	focus = {
+		id = MOL_red_destroy_reactionaries
+		icon = GFX_focus_focus_fra_revolution_utmost
+		prerequisite = { focus = MOL_red_decrease_fascist_influence }
+		mutually_exclusive = { focus = MOL_red_fight_capitalism focus = MOL_red_crush_fascism }
+		x = 1
+		y = 1
+		relative_position_id = MOL_red_decrease_fascist_influence
+		cost = 10
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		available_if_capitulated = yes
+		available = {
+			is_subject = no
+			any_country = { OR = { is_major = yes is_neighbor_of = ROOT } has_government = neutrality }
+		}
+		completion_reward = {
+			every_other_country = {
+				limit = { has_government = neutrality OR = { is_major = yes is_neighbor_of = ROOT } }
+				ROOT = { create_wargoal = { type = puppet_wargoal_focus target = PREV } }
+			}
+		}
+	}
+	focus = {
+		id = MOL_red_crush_fascism
+		icon = GFX_focus_focus_fra_fascist_threat
+		prerequisite = { focus = MOL_red_decrease_fascist_influence }
+		mutually_exclusive = { focus = MOL_red_fight_capitalism focus = MOL_red_destroy_reactionaries }
+		x = 3
+		y = 1
+		relative_position_id = MOL_red_decrease_fascist_influence
+		cost = 10
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		available_if_capitulated = yes
+		available = {
+			is_subject = no
+			any_country = { OR = { is_major = yes is_neighbor_of = ROOT } has_government = fascism }
+		}
+		completion_reward = {
+			every_other_country = {
+				limit = { has_government = fascism OR = { is_major = yes is_neighbor_of = ROOT } }
+				ROOT = { create_wargoal = { type = puppet_wargoal_focus target = PREV } }
+			}
+		}
+	}
+	focus = {
+		id = MOL_red_finish_fascism
+		icon = GFX_focus_ITA_liberation_or_death
+		prerequisite = { focus = MOL_red_fight_capitalism focus = MOL_red_destroy_reactionaries focus = MOL_red_crush_fascism }
+		x = 1
+		y = 1
+		relative_position_id = MOL_red_fight_capitalism
+		cost = 10
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		available_if_capitulated = yes
+		available = {
+			is_subject = no
+			NOT = { has_government = fascism }
+			any_country = {
+				has_government = fascism
+				OR = { is_major = yes AND = { is_major = no capital_scope = { is_on_continent = europe } } }
+			}
+		}
+		completion_reward = {
+			every_other_country = {
+				limit = { has_government = fascism is_major = yes }
+				ROOT = { create_wargoal = { type = puppet_wargoal_focus target = PREV } }
+			}
+			custom_effect_tooltip = MOL_finish_fascism_tt
+		}
+	}
+
+	# === КУЛЬМИНАЦИЯ: Народная Молдова ===
+	focus = {
+		id = MOL_red_peoples_moldavia
+		icon = GFX_focus_SOV_socialism_in_one_country
+		prerequisite = { focus = MOL_red_unification_of_balkans focus = MOL_red_finish_fascism focus = MOL_red_fortress }
+		x = 0
+		y = 1
+		relative_position_id = MOL_red_finish_fascism
+		cost = 20
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_stability = 0.15
+			add_war_support = 0.10
+			add_political_power = 200
+			add_manpower = 50000
+			add_dynamic_modifier = { modifier = MOL_peoples_moldavia }
+			if = {
+				limit = { NOT = { has_government = communism } }
+				set_politics = { ruling_party = communism elections_allowed = no }
+			}
+			add_popularity = { ideology = communism popularity = 0.25 }
+			set_cosmetic_tag = MOL_peoples_republic
+		}
+	}
+
+	# (Старая компактная демократическая ветка удалена — см. расширенную версию ниже)
+
+	# ==================== РАСШИРЕННАЯ СИНЯЯ ВЕТКА (Демократы) ====================
+
+	# --- Входная точка демократической ветки ---
+	focus = {
+		id = MOL_dem_government
+		icon = GFX_goal_support_democracy
+		prerequisite = { focus = MOL_victory }
+		x = 8
+		y = 1
+		relative_position_id = MOL_victory
+		cost = 5
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available = { always = no }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_stability = 0.05
+			add_political_power = 50
+			set_country_flag = MOL_dem_path
+		}
+	}
+
+	# --- Базовая стабилизация ---
+	focus = {
+		id = MOL_dem_stabilization
+		icon = GFX_focus_generic_treaty
+		prerequisite = { focus = MOL_dem_government }
+		x = 0
+		y = 1
+		relative_position_id = MOL_dem_government
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_stability = 0.10
+			add_political_power = 100
+			add_popularity = { ideology = democratic popularity = 0.10 }
+			add_dynamic_modifier = { modifier = MOL_victorious_nation }
+		}
+	}
+
+	# ============================================
+	# ПРОСОЮЗНИЧЕСКИЙ ПУТЬ (Allied Path)
+	# ============================================
+	focus = {
+		id = MOL_dem_allied_alignment
+		icon = GFX_goal_generic_major_alliance
+		prerequisite = { focus = MOL_dem_stabilization }
+		mutually_exclusive = { focus = MOL_dem_neutral_path }
+		x = -8
+		y = 1
+		relative_position_id = MOL_dem_stabilization
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		available = {
+			is_subject = no
+			ENG = { exists = yes }
+		}
+		ai_will_do = { factor = 1 modifier = { factor = 3 ENG = { has_government = democratic } } }
+		completion_reward = {
+			add_opinion_modifier = { target = ENG modifier = friendly_relations }
+			ENG = { add_opinion_modifier = { target = ROOT modifier = friendly_relations } }
+			add_political_power = 75
+			add_dynamic_modifier = { modifier = MOL_british_trade }
+		}
+	}
+	focus = {
+		id = MOL_dem_anti_fascist_diplomacy
+		icon = GFX_focus_generic_anti_fascist_diplomacy
+		prerequisite = { focus = MOL_dem_allied_alignment }
+		x = -1
+		y = 1
+		relative_position_id = MOL_dem_allied_alignment
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_war_support = 0.05
+			add_political_power = 50
+			add_popularity = { ideology = democratic popularity = 0.05 }
+			every_neighbor_country = {
+				limit = { has_government = fascism is_major = no }
+				add_opinion_modifier = { target = ROOT modifier = MOL_anti_fascist_diplomacy }
+			}
+		}
+	}
+	focus = {
+		id = MOL_dem_british_trade
+		icon = GFX_goal_generic_trade
+		prerequisite = { focus = MOL_dem_allied_alignment }
+		x = 1
+		y = 1
+		relative_position_id = MOL_dem_allied_alignment
+		cost = 10
+		search_filters = { FOCUS_FILTER_INDUSTRY FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		completion_reward = {
+			ENG = { add_opinion_modifier = { target = ROOT modifier = MOL_democratic_cooperation } }
+			add_opinion_modifier = { target = ENG modifier = MOL_democratic_cooperation }
+			add_dynamic_modifier = { modifier = MOL_british_trade }
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 1
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+		}
+	}
+	focus = {
+		id = MOL_dem_british_military_mission
+		icon = GFX_goal_generic_military_deal
+		prerequisite = { focus = MOL_dem_british_trade }
+		prerequisite = { focus = MOL_dem_anti_fascist_diplomacy }
+		x = -1
+		y = 1
+		relative_position_id = MOL_dem_british_trade
+		cost = 10
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_ARMY_XP }
+		available_if_capitulated = yes
+		completion_reward = {
+			army_experience = 50
+			add_doctrine_cost_reduction = {
+				name = land_doc_bonus
+				cost_reduction = 0.5
+				uses = 2
+				category = land_doctrine
+			}
+			add_equipment_to_stockpile = { type = infantry_equipment amount = 3000 }
+			add_tech_bonus = { name = infantry_artillery_bonus bonus = 1 uses = 1 category = infantry_weapons }
+		}
+	}
+	focus = {
+		id = MOL_dem_join_allies
+		icon = GFX_goal_generic_alliance
+		prerequisite = { focus = MOL_dem_british_military_mission }
+		x = 0
+		y = 1
+		relative_position_id = MOL_dem_british_military_mission
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		available = {
+			is_subject = no
+			is_in_faction = no
+			ENG = { is_faction_leader = yes NOT = { has_government = communism } }
+			NOT = { has_war_with = ENG }
+		}
+		bypass = {
+			OR = {
+				is_in_faction_with = ENG
+				AND = {
+					ENG = { is_faction_leader = yes is_in_faction_with = ROOT }
+				}
+			}
+		}
+		completion_reward = {
+			ENG = { country_event = generic.2 }
+		}
+	}
+	focus = {
+		id = MOL_dem_guarantee_balkans
+		icon = GFX_goal_generic_national_unity
+		prerequisite = { focus = MOL_dem_join_allies }
+		x = -2
+		y = 1
+		relative_position_id = MOL_dem_join_allies
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		available = {
+			is_faction_leader = yes
+			has_government = democratic
+		}
+		completion_reward = {
+			custom_effect_tooltip = MOL_dem_guarantee_balkans_tt
+			every_other_country = {
+				limit = {
+					OR = {
+						original_tag = BUL
+						original_tag = GRE
+						original_tag = ALB
+						original_tag = YUG
+						original_tag = TUR
+					}
+					NOT = { original_tag = ROM }
+					has_government = democratic
+					is_subject = no
+				}
+				ROOT = { give_guarantee = PREV }
+				add_opinion_modifier = { target = ROOT modifier = MOL_democratic_cooperation }
+			}
+			add_political_power = 50
+		}
+	}
+	focus = {
+		id = MOL_dem_french_support
+		icon = GFX_focus_chi_reach_out_to_france
+		prerequisite = { focus = MOL_dem_join_allies }
+		x = 2
+		y = 1
+		relative_position_id = MOL_dem_join_allies
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		available = {
+			FRA = { exists = yes NOT = { has_war_with = ROOT } }
+		}
+		completion_reward = {
+			FRA = { add_opinion_modifier = { target = ROOT modifier = friendly_relations } }
+			add_opinion_modifier = { target = FRA modifier = friendly_relations }
+			add_equipment_to_stockpile = { type = infantry_equipment amount = 2000 producer = FRA }
+			add_equipment_to_stockpile = { type = artillery_equipment amount = 200 producer = FRA }
+		}
+	}
+
+	# --- Румынский вопрос (просоюзнический) ---
+	focus = {
+		id = MOL_dem_ultimatum_romania
+		icon = GFX_goal_generic_forceful_treaty
+		prerequisite = { focus = MOL_dem_guarantee_balkans }
+		x = 0
+		y = 1
+		relative_position_id = MOL_dem_guarantee_balkans
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ANNEXATION }
+		available_if_capitulated = yes
+		available = {
+			is_subject = no
+			ROM = { exists = yes NOT = { is_in_faction_with = ROOT } }
+		}
+		bypass = {
+			OR = {
+				ROM = { has_government = democratic }
+				ROM = { exists = no }
+			}
+		}
+		completion_reward = {
+			if = {
+				limit = { ROM = { has_government = democratic } }
+				set_country_flag = MOL_dem_ultimatum_accepted
+				add_opinion_modifier = { target = ROM modifier = MOL_democratic_cooperation }
+				ROM = { add_opinion_modifier = { target = ROOT modifier = MOL_democratic_cooperation } }
+				custom_effect_tooltip = MOL_dem_romania_democratic_tt
+			}
+			else = {
+				add_war_support = 0.10
+				custom_effect_tooltip = MOL_dem_ultimatum_demands_tt
+				ROM = { country_event = { id = MOL_dem_events.1 days = 1 } }
+			}
+		}
+	}
+	focus = {
+		id = MOL_dem_war_with_romania
+		icon = GFX_focus_generic_attack_romania
+		prerequisite = { focus = MOL_dem_ultimatum_romania }
+		mutually_exclusive = { focus = MOL_dem_peaceful_romania }
+		x = -1
+		y = 1
+		relative_position_id = MOL_dem_ultimatum_romania
+		cost = 10
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		available_if_capitulated = yes
+		available = {
+			is_subject = no
+			has_country_flag = MOL_dem_ultimatum_rejected
+			has_war_with = ROM
+		}
+		bypass = {
+			OR = {
+				ROM = { exists = no }
+				has_country_flag = MOL_dem_ultimatum_accepted
+				AND = {
+					owns_state = 79
+					owns_state = 80
+				}
+			}
+		}
+		completion_reward = {
+			add_dynamic_modifier = { modifier = MOL_war_against_romania days = 180 }
+			custom_effect_tooltip = MOL_war_against_romania_tt
+		}
+	}
+	focus = {
+		id = MOL_dem_peaceful_romania
+		icon = GFX_goal_generic_improve_relations
+		prerequisite = { focus = MOL_dem_ultimatum_romania }
+		mutually_exclusive = { focus = MOL_dem_war_with_romania }
+		x = 1
+		y = 1
+		relative_position_id = MOL_dem_ultimatum_romania
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		available = {
+			ROM = { exists = yes has_government = democratic }
+			has_country_flag = MOL_dem_ultimatum_accepted
+		}
+		completion_reward = {
+			add_stability = 0.10
+			add_political_power = 100
+			ROM = { add_opinion_modifier = { target = ROOT modifier = MOL_democratic_cooperation } }
+			add_opinion_modifier = { target = ROM modifier = MOL_democratic_cooperation }
+			if = {
+				limit = { ROM = { is_in_faction = no } }
+				ROM = { country_event = generic.5 }
+			}
+		}
+	}
+	focus = {
+		id = MOL_dem_volunteers_for_democracy
+		icon = GFX_goal_generic_allies_build_infantry
+		prerequisite = { focus = MOL_dem_french_support }
+		x = 0
+		y = 2
+		relative_position_id = MOL_dem_french_support
+		cost = 10
+		search_filters = { FOCUS_FILTER_MANPOWER }
+		available_if_capitulated = yes
+		available = {
+			has_war = no
+			has_manpower > 4999
+			any_country = { has_government = democratic has_war = yes NOT = { is_in_faction_with = ROOT } }
+		}
+		completion_reward = {
+			set_rule = { can_send_volunteers = yes }
+			every_other_country = {
+				limit = { has_government = democratic has_war = yes NOT = { is_in_faction_with = ROOT } }
+				ROOT = { add_ai_strategy = { type = send_volunteers_desire id = PREV value = 100 } }
+			}
+			add_war_support = 0.05
+		}
+	}
+
+	# --- Советский вопрос (просоюзнический) ---
+	focus = {
+		id = MOL_dem_liberate_transnistria
+		icon = GFX_goal_generic_demand_territory
+		prerequisite = { focus = MOL_dem_war_with_romania focus = MOL_dem_peaceful_romania }
+		prerequisite = { focus = MOL_dem_volunteers_for_democracy }
+		x = 1
+		y = 2
+		relative_position_id = MOL_dem_peaceful_romania
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ANNEXATION }
+		available_if_capitulated = yes
+		available = {
+			is_subject = no
+			SOV = { exists = yes }
+			NOT = { owns_state = 834 }
+		}
+		completion_reward = {
+			add_state_claim = 834
+			add_state_claim = 192
+			add_state_claim = 196
+			SOV = { country_event = { id = MOL_dem_events.4 days = 1 } }
+			add_war_support = 0.10
+		}
+	}
+	focus = {
+		id = MOL_dem_war_with_soviet
+		icon = GFX_focus_attack_soviet
+		prerequisite = { focus = MOL_dem_liberate_transnistria }
+		x = 0
+		y = 1
+		relative_position_id = MOL_dem_liberate_transnistria
+		cost = 15
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		available_if_capitulated = yes
+		available = {
+			is_subject = no
+			SOV = { exists = yes NOT = { is_in_faction_with = ROOT } }
+		}
+		bypass = {
+			OR = {
+				owns_state = 834
+				SOV = { exists = no }
+			}
+		}
+		completion_reward = {
+			add_state_claim = 834
+			create_wargoal = { type = take_state_focus target = SOV generator = { 834 192 196 } }
+			add_war_support = 0.15
+			add_manpower = 20000
+		}
+	}
+	focus = {
+		id = MOL_dem_victory_in_europe
+		icon = GFX_goal_generic_national_unity
+		prerequisite = { focus = MOL_dem_war_with_soviet }
+		x = 0
+		y = 1
+		relative_position_id = MOL_dem_war_with_soviet
+		cost = 20
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		available_if_capitulated = yes
+		available = {
+			owns_state = 78
+			owns_state = 766
+			owns_state = 834
+		}
+		completion_reward = {
+			add_stability = 0.20
+			add_war_support = 0.10
+			add_political_power = 200
+			add_manpower = 50000
+			78 = { add_core_of = ROOT }
+			766 = { add_core_of = ROOT }
+			834 = { add_core_of = ROOT }
+			add_dynamic_modifier = { modifier = MOL_democratic_triumph }
+			set_cosmetic_tag = MOL_peoples_republic
+			hidden_effect = { news_event = { id = MOL_dem_news.1 days = 1 } }
+		}
+	}
+
+	# ============================================
+	# НЕЙТРАЛЬНЫЙ ПУТЬ (Neutral Path)
+	# ============================================
+	focus = {
+		id = MOL_dem_neutral_path
+		icon = GFX_goal_generic_neutrality
+		prerequisite = { focus = MOL_dem_stabilization }
+		mutually_exclusive = { focus = MOL_dem_allied_alignment }
+		x = 8
+		y = 1
+		relative_position_id = MOL_dem_stabilization
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_stability = 0.15
+			add_political_power = 100
+			add_war_support = 0.05
+			if = {
+				limit = { NOT = { has_rule = can_not_declare_war } }
+				add_ideas = neutrality_idea_ns
+			}
+		}
+	}
+	focus = {
+		id = MOL_dem_constitution
+		icon = GFX_focus_generic_treaty
+		prerequisite = { focus = MOL_dem_neutral_path }
+		x = 0
+		y = 1
+		relative_position_id = MOL_dem_neutral_path
+		cost = 15
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_stability = 0.20
+			add_political_power = 150
+			add_dynamic_modifier = { modifier = MOL_free_speech }
+		}
+	}
+	focus = {
+		id = MOL_dem_land_reform
+		icon = GFX_focus_generic_agrarian_reform
+		prerequisite = { focus = MOL_dem_constitution }
+		x = -1
+		y = 1
+		relative_position_id = MOL_dem_constitution
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_manpower = 30000
+			add_stability = 0.05
+			add_dynamic_modifier = { modifier = MOL_land_reform }
+		}
+	}
+	focus = {
+		id = MOL_dem_free_market
+		icon = GFX_focus_generic_industry_1
+		prerequisite = { focus = MOL_dem_constitution }
+		x = 1
+		y = 1
+		relative_position_id = MOL_dem_constitution
+		cost = 15
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_dynamic_modifier = { modifier = MOL_free_market_economy }
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = { type = industrial_complex level = 2 instant_build = yes }
+			}
+		}
+	}
+	focus = {
+		id = MOL_dem_multiculturalism
+		icon = GFX_goal_generic_national_unity
+		prerequisite = { focus = MOL_dem_land_reform }
+		prerequisite = { focus = MOL_dem_free_market }
+		x = 1
+		y = 1
+		relative_position_id = MOL_dem_land_reform
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_stability = 0.10
+			add_manpower = 20000
+			add_dynamic_modifier = { modifier = MOL_multicultural_state }
+		}
+	}
+
+	# ============================================
+	# ПОДВЕТКА: ШВЕЙЦАРСКАЯ ОБОРОНА (Swiss Defense)
+	# ============================================
+	focus = {
+		id = MOL_dem_fortify_borders
+		icon = GFX_goal_generic_fortify_city
+		prerequisite = { focus = MOL_dem_multiculturalism }
+		mutually_exclusive = { focus = MOL_dem_war_path }
+		x = -2
+		y = 1
+		relative_position_id = MOL_dem_multiculturalism
+		cost = 10
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		available_if_capitulated = yes
+		completion_reward = {
+			every_owned_state = {
+				limit = { is_core_of = ROOT any_neighbor_state = { NOT = { is_owned_by = ROOT } } }
+				add_building_construction = { type = bunker level = 3 province = { all_provinces = yes limit_to_border = yes } instant_build = yes }
+			}
+			add_dynamic_modifier = { modifier = MOL_fortified_neutrality }
+		}
+	}
+	focus = {
+		id = MOL_dem_militia_system
+		icon = GFX_goal_generic_small_arms
+		prerequisite = { focus = MOL_dem_fortify_borders }
+		x = 0
+		y = 1
+		relative_position_id = MOL_dem_fortify_borders
+		cost = 10
+		search_filters = { FOCUS_FILTER_MANPOWER }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_manpower = 25000
+			add_equipment_to_stockpile = { type = infantry_equipment amount = 5000 }
+			add_dynamic_modifier = { modifier = MOL_militia_system }
+			division_template = {
+				name = "Moldavian People's Militia"
+				is_locked = no
+				regiments = {
+					infantry = { x = 0 y = 0 }
+					infantry = { x = 0 y = 1 }
+					infantry = { x = 0 y = 2 }
+					infantry = { x = 1 y = 0 }
+					infantry = { x = 1 y = 1 }
+					infantry = { x = 1 y = 2 }
+				}
+			}
+			capital_scope = {
+				create_unit = {
+					division = "name = \"1st People's Militia\" division_template = \"Moldavian People's Militia\" start_experience_factor = 0.5"
+					owner = MOL
+				}
+				create_unit = {
+					division = "name = \"2nd People's Militia\" division_template = \"Moldavian People's Militia\" start_experience_factor = 0.5"
+					owner = MOL
+				}
+				create_unit = {
+					division = "name = \"3rd People's Militia\" division_template = \"Moldavian People's Militia\" start_experience_factor = 0.5"
+					owner = MOL
+				}
+			}
+		}
+	}
+	focus = {
+		id = MOL_dem_armed_neutrality
+		icon = GFX_goal_generic_defence
+		prerequisite = { focus = MOL_dem_militia_system }
+		x = 0
+		y = 1
+		relative_position_id = MOL_dem_militia_system
+		cost = 10
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		available_if_capitulated = yes
+		completion_reward = {
+			army_experience = 50
+			add_doctrine_cost_reduction = {
+				name = land_doc_bonus
+				cost_reduction = 0.5
+				uses = 2
+				category = land_doctrine
+			}
+			add_dynamic_modifier = { modifier = MOL_armed_neutrality }
+		}
+	}
+	focus = {
+		id = MOL_dem_swiss_model
+		icon = GFX_goal_generic_neutrality_focus
+		prerequisite = { focus = MOL_dem_armed_neutrality }
+		x = 0
+		y = 1
+		relative_position_id = MOL_dem_armed_neutrality
+		cost = 15
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_stability = 0.15
+			add_political_power = 150
+			add_dynamic_modifier = { modifier = MOL_swiss_model }
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = { type = industrial_complex level = 2 instant_build = yes }
+			}
+		}
+	}
+	focus = {
+		id = MOL_dem_prosperity
+		icon = GFX_focus_generic_infrastructure_2
+		prerequisite = { focus = MOL_dem_swiss_model }
+		x = 0
+		y = 1
+		relative_position_id = MOL_dem_swiss_model
+		cost = 20
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_stability = 0.10
+			every_owned_state = {
+				add_building_construction = { type = infrastructure level = 2 instant_build = yes }
+			}
+			random_owned_controlled_state = {
+				add_extra_state_shared_building_slots = 3
+				add_building_construction = { type = industrial_complex level = 3 instant_build = yes }
+			}
+			add_dynamic_modifier = { modifier = MOL_democratic_prosperity }
+		}
+	}
+
+	# ============================================
+	# ПОДВЕТКА: ИРРЕДЕНТИЗМ (Irredentist Path)
+	# ============================================
+	focus = {
+		id = MOL_dem_war_path
+		icon = GFX_goal_generic_demand_territory
+		prerequisite = { focus = MOL_dem_multiculturalism }
+		mutually_exclusive = { focus = MOL_dem_fortify_borders }
+		x = 2
+		y = 1
+		relative_position_id = MOL_dem_multiculturalism
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ANNEXATION }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_war_support = 0.10
+			add_political_power = 50
+		}
+	}
+
+	focus = {
+		id = MOL_dem_claim_moldovian_states
+		icon = GFX_goal_generic_demand_territory
+		prerequisite = { focus = MOL_dem_war_path }
+		x = -2
+		y = 1
+		relative_position_id = MOL_dem_war_path
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		available = {
+			ROM = { exists = yes NOT = { has_government = democratic } }
+		}
+		completion_reward = {
+			add_state_claim = 80
+			add_state_claim = 79
+		}
+	}
+
+	focus = {
+		id = MOL_dem_revolution_in_romania
+		icon = GFX_goal_generic_propaganda
+		prerequisite = { focus = MOL_dem_claim_moldovian_states }
+		x = 0
+		y = 1
+		relative_position_id = MOL_dem_claim_moldovian_states
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		available = {
+			ROM = { exists = yes NOT = { has_government = democratic } }
+		}
+		completion_reward = {
+			ROM = {
+				add_stability = -0.10
+				add_popularity = { ideology = democratic popularity = 0.15 }
+				add_dynamic_modifier = { modifier = MOL_democratic_agitation days = 365 }
+			}
+			add_political_power = 50
+		}
+	}
+	focus = {
+		id = MOL_dem_war_with_romania_neutral
+		icon = GFX_focus_generic_attack_romania
+		prerequisite = { focus = MOL_dem_revolution_in_romania }
+		x = 0
+		y = 2
+		relative_position_id = MOL_dem_revolution_in_romania
+		cost = 10
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		available_if_capitulated = yes
+		available = {
+			is_subject = no
+			ROM = { exists = yes NOT = { is_in_faction_with = ROOT } }
+		}
+		completion_reward = {
+			create_wargoal = { type = take_state_focus target = ROM generator = { 78 766 79 80 } }
+			add_war_support = 0.10
+		}
+	}
+	focus = {
+		id = MOL_dem_unite_moldova
+		icon = GFX_goal_generic_national_unity
+		prerequisite = { focus = MOL_dem_war_with_romania_neutral }
+		prerequisite = { focus = MOL_dem_unification_of_banks }
+		x = -2
+		y = 1
+		relative_position_id = MOL_dem_unification_of_banks
+		cost = 15
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ANNEXATION }
+		available_if_capitulated = yes
+		available = {
+			owns_state = 78
+			owns_state = 766
+		}
+		completion_reward = {
+			80 = { add_core_of = ROOT }
+			79 = { add_core_of = ROOT }
+			add_stability = 0.15
+			add_political_power = 100
+			add_manpower = 30000
+		}
+	}
+	focus = {
+		id = MOL_dem_revolution_in_ukraine
+		icon = GFX_goal_generic_demand_territory
+		prerequisite = { focus = MOL_dem_war_path }
+		x = 2
+		y = 1
+		relative_position_id = MOL_dem_war_path
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		available = {
+			is_subject = no
+			any_state = {
+				OR = { state = 834 state = 192 state = 196 }
+				owner = {
+					OR = { original_tag = UKR original_tag = SOV }
+					NOT = { has_government = democratic }
+					NOT = { is_in_faction_with = ROOT }
+				}
+			}
+		}
+		bypass = {
+			OR = {
+				owns_state = 834
+				country_exists = PMR
+			}
+		}
+		completion_reward = {
+			add_political_power = 50
+			add_war_support = 0.05
+			add_stability = -0.05
+			set_country_flag = transnistria_rising
+			set_country_flag = MOL_dem_dniester_rising
+			custom_effect_tooltip = MOL_dem_dniester_uprising_tt
+			unlock_decision_category_tooltip = MOL_transnistria_category
+		}
+	}
+	focus = {
+		id = MOL_dem_ukr_agents
+		icon = GFX_goal_generic_intelligence_exchange
+		prerequisite = { focus = MOL_dem_revolution_in_ukraine }
+		x = 0
+		y = 1
+		relative_position_id = MOL_dem_revolution_in_ukraine
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		available = {
+			has_country_flag = MOL_dem_dniester_rising
+		}
+		completion_reward = {
+			add_political_power = 50
+			add_war_support = 0.05
+			set_country_flag = transnistria_agents_bonus
+		}
+	}
+	focus = {
+		id = MOL_dem_ukr_volunteers
+		icon = GFX_goal_generic_allies_build_infantry
+		prerequisite = { focus = MOL_dem_ukr_agents }
+		x = 0
+		y = 1
+		relative_position_id = MOL_dem_ukr_agents
+		cost = 10
+		search_filters = { FOCUS_FILTER_MANPOWER }
+		available_if_capitulated = yes
+		available = {
+			has_country_flag = MOL_dem_dniester_rising
+		}
+		completion_reward = {
+			add_manpower = 5000
+			add_equipment_to_stockpile = { type = infantry_equipment amount = 1500 }
+			add_war_support = 0.05
+			set_country_flag = transnistria_volunteers_bonus
+		}
+	}
+	focus = {
+		id = MOL_dem_unification_of_banks
+		icon = GFX_goal_generic_national_unity
+		prerequisite = { focus = MOL_dem_ukr_volunteers }
+		x = 0
+		y = 1
+		relative_position_id = MOL_dem_ukr_volunteers
+		cost = 15
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ANNEXATION }
+		available_if_capitulated = yes
+		available = {
+			country_exists = PMR
+			PMR = {
+				is_in_faction = no
+				has_war = no
+			}
+		}
+		completion_reward = {
+			add_stability = 0.05
+			add_dynamic_modifier = { modifier = MOL_transnistria_reunion }
+			MOL = { country_event = { id = transnistria_events.3 days = 1 } }
+		}
+	}
+	focus = {
+		id = MOL_dem_war_with_soviet_neutral
+		icon = GFX_focus_attack_soviet
+		prerequisite = { focus = MOL_dem_unite_moldova }
+		x = 0
+		y = 1
+		relative_position_id = MOL_dem_unite_moldova
+		cost = 15
+		search_filters = { FOCUS_FILTER_ANNEXATION }
+		available_if_capitulated = yes
+		available = {
+			is_subject = no
+			OR = {
+				SOV = { exists = yes NOT = { is_in_faction_with = ROOT } }
+				UKR = { exists = yes NOT = { is_in_faction_with = ROOT } }
+			}
+		}
+		completion_reward = {
+			if = {
+				limit = { SOV = { exists = yes NOT = { is_in_faction_with = ROOT } } }
+				create_wargoal = { type = take_state_focus target = SOV generator = { 834 192 196 } }
+			}
+			if = {
+				limit = { UKR = { exists = yes NOT = { is_in_faction_with = ROOT } } }
+				create_wargoal = { type = take_state_focus target = UKR generator = { 834 192 196 } }
+			}
+			add_war_support = 0.15
+		}
+	}
+	focus = {
+		id = MOL_dem_grand_moldavia
+		icon = GFX_goal_generic_demand_territory
+		prerequisite = { focus = MOL_dem_war_with_soviet_neutral }
+		x = 0
+		y = 1
+		relative_position_id = MOL_dem_war_with_soviet_neutral
+		cost = 20
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ANNEXATION FOCUS_FILTER_STABILITY }
+		available_if_capitulated = yes
+		available = {
+			owns_state = 78
+			owns_state = 79
+			owns_state = 80
+			owns_state = 766
+			owns_state = 834
+			owns_state = 192
+			owns_state = 196
+			owns_state = 197
+		}
+		completion_reward = {
+			add_stability = 0.20
+			add_war_support = 0.10
+			add_political_power = 200
+			add_manpower = 50000
+			192 = { add_core_of = ROOT }
+			196 = { add_core_of = ROOT }
+			197 = { add_core_of = ROOT }
+			add_dynamic_modifier = { modifier = MOL_grand_moldavia }
+			set_cosmetic_tag = MOL_peoples_republic
+			hidden_effect = { news_event = { id = MOL_dem_news.1 days = 1 } }
+		}
+	}
+
+	# ==================== ЗЕЛЁНАЯ ВЕТКА (Монархисты) ====================
+	# Три уникальные линии династий: земская (Богдановичи), дворская (Габсбурги), имперская (Романовы).
+	focus = {
+		id = MOL_mon_government
+		icon = GFX_focus_generic_monarchy_1
+		prerequisite = { focus = MOL_victory }
+		x = 38
+		y = 1
+		relative_position_id = MOL_victory
+		cost = 5
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available = { always = no }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_stability = 0.05
+			add_political_power = 50
+			set_country_flag = MOL_mon_path
+		}
+	}
+	focus = {
+		id = MOL_mon_restoration
+		icon = GFX_focus_generic_monarchy_2
+		prerequisite = { focus = MOL_mon_government }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_government
+		cost = 15
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_stability = 0.10
+			add_political_power = 75
+			set_cosmetic_tag = Free_MOL
+			set_party_name = {
+				ideology = neutrality
+				long_name = MOL_monarchist_party_long
+				name = MOL_monarchist_party
+			}
+		}
+	}
+	focus = {
+		id = MOL_mon_crown
+		icon = GFX_focus_generic_congress
+		prerequisite = { focus = MOL_mon_restoration }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_restoration
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_political_power = 100
+			add_popularity = { ideology = neutrality popularity = 0.15 }
+			set_country_flag = MOL_crown_found
+			custom_effect_tooltip = MOL_mon_dynasty_choice_tt
+		}
+	}
+		# === РАЗВИЛКА ДИНАСТИЙ (взаимоисключающие) ===
+	focus = {
+		id = MOL_mon_dynasty_native
+		icon = GFX_focus_generic_monarchy_2
+		prerequisite = { focus = MOL_mon_crown }
+		mutually_exclusive = { focus = MOL_mon_dynasty_habsburg }
+		mutually_exclusive = { focus = MOL_mon_dynasty_romanov }
+		x = -6
+		y = 1
+		relative_position_id = MOL_mon_crown
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		available_if_capitulated = yes
+		completion_reward = {
+			set_country_flag = MOL_dynasty_native
+			add_stability = 0.08
+			add_political_power = 50
+			add_popularity = { ideology = neutrality popularity = 0.10 }
+			custom_effect_tooltip = MOL_mon_dynasty_native_tt
+		}
+	}
+	focus = {
+		id = MOL_mon_dynasty_habsburg
+		icon = GFX_focus_generic_treaty
+		prerequisite = { focus = MOL_mon_crown }
+		mutually_exclusive = { focus = MOL_mon_dynasty_native }
+		mutually_exclusive = { focus = MOL_mon_dynasty_romanov }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_crown
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_INDUSTRY }
+		available_if_capitulated = yes
+		completion_reward = {
+			set_country_flag = MOL_dynasty_habsburg
+			add_political_power = 75
+			add_stability = -0.03
+			every_other_country = {
+				limit = {
+					OR = { original_tag = AUS original_tag = HUN original_tag = ROM original_tag = ITA }
+					has_government = neutrality
+				}
+				add_opinion_modifier = { target = ROOT modifier = MOL_trade_agreement }
+			}
+			custom_effect_tooltip = MOL_mon_dynasty_habsburg_tt
+		}
+	}
+	focus = {
+		id = MOL_mon_dynasty_romanov
+		icon = GFX_focus_generic_monarchy_1
+		prerequisite = { focus = MOL_mon_crown }
+		mutually_exclusive = { focus = MOL_mon_dynasty_native }
+		mutually_exclusive = { focus = MOL_mon_dynasty_habsburg }
+		x = 6
+		y = 1
+		relative_position_id = MOL_mon_crown
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
+		available_if_capitulated = yes
+		completion_reward = {
+			set_country_flag = MOL_dynasty_romanov
+			add_war_support = 0.10
+			add_stability = -0.05
+			add_manpower = 15000
+			SOV = { add_opinion_modifier = { target = ROOT modifier = MOL_subversive_diplomacy } }
+			custom_effect_tooltip = MOL_mon_dynasty_romanov_tt
+		}
+	}
+	focus = {
+		id = MOL_mon_coronation
+		icon = GFX_focus_rom_royal_dictatorship
+		prerequisite = { focus = MOL_mon_dynasty_native focus = MOL_mon_dynasty_habsburg focus = MOL_mon_dynasty_romanov }
+		x = 0
+		y = 2
+		relative_position_id = MOL_mon_crown
+		cost = 20
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_stability = 0.15
+			add_war_support = 0.10
+			add_dynamic_modifier = { modifier = MOL_princely_rule }
+			if = {
+				limit = { has_country_flag = MOL_dynasty_native }
+				set_party_name = { ideology = neutrality long_name = MOL_bogdanovici_party_long name = MOL_bogdanovici_party }
+				add_country_leader_role = {
+					character = MOL_Mircea_Bogdan_Voda
+					promote_leader = yes
+					country_leader = { ideology = despotism expire = "1970.1.1.1" traits = { bogdanovici_dynasty } }
+				}
+			}
+			else_if = {
+				limit = { has_country_flag = MOL_dynasty_habsburg }
+				set_party_name = { ideology = neutrality long_name = MOL_habsburg_party_long name = MOL_habsburg_party }
+				add_country_leader_role = {
+					character = MOL_Leopold_Karl_Habsburg
+					promote_leader = yes
+					country_leader = { ideology = despotism expire = "1970.1.1.1" traits = { habsburg_diplomat } }
+				}
+			}
+			else_if = {
+				limit = { has_country_flag = MOL_dynasty_romanov }
+				set_party_name = { ideology = neutrality long_name = MOL_romanov_party_long name = MOL_romanov_party }
+				add_country_leader_role = {
+					character = MOL_Tsar_Alexiy_III
+					promote_leader = yes
+					country_leader = { ideology = despotism expire = "1970.1.1.1" traits = { romanov_imperial } }
+				}
+			}
+			else = {
+				add_country_leader_role = {
+					character = MOL_Prince
+					promote_leader = yes
+					country_leader = { ideology = despotism expire = "1965.1.1.1" traits = { prince_of_moldavia } }
+				}
+			}
+		}
+	}
+		# ==========================================================
+		# ЛИНИЯ ДОМА БОГДАНОВИЧЕЙ: земское господарство, церковь и крепость
+		# ==========================================================
+	focus = {
+		id = MOL_mon_native_sfatul
+		icon = GFX_focus_generic_improve_the_administration
+		prerequisite = { focus = MOL_mon_coronation }
+		x = -8
+		y = 1
+		relative_position_id = MOL_mon_coronation
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		available = { has_country_flag = MOL_dynasty_native }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_stability = 0.05
+			add_political_power = 50
+			add_dynamic_modifier = { modifier = MOL_native_dynasty_spirit }
+		}
+	}
+	focus = {
+		id = MOL_mon_native_land_army
+		icon = GFX_focus_generic_manpower
+		prerequisite = { focus = MOL_mon_native_sfatul }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_native_sfatul
+		cost = 15
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_ARMY_XP }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_manpower = 15000
+			add_stability = 0.05
+			army_experience = 50
+			add_dynamic_modifier = { modifier = MOL_militia_reserves }
+		}
+	}
+	focus = {
+		id = MOL_mon_orthodox_state
+		icon = GFX_goal_generic_national_unity
+		prerequisite = { focus = MOL_mon_native_land_army }
+		mutually_exclusive = { focus = MOL_mon_historical_claims }
+		x = -2
+		y = 1
+		relative_position_id = MOL_mon_native_land_army
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available = { has_country_flag = MOL_dynasty_native }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_stability = 0.10
+			add_political_power = 50
+			add_dynamic_modifier = { modifier = MOL_orthodox_state }
+		}
+	}
+	focus = {
+		id = MOL_mon_historical_claims
+		icon = GFX_goal_generic_demand_territory
+		prerequisite = { focus = MOL_mon_native_land_army }
+		mutually_exclusive = { focus = MOL_mon_orthodox_state }
+		x = 2
+		y = 1
+		relative_position_id = MOL_mon_native_land_army
+		cost = 15
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available = { has_country_flag = MOL_dynasty_native }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_war_support = 0.15
+			add_manpower = 20000
+			set_country_flag = MOL_historical_expansion
+		}
+	}
+	focus = {
+		id = MOL_mon_nobility
+		icon = GFX_focus_generic_improve_the_administration
+		prerequisite = { focus = MOL_mon_orthodox_state }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_orthodox_state
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_political_power = 75
+			add_stability = 0.05
+			add_dynamic_modifier = { modifier = MOL_restored_nobility }
+		}
+	}
+	focus = {
+		id = MOL_mon_native_church_synod
+		icon = GFX_goal_generic_neutrality_focus
+		prerequisite = { focus = MOL_mon_nobility }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_nobility
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_stability = 0.05
+			add_political_power = 50
+			add_dynamic_modifier = { modifier = MOL_native_church_autonomy }
+		}
+	}
+	focus = {
+		id = MOL_mon_cultural_revival
+		icon = GFX_goal_generic_propaganda
+		prerequisite = { focus = MOL_mon_native_church_synod }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_native_church_synod
+		cost = 15
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_stability = 0.10
+			add_war_support = 0.05
+			add_popularity = { ideology = neutrality popularity = 0.10 }
+		}
+	}
+	focus = {
+		id = MOL_mon_native_fortress
+		icon = GFX_goal_generic_fortify_city
+		prerequisite = { focus = MOL_mon_cultural_revival }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_cultural_revival
+		cost = 15
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_war_support = 0.05
+			add_dynamic_modifier = { modifier = MOL_native_border_fortress }
+		}
+	}
+	focus = {
+		id = MOL_mon_peaceful_expansion
+		icon = GFX_goal_generic_improve_relations
+		prerequisite = { focus = MOL_mon_native_fortress }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_native_fortress
+		cost = 20
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_stability = 0.05
+			add_political_power = 100
+			if = {
+				limit = { ROM = { is_in_faction = no } }
+				create_wargoal = { type = puppet_wargoal_goal target = ROM }
+			}
+		}
+	}
+	focus = {
+		id = MOL_mon_army
+		icon = GFX_goal_generic_army_doctrines
+		prerequisite = { focus = MOL_mon_historical_claims }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_historical_claims
+		cost = 15
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		available_if_capitulated = yes
+		completion_reward = {
+			army_experience = 75
+			add_doctrine_cost_reduction = {
+				name = land_doc_bonus
+				cost_reduction = 0.5
+				uses = 2
+				category = land_doctrine
+			}
+			add_manpower = 25000
+		}
+	}
+	focus = {
+		id = MOL_mon_conquest
+		icon = GFX_goal_generic_major_war
+		prerequisite = { focus = MOL_mon_army }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_army
+		cost = 10
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_POLITICAL }
+		available = {
+			ROM = { exists = yes }
+			NOT = { has_war_with = ROM }
+		}
+		available_if_capitulated = yes
+		bypass = {
+			OR = {
+				ROM = { exists = no }
+				owns_state = 79
+			}
+		}
+		completion_reward = {
+			add_war_support = 0.10
+			add_state_claim = 79
+			add_state_claim = 80
+			create_wargoal = {
+				type = take_state_focus
+				target = ROM
+				generator = { 79 80 }
+			}
+		}
+	}
+	focus = {
+		id = MOL_mon_native_land_reform
+		icon = GFX_focus_generic_workers
+		prerequisite = { focus = MOL_mon_conquest }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_conquest
+		cost = 10
+		search_filters = { FOCUS_FILTER_STABILITY FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_stability = 0.05
+			add_political_power = 50
+			add_manpower = 10000
+		}
+	}
+	focus = {
+		id = MOL_mon_native_budjak
+		icon = GFX_focus_generic_resource_extraction
+		prerequisite = { focus = MOL_mon_native_land_reform }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_native_land_reform
+		cost = 15
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_political_power = 50
+			766 = {
+				add_extra_state_shared_building_slots = 2
+				add_building_construction = {
+					type = infrastructure
+					level = 1
+					instant_build = yes
+				}
+			}
+		}
+	}
+	focus = {
+		id = MOL_mon_native_guard
+		icon = GFX_goal_generic_special_forces
+		prerequisite = { focus = MOL_mon_native_budjak }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_native_budjak
+		cost = 15
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_ARMY_XP }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_manpower = 10000
+			army_experience = 50
+			add_war_support = 0.05
+		}
+	}
+	focus = {
+		id = MOL_mon_grand_moldavia
+		icon = GFX_goal_generic_military_sphere
+		prerequisite = { focus = MOL_mon_native_guard }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_native_guard
+		cost = 25
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ANNEXATION }
+		available_if_capitulated = yes
+		bypass = {
+			OR = {
+				owns_state = 79
+				owns_state = 80
+			}
+		}
+		completion_reward = {
+			add_war_support = 0.10
+			add_stability = 0.10
+			add_manpower = 50000
+			78 = { add_core_of = ROOT }
+			766 = { add_core_of = ROOT }
+			79 = { add_core_of = ROOT }
+			80 = { add_core_of = ROOT }
+			add_dynamic_modifier = { modifier = MOL_grand_moldavia }
+		}
+	}
+		# --- Земское восстание на Днестре (аналог приднестровской цепочки) ---
+	focus = {
+		id = MOL_mon_native_uprising
+		icon = GFX_goal_generic_demand_territory
+		prerequisite = { focus = MOL_mon_grand_moldavia }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_grand_moldavia
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		available = {
+			is_subject = no
+			any_state = {
+				OR = { state = 834 state = 192 state = 196 }
+				owner = {
+					OR = { original_tag = UKR original_tag = SOV }
+					NOT = { is_in_faction_with = ROOT }
+				}
+			}
+		}
+		available_if_capitulated = yes
+		bypass = {
+			OR = {
+				owns_state = 834
+				country_exists = PMR
+			}
+		}
+		completion_reward = {
+			add_political_power = 50
+			add_war_support = 0.05
+			add_stability = -0.05
+			set_country_flag = transnistria_rising
+			set_country_flag = MOL_mon_native_dniester_rising
+			custom_effect_tooltip = MOL_dem_dniester_uprising_tt
+			unlock_decision_category_tooltip = MOL_transnistria_category
+		}
+	}
+	focus = {
+		id = MOL_mon_native_agents
+		icon = GFX_goal_generic_intelligence_exchange
+		prerequisite = { focus = MOL_mon_native_uprising }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_native_uprising
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		available = { has_country_flag = MOL_mon_native_dniester_rising }
+		completion_reward = {
+			add_political_power = 50
+			add_war_support = 0.05
+			set_country_flag = transnistria_agents_bonus
+		}
+	}
+	focus = {
+		id = MOL_mon_native_volunteers
+		icon = GFX_goal_generic_allies_build_infantry
+		prerequisite = { focus = MOL_mon_native_agents }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_native_agents
+		cost = 10
+		search_filters = { FOCUS_FILTER_MANPOWER }
+		available_if_capitulated = yes
+		available = { has_country_flag = MOL_mon_native_dniester_rising }
+		completion_reward = {
+			add_manpower = 5000
+			add_equipment_to_stockpile = { type = infantry_equipment amount = 1500 }
+			add_war_support = 0.05
+			set_country_flag = transnistria_volunteers_bonus
+		}
+	}
+	focus = {
+		id = MOL_mon_native_reunion
+		icon = GFX_goal_generic_national_unity
+		prerequisite = { focus = MOL_mon_native_volunteers }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_native_volunteers
+		cost = 15
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ANNEXATION }
+		available_if_capitulated = yes
+		available = {
+			country_exists = PMR
+			PMR = { is_in_faction = no has_war = no }
+		}
+		completion_reward = {
+			add_stability = 0.05
+			add_dynamic_modifier = { modifier = MOL_transnistria_reunion }
+			MOL = { country_event = { id = transnistria_events.3 days = 1 } }
+		}
+	}
+		# ==========================================================
+		# ЛИНИЯ ГАБСБУРГОВ: двор, Дунайский пакт и торговая империя
+		# ==========================================================
+	focus = {
+		id = MOL_mon_habsburg_diplomacy
+		icon = GFX_goal_generic_improve_relations
+		prerequisite = { focus = MOL_mon_coronation }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_coronation
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_RESEARCH }
+		available = { has_country_flag = MOL_dynasty_habsburg }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_political_power = 75
+			add_stability = 0.05
+			add_dynamic_modifier = { modifier = MOL_habsburg_court }
+		}
+	}
+	focus = {
+		id = MOL_mon_danubian_pact
+		icon = GFX_goal_generic_major_alliance
+		prerequisite = { focus = MOL_mon_habsburg_diplomacy }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_habsburg_diplomacy
+		cost = 20
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available = {
+			is_subject = no
+			NOT = { has_war_with = ROM }
+		}
+		available_if_capitulated = yes
+		bypass = { is_faction_leader = yes }
+		completion_reward = {
+			add_stability = 0.05
+			add_political_power = 50
+			if = {
+				limit = { is_in_faction = no }
+				create_faction = MOL_danubian_pact
+			}
+			if = {
+				limit = { is_faction_leader = yes }
+				every_other_country = {
+					limit = {
+						OR = { original_tag = AUS original_tag = HUN original_tag = ROM original_tag = BUL original_tag = GRE original_tag = YUG original_tag = ALB }
+						is_subject = no
+						is_in_faction = no
+						NOT = { has_government = communism }
+						NOT = { has_war_with = ROOT }
+					}
+					country_event = { id = generic.5 days = 1 }
+				}
+			}
+			custom_effect_tooltip = MOL_mon_danubian_pact_tt
+		}
+	}
+	focus = {
+		id = MOL_mon_habs_trade_league
+		icon = GFX_goal_generic_trade
+		prerequisite = { focus = MOL_mon_danubian_pact }
+		mutually_exclusive = { focus = MOL_mon_habs_guard_regiments }
+		x = -2
+		y = 1
+		relative_position_id = MOL_mon_danubian_pact
+		cost = 10
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		available = { has_country_flag = MOL_dynasty_habsburg }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_political_power = 50
+			add_dynamic_modifier = { modifier = MOL_habs_trade_league }
+		}
+	}
+	focus = {
+		id = MOL_mon_habs_guard_regiments
+		icon = GFX_focus_generic_military_mission
+		prerequisite = { focus = MOL_mon_danubian_pact }
+		mutually_exclusive = { focus = MOL_mon_habs_trade_league }
+		x = 2
+		y = 1
+		relative_position_id = MOL_mon_danubian_pact
+		cost = 10
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_ARMY_XP }
+		available = { has_country_flag = MOL_dynasty_habsburg }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_manpower = 10000
+			army_experience = 50
+			add_war_support = 0.05
+		}
+	}
+	focus = {
+		id = MOL_mon_habs_railways
+		icon = GFX_goal_generic_construct_infrastructure
+		prerequisite = { focus = MOL_mon_habs_trade_league }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_habs_trade_league
+		cost = 15
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		available_if_capitulated = yes
+		completion_reward = {
+			78 = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+			766 = {
+				add_building_construction = { type = infrastructure level = 1 instant_build = yes }
+			}
+			add_political_power = 25
+		}
+	}
+	focus = {
+		id = MOL_mon_habs_industry
+		icon = GFX_goal_generic_construct_civ_factory
+		prerequisite = { focus = MOL_mon_habs_railways }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_habs_railways
+		cost = 15
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		available_if_capitulated = yes
+		completion_reward = {
+			random_owned_controlled_state = {
+				add_building_construction = { type = industrial_complex level = 1 instant_build = yes }
+			}
+			add_political_power = 25
+		}
+	}
+	focus = {
+		id = MOL_mon_habs_academy
+		icon = GFX_focus_research
+		prerequisite = { focus = MOL_mon_habs_industry }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_habs_industry
+		cost = 15
+		search_filters = { FOCUS_FILTER_RESEARCH }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_political_power = 50
+			add_dynamic_modifier = { modifier = MOL_habs_court_academy }
+		}
+	}
+	focus = {
+		id = MOL_mon_habs_marriages
+		icon = GFX_goal_generic_alliance
+		prerequisite = { focus = MOL_mon_habs_academy }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_habs_academy
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_stability = 0.05
+			add_political_power = 75
+			AUS = { add_opinion_modifier = { target = ROOT modifier = MOL_favouritism_in_trading } }
+			HUN = { add_opinion_modifier = { target = ROOT modifier = MOL_favouritism_in_trading } }
+		}
+	}
+	focus = {
+		id = MOL_mon_habs_guarantees
+		icon = GFX_goal_generic_defence
+		prerequisite = { focus = MOL_mon_habs_guard_regiments }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_habs_guard_regiments
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_political_power = 50
+			every_other_country = {
+				limit = {
+					OR = { original_tag = BUL original_tag = GRE original_tag = YUG original_tag = ALB }
+					is_subject = no
+					NOT = { has_government = communism }
+					NOT = { has_war_with = ROOT }
+				}
+				ROOT = { give_guarantee = PREV }
+			}
+		}
+	}
+	focus = {
+		id = MOL_mon_habs_danube_flotilla
+		icon = GFX_goal_generic_build_navy
+		prerequisite = { focus = MOL_mon_habs_guarantees }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_habs_guarantees
+		cost = 15
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		available_if_capitulated = yes
+		completion_reward = {
+			navy_experience = 50
+			766 = {
+				add_building_construction = { type = dockyard level = 1 instant_build = yes }
+			}
+		}
+	}
+	focus = {
+		id = MOL_mon_habs_army_corps
+		icon = GFX_focus_generic_military_academy
+		prerequisite = { focus = MOL_mon_habs_danube_flotilla }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_habs_danube_flotilla
+		cost = 15
+		search_filters = { FOCUS_FILTER_RESEARCH FOCUS_FILTER_ARMY_XP }
+		available_if_capitulated = yes
+		completion_reward = {
+			army_experience = 50
+			add_doctrine_cost_reduction = {
+				name = land_doc_bonus
+				cost_reduction = 0.5
+				uses = 1
+				category = land_doctrine
+			}
+		}
+	}
+	focus = {
+		id = MOL_mon_habs_danubian_empire
+		icon = GFX_focus_YUG_unification_of_the_balkans
+		prerequisite = { focus = MOL_mon_habs_marriages focus = MOL_mon_habs_army_corps }
+		x = 2
+		y = 1
+		relative_position_id = MOL_mon_habs_marriages
+		cost = 25
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_stability = 0.10
+			add_political_power = 100
+			add_dynamic_modifier = { modifier = MOL_danubian_empire }
+		}
+	}
+		# ==========================================================
+		# ЛИНИЯ РОМАНОВЫХ: двор в изгнании и ТРИ пути (свой / союзнический / прогерманский),
+		# сходящиеся в единственную войну с СССР
+		# ==========================================================
+	focus = {
+		id = MOL_mon_romanov_emigre
+		icon = GFX_goal_generic_allies_build_infantry
+		prerequisite = { focus = MOL_mon_coronation }
+		x = 8
+		y = 1
+		relative_position_id = MOL_mon_coronation
+		cost = 15
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_ARMY_XP }
+		available = { has_country_flag = MOL_dynasty_romanov }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_manpower = 25000
+			add_war_support = 0.05
+			army_experience = 50
+			add_dynamic_modifier = { modifier = MOL_romanov_court }
+		}
+	}
+		# --- Выбор пути двора (взаимоисключающие) ---
+	focus = {
+		id = MOL_mon_romanov_third_rome
+		icon = GFX_goal_generic_national_unity
+		prerequisite = { focus = MOL_mon_romanov_emigre }
+		mutually_exclusive = { focus = MOL_mon_romanov_allied_path }
+		mutually_exclusive = { focus = MOL_mon_romanov_german_path }
+		x = -3
+		y = 1
+		relative_position_id = MOL_mon_romanov_emigre
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		available = { has_country_flag = MOL_dynasty_romanov }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_stability = 0.05
+			add_war_support = 0.05
+			add_dynamic_modifier = { modifier = MOL_third_rome }
+		}
+	}
+	focus = {
+		id = MOL_mon_romanov_allied_path
+		icon = GFX_goal_generic_alliance
+		prerequisite = { focus = MOL_mon_romanov_emigre }
+		mutually_exclusive = { focus = MOL_mon_romanov_third_rome }
+		mutually_exclusive = { focus = MOL_mon_romanov_german_path }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_romanov_emigre
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available = { has_country_flag = MOL_dynasty_romanov }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_political_power = 75
+			ENG = { add_opinion_modifier = { target = ROOT modifier = MOL_democratic_cooperation } }
+			FRA = { add_opinion_modifier = { target = ROOT modifier = MOL_democratic_cooperation } }
+		}
+	}
+	focus = {
+		id = MOL_mon_romanov_german_path
+		icon = GFX_focus_generic_conspiracy
+		prerequisite = { focus = MOL_mon_romanov_emigre }
+		mutually_exclusive = { focus = MOL_mon_romanov_third_rome }
+		mutually_exclusive = { focus = MOL_mon_romanov_allied_path }
+		x = 3
+		y = 1
+		relative_position_id = MOL_mon_romanov_emigre
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available = { has_country_flag = MOL_dynasty_romanov }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_political_power = 75
+			GER = { add_opinion_modifier = { target = ROOT modifier = MOL_trade_agreement } }
+		}
+	}
+		# --- СВОЙ ПУТ: самодержавие, церковь, Белая армия и казачество ---
+	focus = {
+		id = MOL_mon_romanov_autocracy
+		icon = GFX_focus_rom_royal_dictatorship
+		prerequisite = { focus = MOL_mon_romanov_third_rome }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_romanov_third_rome
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_STABILITY }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_political_power = 75
+			add_stability = 0.05
+			add_dynamic_modifier = { modifier = MOL_imperial_throne }
+		}
+	}
+	focus = {
+		id = MOL_mon_romanov_white_army
+		icon = GFX_focus_generic_limited_social_mobilization
+		prerequisite = { focus = MOL_mon_romanov_autocracy }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_romanov_autocracy
+		cost = 15
+		search_filters = { FOCUS_FILTER_MANPOWER }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_manpower = 20000
+			add_dynamic_modifier = { modifier = MOL_white_army }
+		}
+	}
+	focus = {
+		id = MOL_mon_romanov_cossacks
+		icon = GFX_goal_generic_small_arms
+		prerequisite = { focus = MOL_mon_romanov_white_army }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_romanov_white_army
+		cost = 15
+		search_filters = { FOCUS_FILTER_MANPOWER FOCUS_FILTER_ARMY_XP }
+		available_if_capitulated = yes
+		completion_reward = {
+			army_experience = 50
+			add_manpower = 10000
+			add_dynamic_modifier = { modifier = MOL_cossack_hosts }
+		}
+	}
+	focus = {
+		id = MOL_mon_romanov_orthodoxy
+		icon = GFX_goal_generic_propaganda
+		prerequisite = { focus = MOL_mon_romanov_cossacks }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_romanov_cossacks
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_stability = 0.05
+			add_political_power = 50
+			add_popularity = { ideology = neutrality popularity = 0.10 }
+		}
+	}
+		# --- СОЮЗНИЧЕСКИЙ ПУТ: Антанта, помощь и корпус ---
+	focus = {
+		id = MOL_mon_romanov_entente
+		icon = GFX_goal_generic_major_alliance
+		prerequisite = { focus = MOL_mon_romanov_allied_path }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_romanov_allied_path
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_political_power = 50
+			every_other_country = {
+				limit = {
+					OR = { original_tag = ENG original_tag = FRA original_tag = TUR original_tag = GRE }
+					has_government = democratic
+					is_in_faction = no
+					NOT = { has_war_with = ROOT }
+				}
+				ROOT = { give_guarantee = PREV }
+			}
+		}
+	}
+	focus = {
+		id = MOL_mon_romanov_allied_aid
+		icon = GFX_goal_generic_positive_trade_relations
+		prerequisite = { focus = MOL_mon_romanov_entente }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_romanov_entente
+		cost = 15
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_equipment_to_stockpile = { type = infantry_equipment amount = 3000 }
+			add_political_power = 50
+		}
+	}
+	focus = {
+		id = MOL_mon_romanov_allied_corps
+		icon = GFX_focus_generic_military_academy
+		prerequisite = { focus = MOL_mon_romanov_allied_aid }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_romanov_allied_aid
+		cost = 15
+		search_filters = { FOCUS_FILTER_ARMY_XP FOCUS_FILTER_RESEARCH }
+		available_if_capitulated = yes
+		completion_reward = {
+			army_experience = 75
+			add_doctrine_cost_reduction = {
+				name = land_doc_bonus
+				cost_reduction = 0.5
+				uses = 1
+				category = land_doctrine
+			}
+		}
+	}
+	focus = {
+		id = MOL_mon_romanov_black_sea_fleet
+		icon = GFX_goal_generic_navy_cruiser
+		prerequisite = { focus = MOL_mon_romanov_allied_corps }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_romanov_allied_corps
+		cost = 15
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		available_if_capitulated = yes
+		completion_reward = {
+			navy_experience = 50
+			766 = {
+				add_building_construction = { type = dockyard level = 1 instant_build = yes }
+			}
+		}
+	}
+		# --- ПРОГЕРМАНСКИЙ ПУТ: Берлин, лицензии и офицеры ---
+	focus = {
+		id = MOL_mon_romanov_berlin_pact
+		icon = GFX_goal_generic_military_deal
+		prerequisite = { focus = MOL_mon_romanov_german_path }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_romanov_german_path
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_political_power = 50
+			GER = { add_opinion_modifier = { target = ROOT modifier = MOL_favouritism_in_trading } }
+		}
+	}
+	focus = {
+		id = MOL_mon_romanov_german_arms
+		icon = GFX_goal_generic_small_arms
+		prerequisite = { focus = MOL_mon_romanov_berlin_pact }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_romanov_berlin_pact
+		cost = 15
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_equipment_to_stockpile = { type = infantry_equipment amount = 4000 }
+			add_war_support = 0.05
+		}
+	}
+	focus = {
+		id = MOL_mon_romanov_german_officers
+		icon = GFX_focus_generic_military_mission
+		prerequisite = { focus = MOL_mon_romanov_german_arms }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_romanov_german_arms
+		cost = 15
+		search_filters = { FOCUS_FILTER_ARMY_XP }
+		available_if_capitulated = yes
+		completion_reward = {
+			army_experience = 75
+			add_dynamic_modifier = { modifier = MOL_white_army }
+		}
+	}
+	focus = {
+		id = MOL_mon_romanov_war_industry
+		icon = GFX_goal_generic_construct_mil_factory
+		prerequisite = { focus = MOL_mon_romanov_german_officers }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_romanov_german_officers
+		cost = 15
+		search_filters = { FOCUS_FILTER_INDUSTRY }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_war_support = 0.05
+			random_owned_controlled_state = {
+				add_building_construction = { type = arms_factory level = 1 instant_build = yes }
+			}
+		}
+	}
+		# --- Общий хвост: восстание царских лоялистов на Днестре -> ЕДИНСТВЕННАЯ война с СССР ---
+	focus = {
+		id = MOL_mon_romanov_uprising
+		icon = GFX_goal_generic_demand_territory
+		prerequisite = { focus = MOL_mon_romanov_orthodoxy focus = MOL_mon_romanov_black_sea_fleet focus = MOL_mon_romanov_war_industry }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_romanov_black_sea_fleet
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		available = {
+			is_subject = no
+			any_state = {
+				OR = { state = 834 state = 192 state = 196 }
+				owner = {
+					OR = { original_tag = UKR original_tag = SOV }
+					NOT = { is_in_faction_with = ROOT }
+				}
+			}
+		}
+		available_if_capitulated = yes
+		bypass = {
+			OR = {
+				owns_state = 834
+				country_exists = PMR
+			}
+		}
+		completion_reward = {
+			add_political_power = 50
+			add_war_support = 0.05
+			add_stability = -0.05
+			set_country_flag = transnistria_rising
+			set_country_flag = MOL_mon_romanov_dniester_rising
+			custom_effect_tooltip = MOL_mon_romanov_uprising_tt
+			unlock_decision_category_tooltip = MOL_transnistria_category
+		}
+	}
+	focus = {
+		id = MOL_mon_romanov_agents
+		icon = GFX_goal_generic_intelligence_exchange
+		prerequisite = { focus = MOL_mon_romanov_uprising }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_romanov_uprising
+		cost = 10
+		search_filters = { FOCUS_FILTER_POLITICAL }
+		available_if_capitulated = yes
+		available = { has_country_flag = MOL_mon_romanov_dniester_rising }
+		completion_reward = {
+			add_political_power = 50
+			add_war_support = 0.05
+			set_country_flag = transnistria_agents_bonus
+		}
+	}
+	focus = {
+		id = MOL_mon_romanov_volunteers
+		icon = GFX_goal_generic_allies_build_infantry
+		prerequisite = { focus = MOL_mon_romanov_agents }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_romanov_agents
+		cost = 10
+		search_filters = { FOCUS_FILTER_MANPOWER }
+		available_if_capitulated = yes
+		available = { has_country_flag = MOL_mon_romanov_dniester_rising }
+		completion_reward = {
+			add_manpower = 5000
+			add_equipment_to_stockpile = { type = infantry_equipment amount = 1500 }
+			add_war_support = 0.05
+			set_country_flag = transnistria_volunteers_bonus
+		}
+	}
+	focus = {
+		id = MOL_mon_romanov_reunion
+		icon = GFX_goal_generic_national_unity
+		prerequisite = { focus = MOL_mon_romanov_volunteers }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_romanov_volunteers
+		cost = 15
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_ANNEXATION }
+		available_if_capitulated = yes
+		available = {
+			country_exists = PMR
+			PMR = { is_in_faction = no has_war = no }
+		}
+		completion_reward = {
+			add_stability = 0.05
+			add_dynamic_modifier = { modifier = MOL_transnistria_reunion }
+			MOL = { country_event = { id = transnistria_events.3 days = 1 } }
+		}
+	}
+	focus = {
+		id = MOL_mon_romanov_war_ussr
+		icon = GFX_focus_attack_soviet
+		prerequisite = { focus = MOL_mon_romanov_reunion }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_romanov_reunion
+		cost = 20
+		search_filters = { FOCUS_FILTER_ANNEXATION FOCUS_FILTER_POLITICAL }
+		available = {
+			is_subject = no
+			SOV = { exists = yes }
+			NOT = { has_war_with = SOV }
+		}
+		available_if_capitulated = yes
+		bypass = {
+			OR = {
+				SOV = { exists = no }
+				owns_state = 192
+			}
+		}
+		completion_reward = {
+			add_war_support = 0.15
+			add_state_claim = 192
+			add_state_claim = 196
+			add_state_claim = 197
+			add_state_claim = 137
+			create_wargoal = {
+				type = take_state_focus
+				target = SOV
+				generator = { 192 196 197 137 }
+			}
+		}
+	}
+	focus = {
+		id = MOL_mon_romanov_imperial_throne
+		icon = GFX_focus_rom_royal_dictatorship
+		prerequisite = { focus = MOL_mon_romanov_war_ussr }
+		x = 0
+		y = 1
+		relative_position_id = MOL_mon_romanov_war_ussr
+		cost = 25
+		search_filters = { FOCUS_FILTER_POLITICAL FOCUS_FILTER_MANPOWER }
+		available_if_capitulated = yes
+		completion_reward = {
+			add_stability = 0.05
+			add_war_support = 0.10
+			add_manpower = 50000
+			add_dynamic_modifier = { modifier = MOL_imperial_throne }
+		}
+	}
+}

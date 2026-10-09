@@ -1,0 +1,845 @@
+﻿add_namespace = moldavia
+
+# ========== ВЫХОД НА СВОБОДУ: КОСМЕТИКА Free_MOL ==========
+country_event = {
+	id = moldavia.1
+	title = moldavia.1.t
+	desc = moldavia.1.d
+	
+	trigger = {
+		tag = MOL
+		NOT = {
+			OR = {
+				is_puppet_of = ROM
+				has_autonomy_state = autonomy_dominion
+			}
+		}
+		NOT = { has_war_with = ROM }
+	}
+	mean_time_to_happen = {
+		days = 1
+	}
+	fire_only_once = yes
+	
+	option = {
+		name = moldavia.1.a
+		ai_chance = {
+			factor = 100
+		}
+		
+		# FIX: не retiring лидера правящей партии
+		if = {
+			limit = { NOT = { has_government = democratic } }
+			retire_ideology_leader = democratic
+		}
+		if = {
+			limit = { NOT = { has_government = fascism } }
+			retire_ideology_leader = fascism
+		}
+		if = {
+			limit = { NOT = { has_government = neutrality } }
+			retire_ideology_leader = neutrality
+		}
+		
+		set_cosmetic_tag = Free_MOL
+		set_party_name = {
+			ideology = democratic
+			long_name = Free_MOL_democratic_party_long
+			name = Free_MOL_democratic_party
+		}
+		set_party_name = {
+			ideology = communism
+			long_name = Free_MOL_communism_party_long
+			name = Free_MOL_communism_party
+		}
+		set_party_name = {
+			ideology = neutrality
+			long_name = Free_MOL_neutrality_party_long
+			name = Free_MOL_neutrality_party
+		}
+		set_party_name = {
+			ideology = fascism
+			long_name = Free_MOL_fascism_party_long
+			name = Free_MOL_fascism_party
+		}
+		clr_country_flag = ROM_MOL_autonomic
+	}
+}
+
+# ========== СИНХРОНИЗАЦИЯ ИДЕОЛОГИИ С БУХАРЕСТОМ ==========
+country_event = {
+	id = moldavia.2
+	title = moldavia.2.t
+	desc = moldavia.2.d
+	
+	trigger = {
+		tag = MOL
+		OR = {
+			is_puppet_of = ROM
+			has_country_flag = ROM_MOL_autonomic
+		}
+		# FIX: валидное сравнение идеологий вместо has_government = ROM
+		OR = {
+			AND = {
+				ROM = { has_government = communism }
+				NOT = { has_government = communism }
+			}
+			AND = {
+				ROM = { has_government = democratic }
+				NOT = { has_government = democratic }
+			}
+			AND = {
+				ROM = { has_government = fascism }
+				NOT = { has_government = fascism }
+			}
+			AND = {
+				ROM = { has_government = neutrality }
+				NOT = { has_government = neutrality }
+			}
+		}
+	}
+	mean_time_to_happen = {
+		days = 2
+	}
+	fire_only_once = no
+	
+	option = {
+		name = moldavia.2.com
+		ai_chance = { factor = 100 }
+		trigger = { ROM = { has_government = communism } }
+		set_politics = { ruling_party = communism }
+	}
+	option = {
+		name = moldavia.2.dem
+		ai_chance = { factor = 100 }
+		trigger = { ROM = { has_government = democratic } }
+		set_politics = { ruling_party = democratic }
+	}
+	option = {
+		name = moldavia.2.fas
+		ai_chance = { factor = 100 }
+		trigger = { ROM = { has_government = fascism } }
+		set_politics = { ruling_party = fascism }
+	}
+	option = {
+		name = moldavia.2.neu
+		ai_chance = { factor = 100 }
+		trigger = { ROM = { has_government = neutrality } }
+		set_politics = { ruling_party = neutrality }
+	}
+}
+
+# ========== РУМЫНИЯ РЕШАЕТ: ДАТЬ АВТОНОМИЮ ==========
+country_event = {
+	id = moldavia.3
+	title = moldavia.3.t
+	desc = moldavia.3.d
+	
+	is_triggered_only = yes
+	fire_only_once = no
+	
+	option = {
+		name = moldavia.3.a
+		ai_chance = { factor = 85 }
+		hidden_effect = {
+			# FIX: только если Молдова всё ещё сабджит
+			if = {
+				limit = { MOL = { is_subject_of = ROM } }
+				MOL = {
+					complete_national_focus = ROM_MOL_autonomy_success
+					country_event = { days = 1 id = moldavia.4 }
+				}
+			}
+		}
+	}
+	option = {
+		name = moldavia.3.b
+		ai_chance = { factor = 15 }
+	}
+}
+
+country_event = {
+	id = moldavia.4
+	title = moldavia.4.t
+	desc = moldavia.4.d
+	
+	is_triggered_only = yes
+	fire_only_once = no
+	
+	option = {
+		name = moldavia.4.a
+	}
+}
+
+# ========== МОЛДАВСКОЕ СОБРАНИЕ: ВЫБОР СУДЬБЫ ==========
+country_event = {
+	id = moldavia.5
+	title = moldavia.5.t
+	desc = moldavia.5.d
+	picture = GFX_report_event_generic_politics
+	
+	is_triggered_only = yes
+	fire_only_once = yes
+	
+	option = {
+		name = moldavia.5.a
+		ai_chance = {
+			factor = 65
+			modifier = {
+				factor = 2
+				is_in_faction_with = ROM
+			}
+			modifier = {
+				factor = 0.5
+				is_in_faction = yes
+				NOT = { is_in_faction_with = ROM }
+			}
+		}
+		
+		set_country_flag = Moldavia_have_choice
+		
+		add_stability = 0.1
+		add_political_power = 50
+		
+		ROM = { add_political_power = 25 }
+		
+		hidden_effect = {
+			country_event = { days = 3 id = moldavia.6 }
+			complete_national_focus = MOL_we_are_romania
+		}
+	}
+	option = {
+		name = moldavia.5.b
+		ai_chance = {
+			factor = 35
+			modifier = {
+				factor = 0
+				is_subject_of = ROM
+			}
+			modifier = {
+				factor = 5
+				NOT = {
+					OR = {
+						is_subject_of = ROM
+						has_country_flag = ROM_MOL_autonomic
+					}
+				}
+			}
+			modifier = {
+				factor = 2
+				has_war_with = ROM
+			}
+		}
+		
+		ROM = {
+			set_autonomy = {
+				target = MOL
+				autonomous_state = autonomy_free
+				end_wars = no
+				end_civil_wars = no
+			}
+		}
+		hidden_effect = {
+			country_event = { days = 3 id = moldavia.6 }
+		}
+	}
+}
+
+# ========== РЕШЕНИЕ СОБРАНИЯ (ранее отсутствовало) ==========
+country_event = {
+	id = moldavia.6
+	title = moldavia.6.t
+	desc = moldavia.6.d
+	picture = GFX_report_event_generic_politics
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = moldavia.6.a
+		trigger = { has_country_flag = Moldova_have_unite_romania }
+		ai_chance = { factor = 100 }
+		add_stability = 0.05
+		add_political_power = 25
+	}
+	option = {
+		name = moldavia.6.b
+		trigger = { NOT = { has_country_flag = Moldova_have_unite_romania } }
+		ai_chance = { factor = 100 }
+		add_war_support = 0.05
+		add_political_power = 25
+	}
+}
+
+# ========== РУМЫНИЯ ПРИНИМАЕТ ВОССОЕДИНЕНИЕ (ранее отсутствовало) ==========
+country_event = {
+	id = moldavia.7
+	title = moldavia.7.t
+	desc = moldavia.7.d
+	picture = GFX_report_event_generic_politics
+	
+	is_triggered_only = yes
+	
+	option = {
+		name = moldavia.7.a
+		ai_chance = { factor = 100 }
+		add_stability = 0.05
+		add_political_power = 50
+		MOL = {
+			add_stability = 0.05
+			add_political_power = 50
+		}
+	}
+}
+
+# ========== ПЕРЕДАЧА 79/80 (ВЕЛИКАЯ МОЛДАВИЯ) ==========
+country_event = {
+	id = moldavia.8
+	title = moldavia.8.t
+	desc = moldavia.8.d
+	picture = GFX_report_event_generic_politics
+	
+	is_triggered_only = yes
+	fire_only_once = yes
+	
+	option = {
+		name = moldavia.8.a
+		ai_chance = { factor = 90 }
+		
+		79 = { add_core_of = MOL }
+		80 = { add_core_of = MOL }
+		
+		if = {
+			limit = {
+				79 = { NOT = { is_owned_by = MOL } }
+				79 = { is_owned_by = ROM }
+			}
+			MOL = { transfer_state = 79 }
+		}
+		if = {
+			limit = {
+				80 = { NOT = { is_owned_by = MOL } }
+				80 = { is_owned_by = ROM }
+			}
+			MOL = { transfer_state = 80 }
+		}
+		
+		add_political_power = 100
+		
+		MOL = {
+			add_political_power = 50
+			add_stability = 0.1
+		}
+	}
+	
+	option = {
+		name = moldavia.8.b
+		ai_chance = { factor = 10 }
+		
+		add_political_power = -50
+		add_stability = -0.15
+		
+		MOL = {
+			add_stability = -0.1
+			add_popularity = { ideology = communism popularity = 0.1 }
+			add_popularity = { ideology = fascism popularity = 0.1 }
+		}
+	}
+}
+
+# ========== СОВЕТСКИЙ УЛЬТИМАТУМ: РЕШАЕТ МОЛДОВА ==========
+country_event = {
+	id = moldavia.9
+	title = moldavia.9.t
+	desc = moldavia.9.d
+	picture = GFX_report_event_generic_read_write
+	
+	is_triggered_only = yes
+	fire_only_once = no
+	
+	option = { # Согласиться — отдать территории СССР
+		name = moldavia.9.a
+		ai_chance = {
+			factor = 40
+			modifier = {
+				factor = 0.5
+				has_war_with = SOV
+			}
+			modifier = {
+				factor = 2
+				NOT = { is_subject_of = ROM }
+			}
+		}
+		
+		# FIX: штаты уходят СОЮЗУ, а не самой Молдове
+		if = {
+			limit = { owns_state = 80 }
+			SOV = { transfer_state = 80 }
+		}
+		if = {
+			limit = { owns_state = 78 }
+			SOV = { transfer_state = 78 }
+		}
+		if = {
+			limit = { owns_state = 766 }
+			SOV = { transfer_state = 766 }
+		}
+		
+		add_stability = -0.1
+		add_political_power = -30
+		
+		ROM = {
+			add_political_power = -20
+			add_stability = -0.05
+		}
+	}
+	
+	option = { # Отказаться — война
+		name = moldavia.9.b
+		ai_chance = {
+			factor = 60
+			modifier = {
+				factor = 2
+				has_war_with = SOV
+			}
+			modifier = {
+				factor = 0.5
+				NOT = { is_subject_of = ROM }
+			}
+			modifier = {
+				factor = 3
+				is_in_faction_with = ROM
+			}
+		}
+		
+		SOV = {
+			create_wargoal = {
+				type = take_state
+				target = MOL
+				generator = { 78 }
+			}
+		}
+	}
+}
+
+country_event = {
+	id = moldavia.10
+	title = moldavia.10.t
+	desc = moldavia.10.d
+	picture = GFX_report_event_generic_riot
+	is_triggered_only = yes
+	fire_only_once = yes
+	
+	option = {
+		name = moldavia.10.a
+		ai_chance = { factor = 10 modifier = { factor = 3 has_war = yes } }
+		add_stability = -0.20
+		add_war_support = -0.15
+		add_political_power = -150
+		MOL = {
+			add_stability = 0.20
+			add_war_support = 0.20
+			add_political_power = 100
+			clr_country_flag = MOL_independence_war
+		}
+		clr_country_flag = MOL_independence_war
+		set_global_flag = MOL_white_peace_done
+	}
+	
+	option = {
+		name = moldavia.10.b
+		ai_chance = { factor = 90 }
+		declare_war_on = {
+			target = MOL
+			type = annex_everything
+		}
+		add_war_support = 0.10
+		add_stability = -0.10
+		MOL = {
+			add_war_support = 0.20
+			country_event = { id = moldavia.14 hours = 2 }
+		}
+	}
+}
+
+country_event = {
+	id = moldavia.14
+	title = moldavia.14.t
+	desc = moldavia.14.d
+	picture = GFX_report_event_generic_riot
+	is_triggered_only = yes
+	fire_only_once = yes
+	
+	option = {
+		name = moldavia.14.a
+		ai_chance = { factor = 100 }
+		set_country_flag = MOL_independence_war
+		if = {
+			limit = { has_war_with = ROM }
+			activate_mission = MOL_thirty_days_of_fire
+		}
+		ROM = {
+			set_country_flag = MOL_independence_war
+			if = {
+				limit = { has_war_with = MOL }
+				activate_mission = ROM_thirty_days_of_fire
+			}
+		}
+	}
+}
+
+country_event = {
+	id = moldavia.15
+	title = moldavia.15.t
+	desc = moldavia.15.d
+	picture = GFX_report_event_generic_conference
+	is_triggered_only = yes
+	fire_only_once = yes
+	
+	option = {
+		name = moldavia.15.a
+		ai_chance = { factor = 100 }
+	}
+}
+
+country_event = {
+	id = moldavia.16
+	title = moldavia.16.t
+	desc = moldavia.16.d
+	picture = GFX_report_event_generic_politics
+	is_triggered_only = yes
+	option = {
+		name = moldavia.16.com
+		trigger = { has_government = communism }
+		add_manpower = 20000
+		add_dynamic_modifier = { modifier = MOL_victorious_nation }
+	}
+	option = {
+		name = moldavia.16.dem
+		trigger = { has_government = democratic }
+		add_political_power = 150
+		add_dynamic_modifier = { modifier = MOL_victorious_nation }
+	}
+	option = {
+		name = moldavia.16.neu
+		trigger = { has_government = neutrality }
+		add_stability = 0.15
+		add_dynamic_modifier = { modifier = MOL_victorious_nation }
+	}
+	option = {
+		name = moldavia.16.fas
+		trigger = { has_government = fascism }
+		add_war_support = 0.15
+		add_dynamic_modifier = { modifier = MOL_victorious_nation }
+	}
+}
+
+# ========== ВЫБОРЫ ПОСЛЕ ПОБЕДЫ ==========
+country_event = {
+	id = moldavia.17
+	title = moldavia.17.t
+	desc = moldavia.17.d
+	picture = GFX_report_event_election
+	
+	is_triggered_only = yes
+	fire_only_once = yes
+	
+	# Красные побеждают
+	option = {
+		name = moldavia.17.red
+		ai_chance = { factor = 100 }
+		trigger = { has_country_flag = MOL_prep_red }
+		
+		add_popularity = {
+			ideology = communism
+			popularity = 0.60
+		}
+		set_politics = {
+			ruling_party = communism
+			elections_allowed = no
+		}
+		set_cosmetic_tag = Free_MOL
+		set_party_name = {
+			ideology = communism
+			long_name = Free_MOL_communism_party_long
+			name = Free_MOL_communism_party
+		}
+		set_party_name = {
+			ideology = democratic
+			long_name = Free_MOL_democratic_party_long
+			name = Free_MOL_democratic_party
+		}
+		set_party_name = {
+			ideology = neutrality
+			long_name = Free_MOL_neutrality_party_long
+			name = Free_MOL_neutrality_party
+		}
+		set_party_name = {
+			ideology = fascism
+			long_name = Free_MOL_fascism_party_long
+			name = Free_MOL_fascism_party
+		}
+		clr_country_flag = ROM_MOL_autonomic
+		add_stability = 0.10
+		add_political_power = 100
+		hidden_effect = {
+			complete_national_focus = MOL_red_government
+		}
+	}
+	
+	# Синие побеждают
+	option = {
+		name = moldavia.17.blue
+		ai_chance = { factor = 100 }
+		trigger = { has_country_flag = MOL_prep_blue }
+		
+		add_popularity = {
+			ideology = democratic
+			popularity = 0.60
+		}
+		set_politics = {
+			ruling_party = democratic
+			elections_allowed = yes
+		}
+		set_cosmetic_tag = Free_MOL
+		set_party_name = {
+			ideology = communism
+			long_name = Free_MOL_communism_party_long
+			name = Free_MOL_communism_party
+		}
+		set_party_name = {
+			ideology = democratic
+			long_name = Free_MOL_democratic_party_long
+			name = Free_MOL_democratic_party
+		}
+		set_party_name = {
+			ideology = neutrality
+			long_name = Free_MOL_neutrality_party_long
+			name = Free_MOL_neutrality_party
+		}
+		set_party_name = {
+			ideology = fascism
+			long_name = Free_MOL_fascism_party_long
+			name = Free_MOL_fascism_party
+		}
+		clr_country_flag = ROM_MOL_autonomic
+		add_stability = 0.10
+		add_political_power = 100
+		hidden_effect = {
+			complete_national_focus = MOL_dem_government
+		}
+	}
+	
+	# Зелёные побеждают
+	option = {
+		name = moldavia.17.green
+		ai_chance = { factor = 100 }
+		trigger = { has_country_flag = MOL_prep_green }
+		
+		add_popularity = {
+			ideology = neutrality
+			popularity = 0.60
+		}
+		set_politics = {
+			ruling_party = neutrality
+			elections_allowed = no
+		}
+		set_cosmetic_tag = Free_MOL
+		set_party_name = {
+			ideology = communism
+			long_name = Free_MOL_communism_party_long
+			name = Free_MOL_communism_party
+		}
+		set_party_name = {
+			ideology = democratic
+			long_name = Free_MOL_democratic_party_long
+			name = Free_MOL_democratic_party
+		}
+		set_party_name = {
+			ideology = neutrality
+			long_name = Free_MOL_neutrality_party_long
+			name = Free_MOL_neutrality_party
+		}
+		set_party_name = {
+			ideology = fascism
+			long_name = Free_MOL_fascism_party_long
+			name = Free_MOL_fascism_party
+		}
+		clr_country_flag = ROM_MOL_autonomic
+		add_stability = 0.10
+		add_political_power = 100
+		hidden_effect = {
+			complete_national_focus = MOL_mon_government
+		}
+	}
+}
+
+# ========== ДОВЕРИЕ < 30: КОМИССАР ИЗ БУХАРЕСТА ==========
+country_event = {
+	id = moldavia.11
+	title = moldavia.11.t
+	desc = moldavia.11.d
+	picture = GFX_report_event_generic_read_write
+
+	trigger = {
+		tag = MOL
+		is_subject_of = ROM
+		has_country_flag = ROM_MOL_autonomic
+		NOT = { has_country_flag = MOL_crackdown_fired }
+		check_variable = { rom_mol_trust < 30 }
+	}
+
+	mean_time_to_happen = {
+		days = 7
+	}
+
+	immediate = {
+		set_country_flag = MOL_crackdown_fired
+	}
+
+	option = {
+		name = moldavia.11.a
+		ai_chance = { factor = 70 }
+		add_stability = -0.10
+		add_political_power = -100
+		add_autonomy_progress = {
+			value = -0.15
+			freedom = 0.75
+		}
+		add_dynamic_modifier = { modifier = MOL_commissariat_rule }
+		add_to_variable = { rom_mol_trust = 20 }
+		clamp_variable = { var = rom_mol_trust min = 0 max = 100 }
+		custom_effect_tooltip = rom_mol_trust_up_tt
+	}
+	option = {
+		name = moldavia.11.b
+		ai_chance = { factor = 30 }
+		add_war_support = 0.15
+		add_stability = -0.20
+		add_to_variable = { rom_mol_trust = -10 }
+		clamp_variable = { var = rom_mol_trust min = 0 max = 100 }
+		custom_effect_tooltip = rom_mol_trust_down_tt
+		ROM = {
+			country_event = { days = 1 id = moldavia.13 }
+		}
+	}
+}
+
+# ========== ДОВЕРИЕ > 70: МИЛОСТЬ КОРОЛЯ ==========
+country_event = {
+	id = moldavia.12
+	title = moldavia.12.t
+	desc = moldavia.12.d
+	picture = GFX_report_event_royal_visit
+
+	trigger = {
+		tag = MOL
+		is_subject_of = ROM
+		has_country_flag = ROM_MOL_autonomic
+		NOT = { has_country_flag = MOL_king_favor_fired }
+		check_variable = { rom_mol_trust > 70 }
+	}
+
+	mean_time_to_happen = {
+		days = 7
+	}
+
+	immediate = {
+		set_country_flag = MOL_king_favor_fired
+	}
+
+	option = {
+		name = moldavia.12.a
+		ai_chance = { factor = 50 }
+		add_political_power = 100
+		random_owned_controlled_state = {
+			add_extra_state_shared_building_slots = 2
+			add_building_construction = {
+				type = industrial_complex
+				level = 2
+				instant_build = yes
+			}
+		}
+	}
+	option = {
+		name = moldavia.12.b
+		ai_chance = { factor = 40 }
+		add_autonomy_progress = {
+			value = 0.20
+			freedom = 0.75
+		}
+		add_to_variable = { rom_mol_trust = -10 }
+		clamp_variable = { var = rom_mol_trust min = 0 max = 100 }
+		custom_effect_tooltip = rom_mol_trust_down_tt
+	}
+	option = {
+		name = moldavia.12.c
+		ai_chance = { factor = 10 }
+		add_stability = 0.10
+		add_to_variable = { rom_mol_trust = 5 }
+		clamp_variable = { var = rom_mol_trust min = 0 max = 100 }
+		custom_effect_tooltip = rom_mol_trust_up_tt
+	}
+}
+
+# ========== РЕАКЦИЯ БУХАРЕСТА НА ДАВЛЕНИЕ (вызывается из ROM_MOL_pressure_bucharest) ==========
+country_event = {
+	id = moldavia.13
+	title = moldavia.13.t
+	desc = moldavia.13.d
+	picture = GFX_report_event_generic_sign_treaty
+
+	is_triggered_only = yes
+
+	option = {
+		name = moldavia.13.a
+		ai_chance = {
+			factor = 100
+			modifier = {
+				factor = 0.3
+				ROM = { has_government = fascism }
+			}
+		}
+		trigger = {
+			check_variable = { MOL.rom_mol_trust > 40 }
+		}
+		add_stability = 0.05
+		add_autonomy_progress = {
+			value = 0.15
+			freedom = 0.75
+		}
+	}
+	option = {
+		name = moldavia.13.b
+		ai_chance = {
+			factor = 100
+			modifier = {
+				factor = 0
+				check_variable = { MOL.rom_mol_trust > 40 }
+			}
+		}
+		add_stability = -0.10
+		add_political_power = -50
+		MOL = {
+			add_stability = -0.10
+			add_war_support = 0.10
+		}
+	}
+}
+
+# ========== НОВОСТИ: ОБЪЕДИНЕНИЕ БАЛКАН ==========
+add_namespace = MOL_news
+
+country_event = {
+	id = MOL_news.1
+	title = MOL_news.1.t
+	desc = MOL_news.1.d
+	picture = GFX_report_event_generic_conference
+
+	is_triggered_only = yes
+	fire_only_once = yes
+
+	option = {
+		name = MOL_news.1.a
+		ai_chance = { factor = 100 }
+	}
+}
